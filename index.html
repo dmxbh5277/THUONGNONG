@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tra Cứu Thưởng Model</title>
   <!-- Nhập font Google Sans -->
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -20,67 +20,67 @@
       background-color: var(--bg-color);
       color: var(--text-color);
       margin: 0;
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding: 4px;
+      width: 100%;
+      box-sizing: border-box;
+      overflow-x: hidden;
     }
     .container {
       background: var(--box-bg);
-      padding: 12px 10px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+      padding: 10px 8px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
       width: 100%;
-      max-width: 600px;
+      max-width: 100%;
       box-sizing: border-box;
     }
     h2 {
       text-align: center;
       color: var(--primary-color);
-      margin-bottom: 12px;
-      font-size: 18px;
+      margin: 4px 0 10px 0;
+      font-size: 16px;
     }
     
-    /* Top 4 Section Style (Compact for Mobile) */
+    /* Top 4 Section Style */
     .top4-container {
       background: linear-gradient(135deg, #fff8e1, #ffe0b2);
       border: 1px solid #ffe082;
-      border-radius: 8px;
-      padding: 8px;
-      margin-bottom: 12px;
+      border-radius: 6px;
+      padding: 6px;
+      margin-bottom: 10px;
     }
     .top4-title {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: #e65100;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       text-align: center;
     }
     .top4-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px;
+      gap: 4px;
     }
     .top4-card {
       background: white;
-      padding: 6px 8px;
-      border-radius: 5px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      padding: 5px 6px;
+      border-radius: 4px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
     }
     .top4-rank {
       font-weight: bold;
       color: #ff9800;
-      font-size: 12px;
-      min-width: 16px;
+      font-size: 11px;
+      min-width: 14px;
     }
     .top4-info {
       overflow: hidden;
     }
     .top4-name {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 500;
       color: #333;
       white-space: nowrap;
@@ -88,24 +88,25 @@
       text-overflow: ellipsis;
     }
     .top4-val {
-      font-size: 11px;
+      font-size: 10px;
       color: #d32f2f;
       font-weight: bold;
     }
 
     .form-group {
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      position: relative;
     }
     label {
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       font-weight: 500;
       color: #555;
-      font-size: 13px;
+      font-size: 12px;
     }
-    select, input[type="text"] {
+    input[type="text"] {
       width: 100%;
-      padding: 8px 10px;
+      padding: 8px;
       border: 1px solid var(--border-color);
       border-radius: 6px;
       font-size: 14px;
@@ -114,28 +115,63 @@
       background-color: #fff;
       font-family: 'Google Sans', sans-serif;
     }
-    select:focus, input:focus {
+    input[type="text"]:focus {
       border-color: var(--primary-color);
     }
+
+    /* Custom Dropdown List cho Nhóm Hàng */
+    .dropdown-list {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      max-height: 180px;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      margin-top: 2px;
+    }
+    .dropdown-item {
+      padding: 9px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      border-bottom: 1px solid #f5f5f5;
+    }
+    .dropdown-item:hover, .dropdown-item.active {
+      background-color: #f1f4f8;
+      color: var(--primary-color);
+      font-weight: 500;
+    }
     
-    /* Responsive Table Wrapper */
+    /* Table fit full screen without horizontal scroll */
     .table-responsive {
       width: 100%;
-      overflow-x: auto;
-      margin-top: 10px;
-      border-radius: 6px;
-      border: 1px solid var(--border-color);
+      overflow-x: hidden;
+      margin-top: 8px;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      white-space: nowrap;
+      table-layout: fixed;
     }
     th, td {
-      padding: 8px 6px;
+      padding: 6px 3px;
       text-align: left;
-      font-size: 12px;
+      font-size: 11px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
     }
+    th:nth-child(1), td:nth-child(1) { width: 23%; } /* Mã SP */
+    th:nth-child(2), td:nth-child(2) { width: 27%; } /* Tên SP */
+    th:nth-child(3), td:nth-child(3) { width: 22%; } /* Thưởng Nóng */
+    th:nth-child(4), td:nth-child(4) { width: 16%; } /* Hãng */
+    th:nth-child(5), td:nth-child(5) { width: 12%; } /* Size */
+
     th {
       background-color: #F1F4F8;
       font-weight: 600;
@@ -154,10 +190,10 @@
     
     #status {
       text-align: center;
-      margin: 10px 0;
+      margin: 8px 0;
       font-style: italic;
       color: #666;
-      font-size: 12px;
+      font-size: 11px;
     }
   </style>
 </head>
@@ -166,12 +202,11 @@
   <div class="container">
     <h2>Tra Cứu Thưởng Model</h2>
 
-    <!-- Bộ lọc nhóm hàng Cột A -->
-    <div class="form-group">
-      <label for="groupSelect">Chọn nhóm hàng:</label>
-      <select id="groupSelect" onchange="onGroupChange()">
-        <option value="">-- Chọn nhóm hàng --</option>
-      </select>
+    <!-- Ô tìm kiếm & chọn nhóm hàng kèm kính lúp -->
+    <div class="form-group" style="position: relative;">
+      <label for="groupSearch">🔍 Chọn hoặc tìm kiếm nhóm hàng:</label>
+      <input type="text" id="groupSearch" placeholder="Gõ để tìm nhanh nhóm hàng..." oninput="filterGroupList()" onclick="toggleGroupDropdown()" autocomplete="off">
+      <div id="groupDropdown" class="dropdown-list"></div>
     </div>
 
     <!-- Ô nhập liệu lọc theo Tên SP, Hãng, Size -->
@@ -188,14 +223,14 @@
 
     <div id="status">Đang tải dữ liệu...</div>
 
-    <!-- Bảng kết quả (Hiển thị B, C, D, E, F) -->
+    <!-- Bảng kết quả -->
     <div class="table-responsive">
       <table id="dataTable" style="display:none;">
         <thead>
           <tr>
             <th>Mã SP</th>
-            <th>Tên Sản Phẩm</th>
-            <th>Thưởng Nóng</th>
+            <th>Tên SP</th>
+            <th>Thưởng</th>
             <th>Hãng</th>
             <th>Size</th>
           </tr>
@@ -208,10 +243,18 @@
 
   <script>
     let globalData = [];
+    let allGroups = [];
+    let selectedGroup = "";
     const SHEET_ID = "1aNK4p9bfDWG4VIxndztL76A3q9fO5y746l_IdtSVyWo";
 
     window.onload = function() {
       loadData();
+      // Đóng dropdown khi bấm ra ngoài
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('#groupSearch') && !e.target.closest('#groupDropdown')) {
+          document.getElementById('groupDropdown').style.display = 'none';
+        }
+      });
     };
 
     function formatNumber(num) {
@@ -247,7 +290,7 @@
                 globalData.shift(); // Bỏ dòng tiêu đề
               }
 
-              setupDropdown();
+              extractGroups();
               statusDiv.textContent = "";
             } else {
               throw new Error("Dữ liệu trả về trống.");
@@ -273,29 +316,66 @@
       document.body.appendChild(script);
     }
 
-    function setupDropdown() {
-      const select = document.getElementById("groupSelect");
-      select.innerHTML = '<option value="">-- Chọn nhóm hàng --</option>';
-
-      const groups = new Set();
+    function extractGroups() {
+      const groupsSet = new Set();
       globalData.forEach(row => {
         let val = row.colA.toString().trim();
         if (val !== "") {
-          groups.add(val);
+          groupsSet.add(val);
         }
       });
+      allGroups = Array.from(groupsSet).sort();
+      renderGroupDropdown(allGroups);
+    }
 
-      const sortedGroups = Array.from(groups).sort();
-      sortedGroups.forEach(group => {
-        const option = document.createElement("option");
-        option.value = group;
-        option.textContent = group;
-        select.appendChild(option);
+    function renderGroupDropdown(groups) {
+      const dropdown = document.getElementById("groupDropdown");
+      dropdown.innerHTML = "";
+      
+      if (groups.length === 0) {
+        dropdown.innerHTML = '<div class="dropdown-item" style="color: #888; text-align: center;">Không tìm thấy nhóm hàng</div>';
+        return;
+      }
+
+      groups.forEach(group => {
+        const item = document.createElement("div");
+        item.className = "dropdown-item";
+        item.textContent = group;
+        item.onclick = function() {
+          selectGroup(group);
+        };
+        dropdown.appendChild(item);
       });
     }
 
+    function toggleGroupDropdown() {
+      const dropdown = document.getElementById("groupDropdown");
+      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+      filterGroupList();
+    }
+
+    function filterGroupList() {
+      const keyword = document.getElementById("groupSearch").value.toLowerCase().trim();
+      const dropdown = document.getElementById("groupDropdown");
+      
+      const filtered = allGroups.filter(g => g.toLowerCase().includes(keyword));
+      renderGroupDropdown(filtered);
+      dropdown.style.display = "block";
+
+      if (keyword === "") {
+        selectedGroup = "";
+        onGroupChange();
+      }
+    }
+
+    function selectGroup(group) {
+      selectedGroup = group;
+      document.getElementById("groupSearch").value = group;
+      document.getElementById("groupDropdown").style.display = "none";
+      onGroupChange();
+    }
+
     function onGroupChange() {
-      const selectedGroup = document.getElementById("groupSelect").value;
       const searchGroupDiv = document.getElementById("searchGroup");
       const top4Container = document.getElementById("top4Container");
       const table = document.getElementById("dataTable");
@@ -361,7 +441,6 @@
     }
 
     function displayData() {
-      const selectedGroup = document.getElementById("groupSelect").value;
       const searchKeyword = document.getElementById("searchInput").value.toLowerCase().trim();
       const tbody = document.getElementById("tableBody");
       const table = document.getElementById("dataTable");
