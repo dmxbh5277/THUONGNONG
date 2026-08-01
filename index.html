@@ -13,7 +13,10 @@
       --box-bg: #FFFFFF;
       --text-color: #333333;
       --border-color: #E2E8F0;
-      --accent-color: #FF9800;
+      --accent-color: #2E7D32;
+    }
+    *, *:before, *:after {
+      box-sizing: border-box;
     }
     body {
       font-family: 'Google Sans', sans-serif;
@@ -22,37 +25,35 @@
       margin: 0;
       padding: 4px;
       width: 100%;
-      box-sizing: border-box;
       overflow-x: hidden;
     }
     .container {
       background: var(--box-bg);
-      padding: 10px 8px;
+      padding: 8px 6px;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.04);
       width: 100%;
       max-width: 100%;
-      box-sizing: border-box;
     }
     h2 {
       text-align: center;
       color: var(--primary-color);
-      margin: 4px 0 10px 0;
+      margin: 4px 0 8px 0;
       font-size: 16px;
     }
     
-    /* Top 4 Section Style */
+    /* Top 4 Section Style - Green Gradient */
     .top4-container {
-      background: linear-gradient(135deg, #fff8e1, #ffe0b2);
-      border: 1px solid #ffe082;
+      background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+      border: 1px solid #a5d6a7;
       border-radius: 6px;
       padding: 6px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .top4-title {
       font-size: 12px;
       font-weight: 700;
-      color: #e65100;
+      color: #2e7d32;
       margin-bottom: 4px;
       text-align: center;
     }
@@ -72,7 +73,7 @@
     }
     .top4-rank {
       font-weight: bold;
-      color: #ff9800;
+      color: #2e7d32;
       font-size: 11px;
       min-width: 14px;
     }
@@ -95,7 +96,6 @@
 
     .form-group {
       margin-bottom: 8px;
-      position: relative;
     }
     label {
       display: block;
@@ -104,6 +104,37 @@
       color: #555;
       font-size: 12px;
     }
+
+    /* Layout chứa nút xóa và ô input nhóm hàng */
+    .group-search-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+    #clearGroupBtn {
+      background-color: #f1f3f4;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0 10px;
+      height: 38px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #666;
+      cursor: pointer;
+      display: none;
+      flex-shrink: 0;
+    }
+    #clearGroupBtn:hover {
+      background-color: #e4e6e8;
+      color: #d32f2f;
+    }
+
+    .input-wrapper {
+      position: relative;
+      flex: 1;
+    }
+
     input[type="text"] {
       width: 100%;
       padding: 8px;
@@ -111,7 +142,6 @@
       border-radius: 6px;
       font-size: 14px;
       outline: none;
-      box-sizing: border-box;
       background-color: #fff;
       font-family: 'Google Sans', sans-serif;
     }
@@ -151,7 +181,7 @@
     .table-responsive {
       width: 100%;
       overflow-x: hidden;
-      margin-top: 8px;
+      margin-top: 6px;
     }
     table {
       width: 100%;
@@ -159,18 +189,19 @@
       table-layout: fixed;
     }
     th, td {
-      padding: 6px 3px;
+      padding: 6px 4px;
       text-align: left;
       font-size: 11px;
       word-wrap: break-word;
       overflow-wrap: break-word;
       white-space: normal;
     }
-    th:nth-child(1), td:nth-child(1) { width: 23%; } /* Mã SP */
-    th:nth-child(2), td:nth-child(2) { width: 27%; } /* Tên SP */
-    th:nth-child(3), td:nth-child(3) { width: 22%; } /* Thưởng Nóng */
-    th:nth-child(4), td:nth-child(4) { width: 16%; } /* Hãng */
-    th:nth-child(5), td:nth-child(5) { width: 12%; } /* Size */
+    
+    /* Phân bổ tỷ lệ 4 cột C, D, E, F vừa khít màn hình */
+    th:nth-child(1), td:nth-child(1) { width: 42%; } /* Tên SP (C) */
+    th:nth-child(2), td:nth-child(2) { width: 26%; } /* Thưởng (D) */
+    th:nth-child(3), td:nth-child(3) { width: 18%; } /* Hãng (E) */
+    th:nth-child(4), td:nth-child(4) { width: 14%; } /* Size (F) */
 
     th {
       background-color: #F1F4F8;
@@ -190,7 +221,7 @@
     
     #status {
       text-align: center;
-      margin: 8px 0;
+      margin: 6px 0;
       font-style: italic;
       color: #666;
       font-size: 11px;
@@ -202,11 +233,16 @@
   <div class="container">
     <h2>Tra Cứu Thưởng Model</h2>
 
-    <!-- Ô tìm kiếm & chọn nhóm hàng kèm kính lúp -->
-    <div class="form-group" style="position: relative;">
+    <!-- Ô tìm kiếm & chọn nhóm hàng kèm nút Xóa phía bên trái -->
+    <div class="form-group">
       <label for="groupSearch">🔍 Chọn hoặc tìm kiếm nhóm hàng:</label>
-      <input type="text" id="groupSearch" placeholder="Gõ để tìm nhanh nhóm hàng..." oninput="filterGroupList()" onclick="toggleGroupDropdown()" autocomplete="off">
-      <div id="groupDropdown" class="dropdown-list"></div>
+      <div class="group-search-box">
+        <button type="button" id="clearGroupBtn" onclick="clearGroupSearch()" title="Xóa nhanh">✕</button>
+        <div class="input-wrapper">
+          <input type="text" id="groupSearch" placeholder="Gõ để tìm nhanh nhóm hàng..." oninput="filterGroupList()" onclick="toggleGroupDropdown()" autocomplete="off">
+          <div id="groupDropdown" class="dropdown-list"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Ô nhập liệu lọc theo Tên SP, Hãng, Size -->
@@ -217,18 +253,17 @@
 
     <!-- Vùng hiển thị Top 4 Model của 4 hãng khác nhau có thưởng cao nhất -->
     <div id="top4Container" class="top4-container" style="display:none;">
-      <div class="top4-title" id="top4Title">🔥 Top 4 Hãng Thưởng Cao Nhất</div>
+      <div class="top4-title" id="top4Title">🌿 Top 4 Hãng Thưởng Cao Nhất</div>
       <div id="top4List" class="top4-grid"></div>
     </div>
 
     <div id="status">Đang tải dữ liệu...</div>
 
-    <!-- Bảng kết quả -->
+    <!-- Bảng kết quả hiển thị các cột C, D, E, F -->
     <div class="table-responsive">
       <table id="dataTable" style="display:none;">
         <thead>
           <tr>
-            <th>Mã SP</th>
             <th>Tên SP</th>
             <th>Thưởng</th>
             <th>Hãng</th>
@@ -249,9 +284,8 @@
 
     window.onload = function() {
       loadData();
-      // Đóng dropdown khi bấm ra ngoài
       document.addEventListener('click', function(e) {
-        if (!e.target.closest('#groupSearch') && !e.target.closest('#groupDropdown')) {
+        if (!e.target.closest('.group-search-box')) {
           document.getElementById('groupDropdown').style.display = 'none';
         }
       });
@@ -357,7 +391,14 @@
     function filterGroupList() {
       const keyword = document.getElementById("groupSearch").value.toLowerCase().trim();
       const dropdown = document.getElementById("groupDropdown");
+      const clearBtn = document.getElementById("clearGroupBtn");
       
+      if (keyword.length > 0 || selectedGroup !== "") {
+        clearBtn.style.display = "block";
+      } else {
+        clearBtn.style.display = "none";
+      }
+
       const filtered = allGroups.filter(g => g.toLowerCase().includes(keyword));
       renderGroupDropdown(filtered);
       dropdown.style.display = "block";
@@ -372,7 +413,17 @@
       selectedGroup = group;
       document.getElementById("groupSearch").value = group;
       document.getElementById("groupDropdown").style.display = "none";
+      document.getElementById("clearGroupBtn").style.display = "block";
       onGroupChange();
+    }
+
+    function clearGroupSearch() {
+      document.getElementById("groupSearch").value = "";
+      selectedGroup = "";
+      document.getElementById("groupDropdown").style.display = "none";
+      document.getElementById("clearGroupBtn").style.display = "none";
+      onGroupChange();
+      document.getElementById("groupSearch").focus();
     }
 
     function onGroupChange() {
@@ -473,9 +524,8 @@
       filteredData.forEach(row => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${row.colB}</td>
           <td>${row.colC}</td>
-          <td><strong>${formatNumber(row.colD)}</strong></td>
+          <td><strong style="color: #d32f2f;">${formatNumber(row.colD)}</strong></td>
           <td>${row.colE}</td>
           <td>${row.colF}</td>
         `;
