@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tra Cứu Thưởng Model</title>
+  <style>
+    :root {
+      --primary-color: #4A90E2;
+      --bg-color: #F4F6F9;
+      --box-bg: #FFFFFF;
+      --text-color: #333333;
+      --border-color: #E2E8F0;
+      --accent-color: #FF9800;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      background: var(--box-bg);
+      padding: 20px 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      width: 100%;
+      max-width: 700px;
+      box-sizing: border-box;
+    }
+    h2 {
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+    
+    /* Top 4 Section Style */
+    .top4-container {
+      background: linear-gradient(135deg, #fff8e1, #ffe0b2);
+      border: 1px solid #ffe082;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 20px;
+    }
+    .top4-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #e65100;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .top4-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .top4-card {
+      background: white;
+      padding: 8px 10px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .top4-rank {
+      font-weight: bold;
+      color: #ff9800;
+      font-size: 14px;
+      min-width: 20px;
+    }
+    .top4-info {
+      overflow: hidden;
+    }
+    .top4-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .top4-val {
+      font-size: 12px;
+      color: #d32f2f;
+      font-weight: bold;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #555;
+      font-size: 14px;
+    }
+    select, input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+      box-sizing: border-box;
+      background-color: #fff;
+    }
+    select:focus, input:focus {
+      border-color: var(--primary-color);
+    }
+    
+    /* Responsive Table Wrapper */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      white-space: nowrap;
+    }
+    th, td {
+      padding: 12px 10px;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background-color: #F1F4F8;
+      font-weight: 600;
+      color: #444;
+      border-bottom: 1px solid var(--border-color);
+    }
+    td {
+      border-bottom: 1px solid #f0f0f0;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    tr:nth-child(even) {
+      background-color: #FAFAFA;
+    }
+    
+    #status {
+      text-align: center;
+      margin: 15px 0;
+      font-style: italic;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Tra Cứu Thưởng Model</h2>
+
+    <!-- Bộ lọc nhóm hàng Cột A -->
+    <div class="form-group">
+      <label for="groupSelect">Chọn nhóm hàng (Cột A):</label>
+      <select id="groupSelect" onchange="onGroupChange()">
+        <option value="">-- Chọn nhóm hàng --</option>
+      </select>
+    </div>
+
+    <!-- Ô nhập liệu lọc theo Tên SP, Hãng, Size -->
+    <div class="form-group" id="searchGroup" style="display:none;">
+      <label for="searchInput">Tìm kiếm (Tên SP, Hãng, Size):</label>
+      <input type="text" id="searchInput" oninput="displayData()" placeholder="Nhập từ khóa cần tìm...">
+    </div>
+
+    <!-- Vùng hiển thị Top 4 Model của 4 hãng khác nhau có thưởng cao nhất -->
+    <div id="top4Container" class="top4-container" style="display:none;">
+      <div class="top4-title" id="top4Title">🔥 Top 4 Hãng Có Thưởng Cao Nhất</div>
+      <div id="top4List" class="top4-grid"></div>
+    </div>
+
+    <div id="status">Đang tải dữ liệu từ Google Sheet...</div>
+
+    <!-- Bảng kết quả -->
+    <div class="table-responsive">
+      <table id="dataTable" style="display:none;">
+        <thead>
+          <tr>
+            <th>Mã SP</th>
+            <th>Tên Sản Phẩm</th>
+            <th>Thưởng Nóng</th>
+            <th>Hãng</th>
+            <th>Size</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    let globalData = [];
+    const SHEET_ID = "1aNK4p9bfDWG4VIxndztL76A3q9fO5y746l_IdtSVyWo";
+
+    window.onload = function() {
+      loadData();
+    };
+
+    function formatNumber(num) {
+      let n = parseFloat(num);
+      if (isNaN(n)) return num;
+      return n.toLocaleString('vi-VN');
+    }
+
+    function loadData() {
+      const statusDiv = document.getElementById("status");
+      statusDiv.textContent = "Đang kết nối lấy dữ liệu...";
+      statusDiv.style.color = "#666";
+
+      window.google = window.google || {};
+      window.google.visualization = window.google.visualization || {};
+      window.google.visualization.Query = {
+        setResponse: function(response) {
+          try {
+            if (response && response.table && response.table.rows) {
+              const rows = response.table.rows;
+              globalData = rows.map(row => {
+                return {
+                  colA: row.c[0] && row.c[0].v !== null ? row.c[0].v : '', // Nhóm hàng
+                  colB: row.c[1] && row.c[1].v !== null ? row.c[1].v : '', // Mã SP
+                  colC: row.c[2] && row.c[2].v !== null ? row.c[2].v : '', // Tên SP
+                  colD: row.c[3] && row.c[3].v !== null ? row.c[3].v : 0,  // Thưởng Nóng
+                  colE: row.c[4] && row.c[4].v !== null ? row.c[4].v : '', // Hãng
+                  colF: row.c[5] && row.c[5].v !== null ? row.c[5].v : ''  // Size
+                };
+              });
+
+              if (globalData.length > 0) {
+                globalData.shift(); // Bỏ dòng tiêu đề
+              }
+
+              setupDropdown();
+              statusDiv.textContent = "";
+            } else {
+              throw new Error("Dữ liệu trả về trống.");
+            }
+          } catch (e) {
+            console.error(e);
+            statusDiv.textContent = "Lỗi xử lý dữ liệu! Kiểm tra lại link hoặc quyền chia sẻ Sheet.";
+            statusDiv.style.color = "red";
+          }
+        }
+      };
+
+      const oldScript = document.getElementById("gviz-script");
+      if (oldScript) oldScript.remove();
+
+      const script = document.createElement("script");
+      script.id = "gviz-script";
+      script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+      script.onerror = function() {
+        statusDiv.textContent = "Không tải được dữ liệu! Hãy kiểm tra kết nối mạng hoặc quyền 'Bất kỳ ai có đường liên kết' trên Google Sheet.";
+        statusDiv.style.color = "red";
+      };
+      document.body.appendChild(script);
+    }
+
+    function setupDropdown() {
+      const select = document.getElementById("groupSelect");
+      select.innerHTML = '<option value="">-- Chọn nhóm hàng --</option>';
+
+      const groups = new Set();
+      globalData.forEach(row => {
+        let val = row.colA.toString().trim();
+        if (val !== "") {
+          groups.add(val);
+        }
+      });
+
+      const sortedGroups = Array.from(groups).sort();
+      sortedGroups.forEach(group => {
+        const option = document.createElement("option");
+        option.value = group;
+        option.textContent = group;
+        select.appendChild(option);
+      });
+    }
+
+    function onGroupChange() {
+      const selectedGroup = document.getElementById("groupSelect").value;
+      const searchGroupDiv = document.getElementById("searchGroup");
+      const top4Container = document.getElementById("top4Container");
+      const table = document.getElementById("dataTable");
+      
+      if (!selectedGroup) {
+        searchGroupDiv.style.display = "none";
+        top4Container.style.display = "none";
+        table.style.display = "none";
+        document.getElementById("tableBody").innerHTML = "";
+        return;
+      }
+
+      searchGroupDiv.style.display = "block";
+      document.getElementById("searchInput").value = "";
+
+      renderTop4(selectedGroup);
+      displayData();
+    }
+
+    function renderTop4(group) {
+      const container = document.getElementById("top4Container");
+      const list = document.getElementById("top4List");
+      list.innerHTML = "";
+
+      let groupData = globalData.filter(row => row.colA.toString().trim() === group);
+
+      let sorted = [...groupData].sort((a, b) => {
+        let valA = parseFloat(a.colD) || 0;
+        let valB = parseFloat(b.colD) || 0;
+        return valB - valA;
+      });
+
+      let top4Items = [];
+      let seenBrands = new Set();
+      for (let item of sorted) {
+        let brand = item.colE ? item.colE.toString().trim() : '';
+        if (!seenBrands.has(brand)) {
+          seenBrands.add(brand);
+          top4Items.push(item);
+          if (top4Items.length === 4) break;
+        }
+      }
+
+      if (top4Items.length === 0) {
+        container.style.display = "none";
+        return;
+      }
+
+      top4Items.forEach((item, index) => {
+        let card = document.createElement("div");
+        card.className = "top4-card";
+        card.innerHTML = `
+          <div class="top4-rank">#${index + 1}</div>
+          <div class="top4-info" style="width:100%;">
+            <div class="top4-name" title="${item.colC}">${item.colC || '---'}</div>
+            <div class="top4-val">${formatNumber(item.colD)}</div>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+
+      container.style.display = "block";
+    }
+
+    function displayData() {
+      const selectedGroup = document.getElementById("groupSelect").value;
+      const searchKeyword = document.getElementById("searchInput").value.toLowerCase().trim();
+      const tbody = document.getElementById("tableBody");
+      const table = document.getElementById("dataTable");
+      
+      tbody.innerHTML = "";
+
+      if (!selectedGroup) {
+        table.style.display = "none";
+        return;
+      }
+
+      table.style.display = "table";
+
+      let filteredData = globalData.filter(row => {
+        let matchGroup = row.colA.toString().trim() === selectedGroup;
+        
+        // Lọc theo điều kiện nhập liệu từ các cột C (Tên SP), E (Hãng), F (Size)
+        let matchSearch = searchKeyword === "" || 
+                          row.colC.toString().toLowerCase().includes(searchKeyword) ||
+                          row.colE.toString().toLowerCase().includes(searchKeyword) ||
+                          row.colF.toString().toLowerCase().includes(searchKeyword);
+
+        return matchGroup && matchSearch;
+      });
+
+      filteredData.sort((a, b) => {
+        let valA = parseFloat(a.colD) || 0;
+        let valB = parseFloat(b.colD) || 0;
+        return valB - valA; 
+      });
+
+      filteredData.forEach(row => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${row.colB}</td>
+          <td>${row.colC}</td>
+          <td><strong>${formatNumber(row.colD)}</strong></td>
+          <td>${row.colE}</td>
+          <td>${row.colF}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+  </script>
+</body>
+</html>
