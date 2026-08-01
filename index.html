@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Tra Cứu Thưởng Model</title>
+  <!-- Nhập font Google Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary-color: #4A90E2;
@@ -14,102 +16,103 @@
       --accent-color: #FF9800;
     }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Google Sans', sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
       margin: 0;
-      padding: 15px;
+      padding: 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
     .container {
       background: var(--box-bg);
-      padding: 20px 15px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      padding: 12px 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
       width: 100%;
-      max-width: 700px;
+      max-width: 600px;
       box-sizing: border-box;
     }
     h2 {
       text-align: center;
       color: var(--primary-color);
-      margin-bottom: 20px;
-      font-size: 22px;
+      margin-bottom: 12px;
+      font-size: 18px;
     }
     
-    /* Top 4 Section Style */
+    /* Top 4 Section Style (Compact for Mobile) */
     .top4-container {
       background: linear-gradient(135deg, #fff8e1, #ffe0b2);
       border: 1px solid #ffe082;
-      border-radius: 10px;
-      padding: 12px;
-      margin-bottom: 20px;
+      border-radius: 8px;
+      padding: 8px;
+      margin-bottom: 12px;
     }
     .top4-title {
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 700;
       color: #e65100;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       text-align: center;
     }
     .top4-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 6px;
     }
     .top4-card {
       background: white;
-      padding: 8px 10px;
-      border-radius: 6px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+      padding: 6px 8px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
     .top4-rank {
       font-weight: bold;
       color: #ff9800;
-      font-size: 14px;
-      min-width: 20px;
+      font-size: 12px;
+      min-width: 16px;
     }
     .top4-info {
       overflow: hidden;
     }
     .top4-name {
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 500;
       color: #333;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .top4-val {
-      font-size: 12px;
+      font-size: 11px;
       color: #d32f2f;
       font-weight: bold;
     }
 
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
     label {
       display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
+      margin-bottom: 4px;
+      font-weight: 500;
       color: #555;
-      font-size: 14px;
+      font-size: 13px;
     }
     select, input[type="text"] {
       width: 100%;
-      padding: 12px;
+      padding: 8px 10px;
       border: 1px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 16px;
+      border-radius: 6px;
+      font-size: 14px;
       outline: none;
       box-sizing: border-box;
       background-color: #fff;
+      font-family: 'Google Sans', sans-serif;
     }
     select:focus, input:focus {
       border-color: var(--primary-color);
@@ -119,8 +122,8 @@
     .table-responsive {
       width: 100%;
       overflow-x: auto;
-      margin-top: 15px;
-      border-radius: 8px;
+      margin-top: 10px;
+      border-radius: 6px;
       border: 1px solid var(--border-color);
     }
     table {
@@ -129,9 +132,9 @@
       white-space: nowrap;
     }
     th, td {
-      padding: 12px 10px;
+      padding: 8px 6px;
       text-align: left;
-      font-size: 14px;
+      font-size: 12px;
     }
     th {
       background-color: #F1F4F8;
@@ -151,10 +154,10 @@
     
     #status {
       text-align: center;
-      margin: 15px 0;
+      margin: 10px 0;
       font-style: italic;
       color: #666;
-      font-size: 14px;
+      font-size: 12px;
     }
   </style>
 </head>
@@ -165,7 +168,7 @@
 
     <!-- Bộ lọc nhóm hàng Cột A -->
     <div class="form-group">
-      <label for="groupSelect">Chọn nhóm hàng (Cột A):</label>
+      <label for="groupSelect">Chọn nhóm hàng:</label>
       <select id="groupSelect" onchange="onGroupChange()">
         <option value="">-- Chọn nhóm hàng --</option>
       </select>
@@ -179,13 +182,13 @@
 
     <!-- Vùng hiển thị Top 4 Model của 4 hãng khác nhau có thưởng cao nhất -->
     <div id="top4Container" class="top4-container" style="display:none;">
-      <div class="top4-title" id="top4Title">🔥 Top 4 Hãng Có Thưởng Cao Nhất</div>
+      <div class="top4-title" id="top4Title">🔥 Top 4 Hãng Thưởng Cao Nhất</div>
       <div id="top4List" class="top4-grid"></div>
     </div>
 
-    <div id="status">Đang tải dữ liệu từ Google Sheet...</div>
+    <div id="status">Đang tải dữ liệu...</div>
 
-    <!-- Bảng kết quả -->
+    <!-- Bảng kết quả (Hiển thị B, C, D, E, F) -->
     <div class="table-responsive">
       <table id="dataTable" style="display:none;">
         <thead>
@@ -251,7 +254,7 @@
             }
           } catch (e) {
             console.error(e);
-            statusDiv.textContent = "Lỗi xử lý dữ liệu! Kiểm tra lại link hoặc quyền chia sẻ Sheet.";
+            statusDiv.textContent = "Lỗi xử lý dữ liệu!";
             statusDiv.style.color = "red";
           }
         }
@@ -264,7 +267,7 @@
       script.id = "gviz-script";
       script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
       script.onerror = function() {
-        statusDiv.textContent = "Không tải được dữ liệu! Hãy kiểm tra kết nối mạng hoặc quyền 'Bất kỳ ai có đường liên kết' trên Google Sheet.";
+        statusDiv.textContent = "Không tải được dữ liệu!";
         statusDiv.style.color = "red";
       };
       document.body.appendChild(script);
@@ -374,8 +377,6 @@
 
       let filteredData = globalData.filter(row => {
         let matchGroup = row.colA.toString().trim() === selectedGroup;
-        
-        // Lọc theo điều kiện nhập liệu từ các cột C (Tên SP), E (Hãng), F (Size)
         let matchSearch = searchKeyword === "" || 
                           row.colC.toString().toLowerCase().includes(searchKeyword) ||
                           row.colE.toString().toLowerCase().includes(searchKeyword) ||
