@@ -38,20 +38,119 @@
     h2 {
       text-align: center;
       color: var(--primary-color);
-      margin: 4px 0 8px 0;
-      font-size: 16px;
+      margin: 2px 0 6px 0;
+      font-size: 15px;
     }
     
-    /* Top 4 Section Style - Green Gradient & Text Wrapping */
+    /* Layout hàng ngang chứa 2 ô tìm kiếm */
+    .search-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .form-group {
+      flex: 1;
+      margin-bottom: 0;
+      min-width: 0; /* Tránh tràn layout flex */
+    }
+    label {
+      display: block;
+      margin-bottom: 2px;
+      font-weight: 500;
+      color: #555;
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Layout gọn cho ô chọn nhóm hàng */
+    .group-search-box {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      position: relative;
+    }
+    #clearGroupBtn {
+      background-color: #f1f3f4;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 0 6px;
+      height: 32px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #666;
+      cursor: pointer;
+      display: none;
+      flex-shrink: 0;
+    }
+    #clearGroupBtn:hover {
+      background-color: #e4e6e8;
+      color: #d32f2f;
+    }
+
+    .input-wrapper {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 6px 8px;
+      height: 32px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 12px;
+      outline: none;
+      background-color: #fff;
+      font-family: 'Google Sans', sans-serif;
+    }
+    input[type="text"]:focus {
+      border-color: var(--primary-color);
+    }
+
+    /* Custom Dropdown List thu gọn */
+    .dropdown-list {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      max-height: 140px; /* Thu gọn chiều cao tối đa */
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+      margin-top: 2px;
+    }
+    .dropdown-item {
+      padding: 6px 8px; /* Tối ưu padding gọn gàng hơn */
+      font-size: 11.5px;
+      cursor: pointer;
+      border-bottom: 1px solid #f5f5f5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .dropdown-item:hover, .dropdown-item.active {
+      background-color: #f1f4f8;
+      color: var(--primary-color);
+      font-weight: 500;
+    }
+
+    /* Top 4 Section Style */
     .top4-container {
       background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
       border: 1px solid #a5d6a7;
       border-radius: 6px;
       padding: 6px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .top4-title {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       color: #2e7d32;
       margin-bottom: 4px;
@@ -64,7 +163,7 @@
     }
     .top4-card {
       background: white;
-      padding: 5px 6px;
+      padding: 4px 5px;
       border-radius: 4px;
       box-shadow: 0 1px 2px rgba(0,0,0,0.03);
       display: flex;
@@ -93,7 +192,7 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      line-height: 1.3;
+      line-height: 1.2;
     }
     .top4-val {
       font-size: 10px;
@@ -102,94 +201,11 @@
       margin-top: 2px;
     }
 
-    .form-group {
-      margin-bottom: 8px;
-    }
-    label {
-      display: block;
-      margin-bottom: 3px;
-      font-weight: 500;
-      color: #555;
-      font-size: 12px;
-    }
-
-    /* Layout chứa nút xóa và ô input nhóm hàng */
-    .group-search-box {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      position: relative;
-    }
-    #clearGroupBtn {
-      background-color: #f1f3f4;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 0 10px;
-      height: 38px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #666;
-      cursor: pointer;
-      display: none;
-      flex-shrink: 0;
-    }
-    #clearGroupBtn:hover {
-      background-color: #e4e6e8;
-      color: #d32f2f;
-    }
-
-    .input-wrapper {
-      position: relative;
-      flex: 1;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      font-size: 14px;
-      outline: none;
-      background-color: #fff;
-      font-family: 'Google Sans', sans-serif;
-    }
-    input[type="text"]:focus {
-      border-color: var(--primary-color);
-    }
-
-    /* Custom Dropdown List cho Nhóm Hàng */
-    .dropdown-list {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: #fff;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      max-height: 180px;
-      overflow-y: auto;
-      z-index: 1000;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      margin-top: 2px;
-    }
-    .dropdown-item {
-      padding: 9px 10px;
-      font-size: 13px;
-      cursor: pointer;
-      border-bottom: 1px solid #f5f5f5;
-    }
-    .dropdown-item:hover, .dropdown-item.active {
-      background-color: #f1f4f8;
-      color: var(--primary-color);
-      font-weight: 500;
-    }
-    
-    /* Table fit full screen without horizontal scroll */
+    /* Table fit full screen */
     .table-responsive {
       width: 100%;
       overflow-x: hidden;
-      margin-top: 6px;
+      margin-top: 4px;
     }
     table {
       width: 100%;
@@ -197,7 +213,7 @@
       table-layout: fixed;
     }
     th, td {
-      padding: 6px 4px;
+      padding: 5px 4px;
       text-align: left;
       font-size: 11px;
       word-wrap: break-word;
@@ -205,11 +221,10 @@
       white-space: normal;
     }
     
-    /* Phân bổ tỷ lệ chuẩn xác và tối ưu không gian hiển thị */
-    th:nth-child(1), td:nth-child(1) { width: 48%; } /* Tên SP (C) - Tăng rộng */
-    th:nth-child(2), td:nth-child(2) { width: 20%; text-align: right; padding-right: 6px; } /* Thưởng (D) - Thu gọn & căn phải */
-    th:nth-child(3), td:nth-child(3) { width: 18%; } /* Hãng (E) */
-    th:nth-child(4), td:nth-child(4) { width: 14%; } /* Size (F) */
+    th:nth-child(1), td:nth-child(1) { width: 48%; }
+    th:nth-child(2), td:nth-child(2) { width: 20%; text-align: right; padding-right: 6px; }
+    th:nth-child(3), td:nth-child(3) { width: 18%; }
+    th:nth-child(4), td:nth-child(4) { width: 14%; }
 
     th {
       background-color: #F1F4F8;
@@ -229,7 +244,7 @@
     
     #status {
       text-align: center;
-      margin: 6px 0;
+      margin: 4px 0;
       font-style: italic;
       color: #666;
       font-size: 11px;
@@ -241,25 +256,28 @@
   <div class="container">
     <h2>Tra Cứu Thưởng Nóng</h2>
 
-    <!-- Ô tìm kiếm & chọn nhóm hàng kèm nút Xóa phía bên trái -->
-    <div class="form-group">
-      <label for="groupSearch">🔍 Chọn hoặc tìm kiếm nhóm hàng:</label>
-      <div class="group-search-box">
-        <button type="button" id="clearGroupBtn" onclick="clearGroupSearch()" title="Xóa nhanh">✕</button>
-        <div class="input-wrapper">
-          <input type="text" id="groupSearch" placeholder="Gõ để tìm nhanh nhóm hàng..." oninput="filterGroupList()" onclick="toggleGroupDropdown()" autocomplete="off">
-          <div id="groupDropdown" class="dropdown-list"></div>
+    <!-- Hàng chứa 2 ô tìm kiếm đặt song song -->
+    <div class="search-row">
+      <!-- Ô 1: Chọn / Lọc nhóm hàng -->
+      <div class="form-group">
+        <label for="groupSearch">🔍 Nhóm hàng:</label>
+        <div class="group-search-box">
+          <button type="button" id="clearGroupBtn" onclick="clearGroupSearch()" title="Xóa nhanh">✕</button>
+          <div class="input-wrapper">
+            <input type="text" id="groupSearch" placeholder="Chọn nhóm hàng..." oninput="filterGroupList()" onclick="toggleGroupDropdown()" autocomplete="off">
+            <div id="groupDropdown" class="dropdown-list"></div>
+          </div>
         </div>
+      </div>
+
+      <!-- Ô 2: Tìm theo từ khóa (SP, Hãng, Size) -->
+      <div class="form-group">
+        <label for="searchInput">🔎 Từ khóa:</label>
+        <input type="text" id="searchInput" oninput="displayData()" placeholder="Tên SP, Hãng, Size..." disabled>
       </div>
     </div>
 
-    <!-- Ô nhập liệu lọc theo Tên SP, Hãng, Size -->
-    <div class="form-group" id="searchGroup" style="display:none;">
-      <label for="searchInput">Tìm kiếm (Tên SP, Hãng, Size):</label>
-      <input type="text" id="searchInput" oninput="displayData()" placeholder="Nhập từ khóa cần tìm...">
-    </div>
-
-    <!-- Vùng hiển thị Top 4 Model của 4 hãng khác nhau có thưởng cao nhất -->
+    <!-- Vùng hiển thị Top 4 Model -->
     <div id="top4Container" class="top4-container" style="display:none;">
       <div class="top4-title" id="top4Title">🌿 Top 4 Hãng Thưởng Cao Nhất</div>
       <div id="top4List" class="top4-grid"></div>
@@ -267,7 +285,7 @@
 
     <div id="status">Đang tải dữ liệu...</div>
 
-    <!-- Bảng kết quả hiển thị các cột C, D, E, F -->
+    <!-- Bảng kết quả -->
     <div class="table-responsive">
       <table id="dataTable" style="display:none;">
         <thead>
@@ -319,17 +337,17 @@
               const rows = response.table.rows;
               globalData = rows.map(row => {
                 return {
-                  colA: row.c[0] && row.c[0].v !== null ? row.c[0].v : '', // Nhóm hàng
-                  colB: row.c[1] && row.c[1].v !== null ? row.c[1].v : '', // Mã SP
-                  colC: row.c[2] && row.c[2].v !== null ? row.c[2].v : '', // Tên SP
-                  colD: row.c[3] && row.c[3].v !== null ? row.c[3].v : 0,  // Thưởng Nóng
-                  colE: row.c[4] && row.c[4].v !== null ? row.c[4].v : '', // Hãng
-                  colF: row.c[5] && row.c[5].v !== null ? row.c[5].v : ''  // Size
+                  colA: row.c[0] && row.c[0].v !== null ? row.c[0].v : '', 
+                  colB: row.c[1] && row.c[1].v !== null ? row.c[1].v : '', 
+                  colC: row.c[2] && row.c[2].v !== null ? row.c[2].v : '', 
+                  colD: row.c[3] && row.c[3].v !== null ? row.c[3].v : 0,  
+                  colE: row.c[4] && row.c[4].v !== null ? row.c[4].v : '', 
+                  colF: row.c[5] && row.c[5].v !== null ? row.c[5].v : ''  
                 };
               });
 
               if (globalData.length > 0) {
-                globalData.shift(); // Bỏ dòng tiêu đề
+                globalData.shift(); 
               }
 
               extractGroups();
@@ -375,7 +393,7 @@
       dropdown.innerHTML = "";
       
       if (groups.length === 0) {
-        dropdown.innerHTML = '<div class="dropdown-item" style="color: #888; text-align: center;">Không tìm thấy nhóm hàng</div>';
+        dropdown.innerHTML = '<div class="dropdown-item" style="color: #888; text-align: center;">Không tìm thấy</div>';
         return;
       }
 
@@ -435,20 +453,21 @@
     }
 
     function onGroupChange() {
-      const searchGroupDiv = document.getElementById("searchGroup");
+      const searchInput = document.getElementById("searchInput");
       const top4Container = document.getElementById("top4Container");
       const table = document.getElementById("dataTable");
       
       if (!selectedGroup) {
-        searchGroupDiv.style.display = "none";
+        searchInput.disabled = true;
+        searchInput.value = "";
         top4Container.style.display = "none";
         table.style.display = "none";
         document.getElementById("tableBody").innerHTML = "";
         return;
       }
 
-      searchGroupDiv.style.display = "block";
-      document.getElementById("searchInput").value = "";
+      searchInput.disabled = false;
+      searchInput.value = "";
 
       renderTop4(selectedGroup);
       displayData();
