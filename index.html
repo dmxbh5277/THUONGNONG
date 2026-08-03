@@ -42,7 +42,7 @@
       font-size: 16px;
     }
     
-    /* Top 4 Section Style - Green Gradient & Text Wrapping */
+    /* Top 4 Section Style - Tối ưu hiển thị responsive, tên dài tự xuống dòng trọn vẹn */
     .top4-container {
       background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
       border: 1px solid #a5d6a7;
@@ -70,6 +70,7 @@
       display: flex;
       align-items: flex-start;
       gap: 4px;
+      min-width: 0; /* Quan trọng: Ngăn flex item đẩy rộng lưới grid trên mobile */
     }
     .top4-rank {
       font-weight: bold;
@@ -77,22 +78,19 @@
       font-size: 11px;
       min-width: 14px;
       padding-top: 1px;
+      flex-shrink: 0;
     }
     .top4-info {
-      overflow: hidden;
       flex: 1;
+      min-width: 0; /* Quan trọng: Giúp chữ trong flex container biết cách co giãn và xuống dòng */
     }
     .top4-name {
       font-size: 10px;
       font-weight: 500;
       color: #333;
       white-space: normal;
-      word-wrap: break-word;
+      word-break: break-word;
       overflow-wrap: break-word;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
       line-height: 1.3;
     }
     .top4-val {
@@ -141,6 +139,7 @@
     .input-wrapper {
       position: relative;
       flex: 1;
+      min-width: 0;
     }
 
     input[type="text"] {
@@ -206,8 +205,8 @@
     }
     
     /* Phân bổ tỷ lệ chuẩn xác và tối ưu không gian hiển thị */
-    th:nth-child(1), td:nth-child(1) { width: 48%; } /* Tên SP (C) - Tăng rộng */
-    th:nth-child(2), td:nth-child(2) { width: 20%; text-align: right; padding-right: 6px; } /* Thưởng (D) - Thu gọn & căn phải */
+    th:nth-child(1), td:nth-child(1) { width: 48%; } /* Tên SP (C) */
+    th:nth-child(2), td:nth-child(2) { width: 20%; text-align: right; padding-right: 6px; } /* Thưởng (D) */
     th:nth-child(3), td:nth-child(3) { width: 18%; } /* Hãng (E) */
     th:nth-child(4), td:nth-child(4) { width: 14%; } /* Size (F) */
 
@@ -253,7 +252,7 @@
       </div>
     </div>
 
-    <!-- Ô nhập liệu lọc theo Tên SP, Hãng, Size -->
+    <!-- Ô nhập liệu lọc theo Tên SP, Hãng, Size hỗ trợ nhiều từ khóa cách nhau bằng dấu phẩy -->
     <div class="form-group" id="searchGroup" style="display:none;">
       <label for="searchInput">Tìm kiếm (Tên SP, Hãng, Size):</label>
       <input type="text" id="searchInput" oninput="displayData()" placeholder="Nhập từ khóa, cách nhau bằng dấu phẩy...">
@@ -501,7 +500,6 @@
 
     function displayData() {
       const searchInputVal = document.getElementById("searchInput").value;
-      // Tách chuỗi nhập vào theo dấu phẩy, đưa về chữ thường và lọc bỏ khoảng trắng thừa
       const keywords = searchInputVal.split(',').map(k => k.toLowerCase().trim()).filter(k => k !== "");
       
       const tbody = document.getElementById("tableBody");
@@ -519,10 +517,7 @@
       let filteredData = globalData.filter(row => {
         let matchGroup = row.colA.toString().trim() === selectedGroup;
         
-        // Gộp nội dung các cột Tên SP (colC), Hãng (colE), Size (colF) thành một chuỗi duy nhất để tìm kiếm tương đối
         let rowText = (row.colC.toString() + " " + row.colE.toString() + " " + row.colF.toString()).toLowerCase();
-        
-        // Kiểm tra xem tất cả các từ khóa cách nhau bởi dấu phẩy đều xuất hiện trong dòng dữ liệu hay không
         let matchSearch = keywords.length === 0 || keywords.every(kw => rowText.includes(kw));
 
         return matchGroup && matchSearch;
