@@ -206,8 +206,8 @@
     }
     
     /* Phân bổ tỷ lệ chuẩn xác và tối ưu không gian hiển thị */
-    th:nth-child(1), td:nth-child(1) { width: 48%; } /* Tên SP (C) */
-    th:nth-child(2), td:nth-child(2) { width: 20%; text-align: right; padding-right: 6px; } /* Thưởng (D) */
+    th:nth-child(1), td:nth-child(1) { width: 48%; } /* Tên SP (C) - Tăng rộng */
+    th:nth-child(2), td:nth-child(2) { width: 20%; text-align: right; padding-right: 6px; } /* Thưởng (D) - Thu gọn & căn phải */
     th:nth-child(3), td:nth-child(3) { width: 18%; } /* Hãng (E) */
     th:nth-child(4), td:nth-child(4) { width: 14%; } /* Size (F) */
 
@@ -253,9 +253,9 @@
       </div>
     </div>
 
-    <!-- Ô nhập liệu lọc theo từ khóa (hỗ trợ dấu phẩy) -->
+    <!-- Ô nhập liệu lọc theo Tên SP, Hãng, Size -->
     <div class="form-group" id="searchGroup" style="display:none;">
-      <label for="searchInput">Tìm kiếm (VD: Samsung, 1HP...):</label>
+      <label for="searchInput">Tìm kiếm (Tên SP, Hãng, Size):</label>
       <input type="text" id="searchInput" oninput="displayData()" placeholder="Nhập từ khóa, cách nhau bằng dấu phẩy...">
     </div>
 
@@ -501,7 +501,7 @@
 
     function displayData() {
       const searchInputVal = document.getElementById("searchInput").value;
-      // Tách các từ khóa bằng dấu phẩy, đưa về chữ thường và loại bỏ khoảng trắng thừa
+      // Tách chuỗi nhập vào theo dấu phẩy, đưa về chữ thường và lọc bỏ khoảng trắng thừa
       const keywords = searchInputVal.split(',').map(k => k.toLowerCase().trim()).filter(k => k !== "");
       
       const tbody = document.getElementById("tableBody");
@@ -519,10 +519,10 @@
       let filteredData = globalData.filter(row => {
         let matchGroup = row.colA.toString().trim() === selectedGroup;
         
-        // Gộp nội dung các cột cần tìm kiếm thành một chuỗi
+        // Gộp nội dung các cột Tên SP (colC), Hãng (colE), Size (colF) thành một chuỗi duy nhất để tìm kiếm tương đối
         let rowText = (row.colC.toString() + " " + row.colE.toString() + " " + row.colF.toString()).toLowerCase();
         
-        // Kiểm tra xem tất cả các từ khóa trong danh sách ngăn cách bởi dấu phẩy có xuất hiện trong dòng hay không
+        // Kiểm tra xem tất cả các từ khóa cách nhau bởi dấu phẩy đều xuất hiện trong dòng dữ liệu hay không
         let matchSearch = keywords.length === 0 || keywords.every(kw => rowText.includes(kw));
 
         return matchGroup && matchSearch;
