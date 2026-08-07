@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tra Cứu Thưởng Model</title>
+  <title>Tra Cứu Thưởng Nóng</title>
   <!-- Nhập font Google Sans -->
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
@@ -204,6 +204,16 @@
       white-space: normal;
     }
     
+    /* Style cho tên sản phẩm có thể bấm để copy */
+    .product-name-click {
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .product-name-click:hover {
+      color: var(--primary-color);
+      text-decoration: underline;
+    }
+    
     /* Phân bổ tỷ lệ chuẩn xác và tối ưu không gian hiển thị */
     th:nth-child(1), td:nth-child(1) { width: 48%; } /* Tên SP (C) */
     th:nth-child(2), td:nth-child(2) { width: 20%; text-align: right; padding-right: 6px; } /* Thưởng (D) */
@@ -238,11 +248,11 @@
 <body>
 
   <div class="container">
-    <h2>Tra Cứu Thưởng Model</h2>
+    <h2>Tra Cứu Thưởng Nóng</h2>
 
     <!-- Ô tìm kiếm & chọn nhóm hàng kèm nút Xóa phía bên trái -->
     <div class="form-group">
-      <label for="groupSearch">🔍 Chọn hoặc tìm kiếm nhóm hàng:</label>
+      <label for="groupSearch">🔍 Chọn hoặc nhập tìm kiếm nhóm hàng:</label>
       <div class="group-search-box">
         <button type="button" id="clearGroupBtn" onclick="clearGroupSearch()" title="Xóa nhanh">✕</button>
         <div class="input-wrapper">
@@ -258,9 +268,9 @@
       <input type="text" id="searchInput" oninput="displayData()" placeholder="Nhập từ khóa, cách nhau bằng dấu phẩy...">
     </div>
 
-    <!-- Vùng hiển thị Top 4 Model của 4 hãng khác nhau có thưởng cao nhất -->
+    <!-- Vùng hiển thị Top 4 Model tự động thay đổi theo từ khóa tìm kiếm -->
     <div id="top4Container" class="top4-container" style="display:none;">
-      <div class="top4-title" id="top4Title">🌿 Top 4 Hãng Thưởng Cao Nhất</div>
+      <div class="top4-title" id="top4Title">🌿 Top 4 Sản Phẩm Thưởng Cao Nhất</div>
       <div id="top4List" class="top4-grid"></div>
     </div>
 
@@ -271,7 +281,7 @@
       <table id="dataTable" style="display:none;">
         <thead>
           <tr>
-            <th>Tên SP</th>
+            <th>Tên SP (Nhấn để copy)</th>
             <th style="text-align: right; padding-right: 6px;">Thưởng</th>
             <th>Hãng</th>
             <th>Size</th>
@@ -302,6 +312,20 @@
       let n = parseFloat(num);
       if (isNaN(n)) return num;
       return n.toLocaleString('vi-VN');
+    }
+
+    function copyToClipboard(text) {
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        const statusDiv = document.getElementById("status");
+        statusDiv.textContent = `Đã copy: "${text}"`;
+        statusDiv.style.color = "#2e7d32";
+        setTimeout(() => {
+          statusDiv.textContent = "";
+        }, 2000);
+      }).catch(err => {
+        console.error('Không thể copy: ', err);
+      });
     }
 
     function loadData() {
@@ -449,16 +473,15 @@
       searchGroupDiv.style.display = "block";
       document.getElementById("searchInput").value = "";
 
-      renderTop4(selectedGroup);
       displayData();
     }
 
-    function renderTop4(group) {
+    function renderTop4(group, preFilteredData) {
       const container = document.getElementById("top4Container");
       const list = document.getElementById("top4List");
       list.innerHTML = "";
 
-      let groupData = globalData.filter(row => row.colA.toString().trim() === group);
+      let groupData = preFilteredData;
 
       let sorted = [...groupData].sort((a, b) => {
         let valA = parseFloat(a.colD) || 0;
@@ -468,12 +491,24 @@
 
       let top4Items = [];
       let seenBrands = new Set();
+
+      // Bước 1: Ưu tiên lấy các sản phẩm từ các hãng khác nhau (tối đa 4 hãng)
       for (let item of sorted) {
         let brand = item.colE ? item.colE.toString().trim() : '';
         if (!seenBrands.has(brand)) {
           seenBrands.add(brand);
           top4Items.push(item);
           if (top4Items.length === 4) break;
+        }
+      }
+
+      // Bước 2: Nếu chưa đủ 4 sản phẩm, tiếp tục lấy thêm các sản phẩm tiếp theo
+      if (top4Items.length < 4) {
+        for (let item of sorted) {
+          if (!top4Items.includes(item)) {
+            top4Items.push(item);
+            if (top4Items.length === 4) break;
+          }
         }
       }
 
@@ -509,6 +544,7 @@
 
       if (!selectedGroup) {
         table.style.display = "none";
+        document.getElementById("top4Container").style.display = "none";
         return;
       }
 
@@ -529,14 +565,33 @@
         return valB - valA; 
       });
 
+      renderTop4(selectedGroup, filteredData);
+
       filteredData.forEach(row => {
         const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${row.colC}</td>
-          <td style="text-align: right; padding-right: 6px;"><strong style="color: #d32f2f;">${formatNumber(row.colD)}</strong></td>
-          <td>${row.colE}</td>
-          <td>${row.colF}</td>
-        `;
+        
+        const tdName = document.createElement("td");
+        tdName.className = "product-name-click";
+        tdName.title = "Nhấn để copy tên sản phẩm";
+        tdName.textContent = row.colC;
+        tdName.onclick = () => copyToClipboard(row.colC);
+
+        const tdReward = document.createElement("td");
+        tdReward.style.textAlign = "right";
+        tdReward.style.paddingRight = "6px";
+        tdReward.innerHTML = `<strong style="color: #d32f2f;">${formatNumber(row.colD)}</strong>`;
+
+        const tdBrand = document.createElement("td");
+        tdBrand.textContent = row.colE;
+
+        const tdSize = document.createElement("td");
+        tdSize.textContent = row.colF;
+
+        tr.appendChild(tdName);
+        tr.appendChild(tdReward);
+        tr.appendChild(tdBrand);
+        tr.appendChild(tdSize);
+
         tbody.appendChild(tr);
       });
     }
