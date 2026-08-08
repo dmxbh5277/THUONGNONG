@@ -493,7 +493,6 @@
       const list = document.getElementById("top4List");
       list.innerHTML = "";
 
-      // Top 4 luôn luôn ưu tiên sắp xếp theo Thưởng cao nhất để cố định mục đích hiển thị tốt nhất
       let sorted = [...preFilteredData].sort((a, b) => {
         let valA = parseFloat(a.colE) || 0;
         let valB = parseFloat(b.colE) || 0;
@@ -554,7 +553,7 @@
         return matchGroup && matchSearch;
       });
 
-      // Xử lý logic sắp xếp bảng theo tùy chọn của người dùng
+      // Xử lý logic sắp xếp bảng theo tùy chọn của người dùng (Sắp xếp đa tầng)
       filteredData.sort((a, b) => {
         if (sortOption === "size_asc" || sortOption === "size_desc") {
           let sizeA = a.colG.toString().trim().toLowerCase();
@@ -569,7 +568,15 @@
           } else {
             comp = sizeA.localeCompare(sizeB, 'vi', { numeric: true });
           }
-          return sortOption === "size_asc" ? comp : -comp;
+
+          if (comp !== 0) {
+            return sortOption === "size_asc" ? comp : -comp;
+          } else {
+            // Điều kiện phụ: Nếu Size giống nhau, sort theo Thưởng từ cao xuống thấp
+            let valA = parseFloat(a.colE) || 0;
+            let valB = parseFloat(b.colE) || 0;
+            return valB - valA;
+          }
         } else {
           // Mặc định: Thưởng cao nhất
           let valA = parseFloat(a.colE) || 0;
