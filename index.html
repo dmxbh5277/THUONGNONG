@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tra Cứu Thưởng Nóng</title>
+  <title>Tra Cứu Thưởng Model</title>
   <!-- Nhập font Google Sans -->
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
@@ -141,7 +141,7 @@
       min-width: 0;
     }
 
-    input[type="text"] {
+    input[type="text"], select {
       width: 100%;
       padding: 8px;
       border: 1px solid var(--border-color);
@@ -151,7 +151,7 @@
       background-color: #fff;
       font-family: 'Google Sans', sans-serif;
     }
-    input[type="text"]:focus {
+    input[type="text"]:focus, select:focus {
       border-color: var(--primary-color);
     }
 
@@ -245,7 +245,7 @@
 <body>
 
   <div class="container">
-    <h2>Tra Cứu Thưởng Nóng</h2>
+    <h2>Tra Cứu Thưởng Model</h2>
 
     <!-- Ô tìm kiếm & chọn nhóm hàng (Cột F) -->
     <div class="form-group">
@@ -265,6 +265,16 @@
       <input type="text" id="searchInput" oninput="displayData()" placeholder="Nhập từ khóa...">
     </div>
 
+    <!-- Tùy chọn sắp xếp (Sort tùy chỉnh) -->
+    <div class="form-group" id="sortGroupContainer" style="display:none;">
+      <label for="sortSelect">⚡ Sắp xếp bảng kết quả:</label>
+      <select id="sortSelect" onchange="displayData()">
+        <option value="reward_desc">Thưởng cao nhất (Mặc định)</option>
+        <option value="size_asc">Cột Size (Tăng dần / A-Z)</option>
+        <option value="size_desc">Cột Size (Giảm dần / Z-A)</option>
+      </select>
+    </div>
+
     <!-- Vùng hiển thị Top 4 Model có thưởng cao nhất -->
     <div id="top4Container" class="top4-container" style="display:none;">
       <div class="top4-title" id="top4Title">🌿 Top 4 Sản Phẩm Thưởng Cao Nhất</div>
@@ -278,7 +288,7 @@
       <table id="dataTable" style="display:none;">
         <thead>
           <tr>
-            <th>Tên SP</th>
+            <th>Tên SP (Copy)</th>
             <th style="text-align: right; padding-right: 4px;">Giá NY</th>
             <th style="text-align: right; padding-right: 4px;">Giá KM</th>
             <th style="text-align: right; padding-right: 4px;">Thưởng</th>
@@ -457,11 +467,13 @@
 
     function onGroupChange() {
       const searchGroupDiv = document.getElementById("searchGroup");
+      const sortGroupContainer = document.getElementById("sortGroupContainer");
       const top4Container = document.getElementById("top4Container");
       const table = document.getElementById("dataTable");
       
       if (!selectedGroup) {
         searchGroupDiv.style.display = "none";
+        sortGroupContainer.style.display = "none";
         top4Container.style.display = "none";
         table.style.display = "none";
         document.getElementById("tableBody").innerHTML = "";
@@ -469,26 +481,26 @@
       }
 
       searchGroupDiv.style.display = "block";
+      sortGroupContainer.style.display = "block";
       document.getElementById("searchInput").value = "";
+      document.getElementById("sortSelect").value = "reward_desc"; // Mặc định khi chọn nhóm mới sẽ về thưởng cao nhất
 
       displayData();
     }
 
-    function renderTop4(group, preFilteredData) {
+    function renderTop4(preFilteredData) {
       const container = document.getElementById("top4Container");
       const list = document.getElementById("top4List");
       list.innerHTML = "";
 
-      let groupData = preFilteredData;
-
-      let sorted = [...groupData].sort((a, b) => {
+      // Top 4 luôn luôn ưu tiên sắp xếp theo Thưởng cao nhất để cố định mục đích hiển thị tốt nhất
+      let sorted = [...preFilteredData].sort((a, b) => {
         let valA = parseFloat(a.colE) || 0;
         let valB = parseFloat(b.colE) || 0;
         return valB - valA;
       });
 
       let top4Items = [];
-      // Lấy 4 sản phẩm có thưởng cao nhất
       for (let item of sorted) {
         top4Items.push(item);
         if (top4Items.length === 4) break;
@@ -518,6 +530,7 @@
     function displayData() {
       const searchInputVal = document.getElementById("searchInput").value;
       const keywords = searchInputVal.split(',').map(k => k.toLowerCase().trim()).filter(k => k !== "");
+      const sortOption = document.getElementById("sortSelect").value;
       
       const tbody = document.getElementById("tableBody");
       const table = document.getElementById("dataTable");
@@ -541,13 +554,31 @@
         return matchGroup && matchSearch;
       });
 
+      // Xử lý logic sắp xếp bảng theo tùy chọn của người dùng
       filteredData.sort((a, b) => {
-        let valA = parseFloat(a.colE) || 0;
-        let valB = parseFloat(b.colE) || 0;
-        return valB - valA; 
+        if (sortOption === "size_asc" || sortOption === "size_desc") {
+          let sizeA = a.colG.toString().trim().toLowerCase();
+          let sizeB = b.colG.toString().trim().toLowerCase();
+          
+          let numA = parseFloat(a.colG);
+          let numB = parseFloat(b.colG);
+          let comp = 0;
+
+          if (!isNaN(numA) && !isNaN(numB)) {
+            comp = numA - numB;
+          } else {
+            comp = sizeA.localeCompare(sizeB, 'vi', { numeric: true });
+          }
+          return sortOption === "size_asc" ? comp : -comp;
+        } else {
+          // Mặc định: Thưởng cao nhất
+          let valA = parseFloat(a.colE) || 0;
+          let valB = parseFloat(b.colE) || 0;
+          return valB - valA; 
+        }
       });
 
-      renderTop4(selectedGroup, filteredData);
+      renderTop4(filteredData);
 
       filteredData.forEach(row => {
         const tr = document.createElement("tr");
