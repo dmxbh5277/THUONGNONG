@@ -210,27 +210,12 @@
       text-decoration: underline;
     }
 
-    /* Nút xem ảnh */
-    .img-btn {
-      background-color: #e3f2fd;
-      color: #1976d2;
-      border: 1px solid #bbdefb;
-      border-radius: 4px;
-      padding: 3px 6px;
-      font-size: 10px;
-      font-weight: bold;
-      cursor: pointer;
-      text-align: center;
-    }
-    .img-btn:hover {
-      background-color: #bbdefb;
-    }
-    
-    /* Phân bổ tỷ lệ 4 cột: Tên SP, Thưởng, Hãng, Ảnh */
-    th:nth-child(1), td:nth-child(1) { width: 42%; }
-    th:nth-child(2), td:nth-child(2) { width: 22%; text-align: right; padding-right: 6px; }
-    th:nth-child(3), td:nth-child(3) { width: 22%; }
-    th:nth-child(4), td:nth-child(4) { width: 14%; text-align: center; }
+    /* Phân bổ tỷ lệ 5 cột: Tên SP (B), Giá NY (C), Giá KM (D), Thưởng (E), Size (G) */
+    th:nth-child(1), td:nth-child(1) { width: 36%; }
+    th:nth-child(2), td:nth-child(2) { width: 16%; text-align: right; padding-right: 4px; }
+    th:nth-child(3), td:nth-child(3) { width: 16%; text-align: right; padding-right: 4px; }
+    th:nth-child(4), td:nth-child(4) { width: 18%; text-align: right; padding-right: 4px; }
+    th:nth-child(5), td:nth-child(5) { width: 14%; text-align: center; }
 
     th {
       background-color: #F1F4F8;
@@ -255,49 +240,6 @@
       color: #666;
       font-size: 11px;
     }
-
-    /* Modal hiển thị ảnh phóng to */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 2000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.7);
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-    }
-    .modal-content {
-      background: #fff;
-      padding: 12px;
-      border-radius: 8px;
-      max-width: 90%;
-      max-height: 90vh;
-      position: relative;
-      text-align: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-    .modal-content img {
-      max-width: 100%;
-      max-height: 75vh;
-      object-fit: contain;
-      border-radius: 4px;
-    }
-    .close-btn {
-      position: absolute;
-      top: 6px;
-      right: 10px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #666;
-      cursor: pointer;
-    }
-    .close-btn:hover {
-      color: #d32f2f;
-    }
   </style>
 </head>
 <body>
@@ -305,7 +247,7 @@
   <div class="container">
     <h2>Tra Cứu Thưởng Model</h2>
 
-    <!-- Ô tìm kiếm & chọn nhóm hàng (Lấy từ Cột B) -->
+    <!-- Ô tìm kiếm & chọn nhóm hàng (Cột F) -->
     <div class="form-group">
       <label for="groupSearch">🔍 Chọn hoặc tìm kiếm nhóm hàng:</label>
       <div class="group-search-box">
@@ -317,13 +259,13 @@
       </div>
     </div>
 
-    <!-- Ô nhập liệu lọc theo Tên SP, Hãng -->
+    <!-- Ô nhập liệu lọc theo từ khóa (Tên SP, Size, v.v.) -->
     <div class="form-group" id="searchGroup" style="display:none;">
-      <label for="searchInput">Tìm kiếm (Tên SP, Hãng):</label>
-      <input type="text" id="searchInput" oninput="displayData()" placeholder="Nhập từ khóa, cách nhau bằng dấu phẩy...">
+      <label for="searchInput">Tìm kiếm (Tên SP, Size... cách nhau dấu phẩy):</label>
+      <input type="text" id="searchInput" oninput="displayData()" placeholder="Nhập từ khóa...">
     </div>
 
-    <!-- Vùng hiển thị Top 4 Model -->
+    <!-- Vùng hiển thị Top 4 Model có thưởng cao nhất -->
     <div id="top4Container" class="top4-container" style="display:none;">
       <div class="top4-title" id="top4Title">🌿 Top 4 Sản Phẩm Thưởng Cao Nhất</div>
       <div id="top4List" class="top4-grid"></div>
@@ -337,23 +279,15 @@
         <thead>
           <tr>
             <th>Tên SP (Copy)</th>
-            <th style="text-align: right; padding-right: 6px;">Thưởng</th>
-            <th>Hãng</th>
-            <th style="text-align: center;">Ảnh</th>
+            <th style="text-align: right; padding-right: 4px;">Giá NY</th>
+            <th style="text-align: right; padding-right: 4px;">Giá KM</th>
+            <th style="text-align: right; padding-right: 4px;">Thưởng</th>
+            <th style="text-align: center;">Size</th>
           </tr>
         </thead>
         <tbody id="tableBody">
         </tbody>
       </table>
-    </div>
-  </div>
-
-  <!-- Modal xem ảnh sản phẩm -->
-  <div id="imageModal" class="modal" onclick="closeImageModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <span class="close-btn" onclick="closeImageModal()">&times;</span>
-      <div id="modalImageTitle" style="font-size: 12px; font-weight: bold; margin-bottom: 8px; color: #333;"></div>
-      <img id="modalImage" src="" alt="Hình ảnh sản phẩm">
     </div>
   </div>
 
@@ -392,21 +326,6 @@
       });
     }
 
-    function showImageModal(name, imageUrl) {
-      if (!imageUrl) {
-        alert("Sản phẩm này chưa có hình ảnh!");
-        return;
-      }
-      document.getElementById("modalImageTitle").textContent = name;
-      document.getElementById("modalImage").src = imageUrl;
-      document.getElementById("imageModal").style.display = "flex";
-    }
-
-    function closeImageModal() {
-      document.getElementById("imageModal").style.display = "none";
-      document.getElementById("modalImage").src = "";
-    }
-
     function loadData() {
       const statusDiv = document.getElementById("status");
       statusDiv.textContent = "Đang kết nối lấy dữ liệu...";
@@ -421,11 +340,12 @@
               const rows = response.table.rows;
               globalData = rows.map(row => {
                 return {
-                  colB: row.c[1] && row.c[1].v !== null ? row.c[1].v : '', // Nhóm hàng (Cột B)
-                  colC: row.c[2] && row.c[2].v !== null ? row.c[2].v : '', // Tên SP (Cột C)
-                  colD: row.c[3] && row.c[3].v !== null ? row.c[3].v : 0,  // Thưởng Nóng (Cột D)
-                  colE: row.c[4] && row.c[4].v !== null ? row.c[4].v : '', // Hãng (Cột E)
-                  colG: row.c[6] && row.c[6].v !== null ? row.c[6].v : ''  // Link Ảnh (Cột G)
+                  colB: row.c[1] && row.c[1].v !== null ? row.c[1].v : '', // Tên SP (Cột B)
+                  colC: row.c[2] && row.c[2].v !== null ? row.c[2].v : 0,  // Giá NY (Cột C)
+                  colD: row.c[3] && row.c[3].v !== null ? row.c[3].v : 0,  // Giá KM (Cột D)
+                  colE: row.c[4] && row.c[4].v !== null ? row.c[4].v : 0,  // Thưởng (Cột E)
+                  colF: row.c[5] && row.c[5].v !== null ? row.c[5].v : '', // Nhóm hàng (Cột F)
+                  colG: row.c[6] && row.c[6].v !== null ? row.c[6].v : ''  // Size (Cột G)
                 };
               });
 
@@ -462,7 +382,7 @@
     function extractGroups() {
       const groupsSet = new Set();
       globalData.forEach(row => {
-        let val = row.colB.toString().trim();
+        let val = row.colF.toString().trim();
         if (val !== "") {
           groupsSet.add(val);
         }
@@ -562,30 +482,16 @@
       let groupData = preFilteredData;
 
       let sorted = [...groupData].sort((a, b) => {
-        let valA = parseFloat(a.colD) || 0;
-        let valB = parseFloat(b.colD) || 0;
+        let valA = parseFloat(a.colE) || 0;
+        let valB = parseFloat(b.colE) || 0;
         return valB - valA;
       });
 
       let top4Items = [];
-      let seenBrands = new Set();
-
+      // Lấy 4 sản phẩm có thưởng cao nhất
       for (let item of sorted) {
-        let brand = item.colE ? item.colE.toString().trim() : '';
-        if (!seenBrands.has(brand)) {
-          seenBrands.add(brand);
-          top4Items.push(item);
-          if (top4Items.length === 4) break;
-        }
-      }
-
-      if (top4Items.length < 4) {
-        for (let item of sorted) {
-          if (!top4Items.includes(item)) {
-            top4Items.push(item);
-            if (top4Items.length === 4) break;
-          }
-        }
+        top4Items.push(item);
+        if (top4Items.length === 4) break;
       }
 
       if (top4Items.length === 0) {
@@ -599,8 +505,8 @@
         card.innerHTML = `
           <div class="top4-rank">#${index + 1}</div>
           <div class="top4-info">
-            <div class="top4-name" title="${item.colC}">${item.colC || '---'}</div>
-            <div class="top4-val">${formatNumber(item.colD)}</div>
+            <div class="top4-name" title="${item.colB}">${item.colB || '---'}</div>
+            <div class="top4-val">${formatNumber(item.colE)}</div>
           </div>
         `;
         list.appendChild(card);
@@ -627,17 +533,17 @@
       table.style.display = "table";
 
       let filteredData = globalData.filter(row => {
-        let matchGroup = row.colB.toString().trim() === selectedGroup;
+        let matchGroup = row.colF.toString().trim() === selectedGroup;
         
-        let rowText = (row.colC.toString() + " " + row.colE.toString()).toLowerCase();
+        let rowText = (row.colB.toString() + " " + row.colG.toString()).toLowerCase();
         let matchSearch = keywords.length === 0 || keywords.every(kw => rowText.includes(kw));
 
         return matchGroup && matchSearch;
       });
 
       filteredData.sort((a, b) => {
-        let valA = parseFloat(a.colD) || 0;
-        let valB = parseFloat(b.colD) || 0;
+        let valA = parseFloat(a.colE) || 0;
+        let valB = parseFloat(b.colE) || 0;
         return valB - valA; 
       });
 
@@ -649,36 +555,33 @@
         const tdName = document.createElement("td");
         tdName.className = "product-name-click";
         tdName.title = "Nhấn để copy tên sản phẩm";
-        tdName.textContent = row.colC;
-        tdName.onclick = () => copyToClipboard(row.colC);
+        tdName.textContent = row.colB;
+        tdName.onclick = () => copyToClipboard(row.colB);
+
+        const tdNy = document.createElement("td");
+        tdNy.style.textAlign = "right";
+        tdNy.style.paddingRight = "4px";
+        tdNy.textContent = formatNumber(row.colC);
+
+        const tdKm = document.createElement("td");
+        tdKm.style.textAlign = "right";
+        tdKm.style.paddingRight = "4px";
+        tdKm.textContent = formatNumber(row.colD);
 
         const tdReward = document.createElement("td");
         tdReward.style.textAlign = "right";
-        tdReward.style.paddingRight = "6px";
-        tdReward.innerHTML = `<strong style="color: #d32f2f;">${formatNumber(row.colD)}</strong>`;
+        tdReward.style.paddingRight = "4px";
+        tdReward.innerHTML = `<strong style="color: #d32f2f;">${formatNumber(row.colE)}</strong>`;
 
-        const tdBrand = document.createElement("td");
-        tdBrand.textContent = row.colE;
-
-        const tdImg = document.createElement("td");
-        tdImg.style.textAlign = "center";
-        if (row.colG) {
-          const imgBtn = document.createElement("button");
-          imgBtn.type = "button";
-          imgBtn.className = "img-btn";
-          imgBtn.textContent = "Xem";
-          imgBtn.onclick = () => showImageModal(row.colC, row.colG);
-          tdImg.appendChild(imgBtn);
-        } else {
-          tdImg.textContent = "---";
-          tdImg.style.color = "#aaa";
-          tdImg.style.fontSize = "10px";
-        }
+        const tdSize = document.createElement("td");
+        tdSize.style.textAlign = "center";
+        tdSize.textContent = row.colG || '---';
 
         tr.appendChild(tdName);
+        tr.appendChild(tdNy);
+        tr.appendChild(tdKm);
         tr.appendChild(tdReward);
-        tr.appendChild(tdBrand);
-        tr.appendChild(tdImg);
+        tr.appendChild(tdSize);
 
         tbody.appendChild(tr);
       });
