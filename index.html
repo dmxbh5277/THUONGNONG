@@ -1,600 +1,670 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tra Cứu Thưởng Nóng</title>
-  <!-- Nhập font Google Sans -->
-  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary-color: #4A90E2;
-      --bg-color: #F4F6F9;
-      --box-bg: #FFFFFF;
-      --text-color: #333333;
-      --border-color: #E2E8F0;
-      --accent-color: #2E7D32;
-    }
-    *, *:before, *:after {
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Google Sans', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      margin: 0;
-      padding: 4px;
-      width: 100%;
-      overflow-x: hidden;
-    }
-    .container {
-      background: var(--box-bg);
-      padding: 8px 6px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      width: 100%;
-      max-width: 100%;
-    }
-    h2 {
-      text-align: center;
-      color: var(--primary-color);
-      margin: 4px 0 8px 0;
-      font-size: 16px;
-    }
-    
-    /* Top 4 Section Style - Tối ưu hiển thị responsive, tên dài tự xuống dòng trọn vẹn */
-    .top4-container {
-      background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-      border: 1px solid #a5d6a7;
-      border-radius: 6px;
-      padding: 6px;
-      margin-bottom: 8px;
-    }
-    .top4-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: #2e7d32;
-      margin-bottom: 4px;
-      text-align: center;
-    }
-    .top4-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4px;
-    }
-    .top4-card {
-      background: white;
-      padding: 5px 6px;
-      border-radius: 4px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-      display: flex;
-      align-items: flex-start;
-      gap: 4px;
-      min-width: 0; /* Quan trọng: Ngăn flex item đẩy rộng lưới grid trên mobile */
-    }
-    .top4-rank {
-      font-weight: bold;
-      color: #2e7d32;
-      font-size: 11px;
-      min-width: 14px;
-      padding-top: 1px;
-      flex-shrink: 0;
-    }
-    .top4-info {
-      flex: 1;
-      min-width: 0; /* Quan trọng: Giúp chữ trong flex container biết cách co giãn và xuống dòng */
-    }
-    .top4-name {
-      font-size: 10px;
-      font-weight: 500;
-      color: #333;
-      white-space: normal;
-      word-break: break-word;
-      overflow-wrap: break-word;
-      line-height: 1.3;
-    }
-    .top4-val {
-      font-size: 10px;
-      color: #d32f2f;
-      font-weight: bold;
-      margin-top: 2px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Tra cứu Giá Thưởng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Roboto+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #f5f6f8;
+    --panel: #ffffff;
+    --panel-2: #f1f3f7;
+    --border: #e4e7ee;
+    --text: #1b1f2a;
+    --muted: #6b7280;
+    --accent: #ea7f2b;      /* warm amber-orange, works well on light bg */
+    --accent-soft: #fdf1e4;
+    --accent-border: #f6d9b8;
+    --green: #1f9d55;
+    --red: #d64545;
+    --shadow: 0 1px 2px rgba(20,22,30,.04), 0 6px 16px rgba(20,22,30,.05);
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Roboto', system-ui, sans-serif;
+    min-height:100vh;
+    padding:16px 12px 48px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{ max-width:820px; margin:0 auto; }
 
-    .form-group {
-      margin-bottom: 8px;
-    }
-    label {
-      display: block;
-      margin-bottom: 3px;
-      font-weight: 500;
-      color: #555;
-      font-size: 12px;
-    }
+  /* Header */
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px; margin-bottom:18px; flex-wrap:wrap;
+  }
+  .eyebrow{
+    font-family:'Roboto Mono', monospace;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 4px; font-weight:600;
+  }
+  h1{
+    font-size:clamp(20px,5vw,26px); font-weight:700; margin:0;
+    letter-spacing:-0.01em;
+  }
+  .sync{
+    display:flex; align-items:center; gap:7px;
+    font-family:'Roboto Mono', monospace; font-size:11px; color:var(--muted);
+    padding:6px 10px; border:1px solid var(--border); border-radius:100px;
+    background:var(--panel); box-shadow:var(--shadow);
+  }
+  .dot{ width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 0 3px rgba(31,157,85,.15); flex-shrink:0; }
+  .dot.loading{ background:var(--accent); box-shadow:0 0 0 3px rgba(234,127,43,.16); animation:pulse 1.1s ease-in-out infinite; }
+  .dot.err{ background:var(--red); box-shadow:0 0 0 3px rgba(214,69,69,.16); }
+  @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.35} }
 
-    /* Layout chứa nút xóa và ô input nhóm hàng */
-    .group-search-box {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      position: relative;
-    }
-    #clearGroupBtn {
-      background-color: #f1f3f4;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 0 10px;
-      height: 38px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #666;
-      cursor: pointer;
-      display: none;
-      flex-shrink: 0;
-    }
-    #clearGroupBtn:hover {
-      background-color: #e4e6e8;
-      color: #d32f2f;
-    }
+  /* Controls */
+  .controls{
+    display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:18px;
+  }
+  @media (max-width:560px){ .controls{ grid-template-columns:1fr; } }
 
-    .input-wrapper {
-      position: relative;
-      flex: 1;
-      min-width: 0;
-    }
+  .field{ position:relative; }
+  .field label{
+    display:block; font-size:11px; font-family:'Roboto Mono',monospace;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; font-weight:600;
+  }
+  .field input{
+    width:100%; background:var(--panel); border:1px solid var(--border);
+    color:var(--text); border-radius:12px; padding:13px 14px; font-size:15px;
+    font-family:'Roboto',sans-serif; outline:none; transition:border-color .15s, box-shadow .15s;
+    box-shadow:var(--shadow);
+  }
+  .field input::placeholder{ color:#a4a9b6; }
+  .field input:focus{ border-color:var(--accent); box-shadow:0 0 0 3px rgba(234,127,43,.14); }
 
-    input[type="text"] {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      font-size: 14px;
-      outline: none;
-      background-color: #fff;
-      font-family: 'Google Sans', sans-serif;
-    }
-    input[type="text"]:focus {
-      border-color: var(--primary-color);
-    }
+  .input-with-clear{ position:relative; }
+  .input-with-clear input{ padding-right:40px; }
+  .clear-btn{
+    position:absolute; top:50%; right:6px; transform:translateY(-50%);
+    width:28px; height:28px; border-radius:50%; border:none; background:var(--panel-2);
+    color:var(--muted); font-size:14px; line-height:1; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; transition:background .12s, color .12s;
+  }
+  .clear-btn:hover{ background:var(--accent-soft); color:var(--accent); }
 
-    /* Custom Dropdown List cho Nhóm Hàng */
-    .dropdown-list {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: #fff;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      max-height: 180px;
-      overflow-y: auto;
-      z-index: 1000;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      margin-top: 2px;
-    }
-    .dropdown-item {
-      padding: 9px 10px;
-      font-size: 13px;
-      cursor: pointer;
-      border-bottom: 1px solid #f5f5f5;
-    }
-    .dropdown-item:hover, .dropdown-item.active {
-      background-color: #f1f4f8;
-      color: var(--primary-color);
-      font-weight: 500;
-    }
-    
-    /* Table fit full screen without horizontal scroll */
-    .table-responsive {
-      width: 100%;
-      overflow-x: hidden;
-      margin-top: 6px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-    }
-    th, td {
-      padding: 6px 4px;
-      text-align: left;
-      font-size: 11px;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      white-space: normal;
-    }
-    
-    /* Style cho tên sản phẩm có thể bấm để copy */
-    .product-name-click {
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-    .product-name-click:hover {
-      color: var(--primary-color);
-      text-decoration: underline;
-    }
-    
-    /* Phân bổ tỷ lệ chuẩn xác và tối ưu không gian hiển thị */
-    th:nth-child(1), td:nth-child(1) { width: 48%; } /* Tên SP (C) */
-    th:nth-child(2), td:nth-child(2) { width: 20%; text-align: right; padding-right: 6px; } /* Thưởng (D) */
-    th:nth-child(3), td:nth-child(3) { width: 18%; } /* Hãng (E) */
-    th:nth-child(4), td:nth-child(4) { width: 14%; } /* Size (F) */
+  .hint{
+    background:var(--panel); border:1px dashed var(--border); border-radius:12px;
+    padding:16px; text-align:center; color:var(--muted); font-size:13.5px; margin-bottom:6px;
+  }
 
-    th {
-      background-color: #F1F4F8;
-      font-weight: 600;
-      color: #444;
-      border-bottom: 1px solid var(--border-color);
-    }
-    td {
-      border-bottom: 1px solid #f0f0f0;
-    }
-    tr:last-child td {
-      border-bottom: none;
-    }
-    tr:nth-child(even) {
-      background-color: #FAFAFA;
-    }
-    
-    #status {
-      text-align: center;
-      margin: 6px 0;
-      font-style: italic;
-      color: #666;
-      font-size: 11px;
-    }
-  </style>
+  .suggest{
+    position:absolute; top:calc(100% + 6px); left:0; right:0;
+    background:var(--panel); border:1px solid var(--border); border-radius:12px;
+    max-height:280px; overflow-y:auto; z-index:20;
+    box-shadow:0 12px 28px rgba(20,22,30,.14); display:none;
+  }
+  .suggest.open{ display:block; }
+  .suggest .opt{
+    padding:12px 14px; font-size:14px; cursor:pointer; border-bottom:1px solid var(--border);
+    display:flex; justify-content:space-between; gap:10px; align-items:center;
+  }
+  .suggest .opt:last-child{ border-bottom:none; }
+  .suggest .opt:hover, .suggest .opt.active{ background:var(--accent-soft); }
+  .suggest .opt .name{ color:var(--text); font-weight:500; }
+  .suggest .opt .grp{ font-family:'Roboto Mono',monospace; font-size:10.5px; color:var(--muted); white-space:nowrap; }
+  .suggest .empty{ padding:14px; color:var(--muted); font-size:13px; text-align:center; }
+
+  /* Section label */
+  .section-label{
+    display:flex; align-items:center; justify-content:space-between;
+    margin:22px 0 10px;
+  }
+  .section-label h2{
+    font-size:13px; font-family:'Roboto Mono',monospace; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--muted); margin:0; font-weight:600;
+  }
+  .count{ font-family:'Roboto Mono',monospace; font-size:11.5px; color:var(--muted); }
+
+  /* Top bonus grid */
+  .top-grid{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:10px;
+  }
+  @media (min-width:640px){ .top-grid{ grid-template-columns:repeat(4,1fr); } }
+  .top-card{
+    background:var(--panel); border:1px solid var(--border); border-radius:14px;
+    padding:14px; box-shadow:var(--shadow); cursor:pointer; position:relative;
+    transition:transform .12s, box-shadow .12s;
+  }
+  .top-card:active{ transform:scale(.98); }
+  .top-rank{
+    position:absolute; top:10px; right:12px;
+    font-family:'Roboto Mono',monospace; font-size:11px; font-weight:700; color:var(--accent-border);
+  }
+  .top-rank.r1{ color:var(--accent); }
+  .top-name{
+    font-size:13px; font-weight:600; line-height:1.35; margin:2px 26px 12px 0;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+    min-height:2.7em;
+  }
+  .top-bonus-label{ font-size:10px; color:var(--muted); font-family:'Roboto Mono',monospace; letter-spacing:.05em; text-transform:uppercase; }
+  .top-bonus-val{ font-family:'Roboto Mono',monospace; font-size:18px; font-weight:700; color:var(--accent); margin-top:2px; }
+  .top-empty{ grid-column:1/-1; padding:24px; text-align:center; color:var(--muted); font-size:13px; background:var(--panel); border:1px solid var(--border); border-radius:14px; }
+
+  /* Results list (card rows, mobile-first) */
+  .tablewrap{
+    border:1px solid var(--border); border-radius:14px; overflow:hidden; background:var(--panel);
+    box-shadow:var(--shadow);
+  }
+  .scrollbody{ max-height:560px; overflow-y:auto; }
+
+  .rowhead{
+    display:flex; padding:10px 14px; background:var(--panel-2); border-bottom:1px solid var(--border);
+    font-family:'Roboto Mono',monospace; font-size:10px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--muted); font-weight:600; position:sticky; top:0; z-index:1;
+  }
+  .rowhead .c-name{ flex:1; }
+  .rowhead .c-num{ width:78px; text-align:right; }
+
+  .prow{
+    display:flex; align-items:center; padding:12px 14px; border-bottom:1px solid var(--border);
+    cursor:pointer; transition:background .1s;
+  }
+  .prow:last-child{ border-bottom:none; }
+  .prow:hover, .prow:active{ background:var(--accent-soft); }
+  .prow .c-name{ flex:1; min-width:0; padding-right:8px; }
+  .prow .c-name .nm{ font-size:13.5px; font-weight:500; line-height:1.35; }
+  .prow .c-num{ width:78px; text-align:right; font-family:'Roboto Mono',monospace; font-size:12.5px; font-variant-numeric:tabular-nums; color:var(--text); }
+  .prow .c-num.bonus{ color:var(--accent); font-weight:700; font-size:13px; }
+
+  .empty-state{ padding:36px 20px; text-align:center; color:var(--muted); font-size:13.5px; }
+  .empty-state b{ color:var(--text); }
+  .loading-state{ padding:36px 20px; text-align:center; color:var(--muted); font-family:'Roboto Mono',monospace; font-size:12.5px; }
+  .error-state{ padding:18px; color:var(--red); font-size:13px; line-height:1.5; }
+
+  .copyable{ cursor:pointer; }
+  .copyable:hover{ color:var(--accent); text-decoration:underline dotted; text-underline-offset:3px; }
+  .copyable:active{ opacity:.7; }
+
+  .toast{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(12px);
+    background:#1b1f2a; color:#fff; padding:10px 18px; border-radius:100px;
+    font-size:13px; box-shadow:0 8px 24px rgba(0,0,0,.22); z-index:100;
+    opacity:0; pointer-events:none; transition:opacity .18s, transform .18s;
+    display:flex; align-items:center; gap:7px; white-space:nowrap; max-width:90vw; overflow:hidden;
+  }
+  .toast span{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  ::-webkit-scrollbar{ width:8px; height:8px; }
+  ::-webkit-scrollbar-thumb{ background:#d6dae2; border-radius:8px; }
+</style>
 </head>
 <body>
+<div class="wrap">
 
-  <div class="container">
-    <h2>Tra Cứu Thưởng Nóng</h2>
+  <header>
+    <div>
+      <p class="eyebrow">SMP · Bảng giá &amp; thưởng</p>
+      <h1>Tra cứu Giá Thưởng</h1>
+    </div>
+    <div class="sync" id="syncStatus"><span class="dot loading" id="syncDot"></span><span id="syncText">Đang tải…</span></div>
+  </header>
 
-    <!-- Ô tìm kiếm & chọn nhóm hàng kèm nút Xóa phía bên trái -->
-    <div class="form-group">
-      <label for="groupSearch">🔍 Chọn hoặc nhập tìm kiếm nhóm hàng:</label>
-      <div class="group-search-box">
-        <button type="button" id="clearGroupBtn" onclick="clearGroupSearch()" title="Xóa nhanh">✕</button>
-        <div class="input-wrapper">
-          <input type="text" id="groupSearch" placeholder="Gõ để tìm nhanh nhóm hàng..." oninput="filterGroupList()" onclick="toggleGroupDropdown()" autocomplete="off">
-          <div id="groupDropdown" class="dropdown-list"></div>
-        </div>
+  <div class="controls">
+    <div class="field">
+      <label for="picker">Chọn nhóm hàng</label>
+      <div class="input-with-clear">
+        <input id="picker" type="text" placeholder="Gõ hoặc chọn nhóm hàng…" autocomplete="off">
+        <button type="button" id="pickerClear" class="clear-btn" aria-label="Xóa nhóm hàng đã chọn" style="display:none">✕</button>
       </div>
+      <div class="suggest" id="suggestBox"></div>
     </div>
-
-    <!-- Ô nhập liệu lọc theo Tên SP, Hãng, Size hỗ trợ nhiều từ khóa cách nhau bằng dấu phẩy -->
-    <div class="form-group" id="searchGroup" style="display:none;">
-      <label for="searchInput">Tìm kiếm (Tên SP, Hãng, Size):</label>
-      <input type="text" id="searchInput" oninput="displayData()" placeholder="Nhập từ khóa, cách nhau bằng dấu phẩy...">
-    </div>
-
-    <!-- Vùng hiển thị Top 4 Model tự động thay đổi theo từ khóa tìm kiếm -->
-    <div id="top4Container" class="top4-container" style="display:none;">
-      <div class="top4-title" id="top4Title">🌿 Top 4 Sản Phẩm Thưởng Cao Nhất</div>
-      <div id="top4List" class="top4-grid"></div>
-    </div>
-
-    <div id="status">Đang tải dữ liệu...</div>
-
-    <!-- Bảng kết quả hiển thị các cột C, D, E, F -->
-    <div class="table-responsive">
-      <table id="dataTable" style="display:none;">
-        <thead>
-          <tr>
-            <th>Tên SP (Nhấn để copy)</th>
-            <th style="text-align: right; padding-right: 6px;">Thưởng</th>
-            <th>Hãng</th>
-            <th>Size</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody">
-        </tbody>
-      </table>
+    <div class="field">
+      <label for="keyword">Tìm theo từ khóa (tên SP / loại)</label>
+      <input id="keyword" type="text" placeholder="VD: OPPO, Samsung, 256GB…" autocomplete="off">
     </div>
   </div>
 
-  <script>
-    let globalData = [];
-    let allGroups = [];
-    let selectedGroup = "";
-    const SHEET_ID = "1aNK4p9bfDWG4VIxndztL76A3q9fO5y746l_IdtSVyWo";
+  <div class="hint" id="selectHint">Chọn một nhóm hàng ở trên để xem sản phẩm.</div>
 
-    window.onload = function() {
-      loadData();
-      document.addEventListener('click', function(e) {
-        if (!e.target.closest('.group-search-box')) {
-          document.getElementById('groupDropdown').style.display = 'none';
-        }
-      });
+  <div id="resultsSection" style="display:none">
+    <div class="section-label"><h2>Top 4 thưởng cao nhất trong nhóm</h2></div>
+    <div class="top-grid" id="topGrid">
+      <div class="top-empty">—</div>
+    </div>
+
+    <div class="section-label">
+      <h2>Kết quả</h2>
+      <span class="count" id="rowCount"></span>
+    </div>
+    <div class="tablewrap">
+      <div class="rowhead">
+        <span class="c-name">Tên SP</span>
+        <span class="c-num">Giá NY</span>
+        <span class="c-num">Giá KM</span>
+        <span class="c-num">Thưởng</span>
+      </div>
+      <div class="scrollbody">
+        <div id="tbody"><div class="loading-state">Đang tải dữ liệu từ Google Sheet…</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="toast" id="toast"><span id="toastText"></span></div>
+
+<script>
+const SHEET_ID = '1DqOGl4e2rLsvSOmJMiKyAzOSFPACjQKhPeASnX_w6wI';
+const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
+
+let allRows = [];   // {A,B,C,D,E,F,G}
+let filteredRows = [];
+let groupList = []; // [{name, count}]
+let selectedGroup = '';
+
+const $ = (id) => document.getElementById(id);
+const tbody = $('tbody');
+const rowCount = $('rowCount');
+const picker = $('picker');
+const pickerClear = $('pickerClear');
+const suggestBox = $('suggestBox');
+const keyword = $('keyword');
+const topGrid = $('topGrid');
+const resultsSection = $('resultsSection');
+const selectHint = $('selectHint');
+
+function sortByBonusDesc(rows){
+  return [...rows].sort((a, b) => {
+    const av = parseVNNumber(a.E), bv = parseVNNumber(b.E);
+    const aNaN = isNaN(av), bNaN = isNaN(bv);
+    if(aNaN && bNaN) return 0;
+    if(aNaN) return 1;
+    if(bNaN) return -1;
+    return bv - av;
+  });
+}
+
+function cellVal(row, idx){
+  const c = row.c && row.c[idx];
+  if(!c) return '';
+  if(c.f !== undefined && c.f !== null && c.f !== '') return String(c.f);
+  if(c.v !== undefined && c.v !== null) return String(c.v);
+  return '';
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function parseVNNumber(s){
+  if(s === undefined || s === null) return NaN;
+  const cleaned = String(s).trim().replace(/\./g, '').replace(/,/g, '.');
+  const n = parseFloat(cleaned);
+  return isNaN(n) ? NaN : n;
+}
+
+/* ---------- Copy to clipboard ---------- */
+const toastEl = $('toast');
+const toastTextEl = $('toastText');
+let toastTimer = null;
+
+function showToast(msg){
+  toastTextEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1800);
+}
+
+function copyToClipboard(text){
+  if(!text) return;
+  const done = () => showToast(`Đã copy: ${text}`);
+  const fail = () => showToast('Không thể copy — trình duyệt chặn quyền truy cập clipboard');
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done, fail));
+  }else{
+    fallbackCopy(text, done, fail);
+  }
+}
+
+function fallbackCopy(text, done, fail){
+  try{
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    ok ? done() : fail();
+  }catch(e){
+    fail();
+  }
+}
+
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('.copyable');
+  if(!el) return;
+  e.stopPropagation();
+  const text = el.getAttribute('data-copy') || el.textContent.trim();
+  copyToClipboard(text);
+});
+
+/* ---------- Data loading ---------- */
+
+function parseCSV(text){
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  for(let i = 0; i < text.length; i++){
+    const c = text[i], next = text[i+1];
+    if(inQuotes){
+      if(c === '"' && next === '"'){ field += '"'; i++; }
+      else if(c === '"'){ inQuotes = false; }
+      else { field += c; }
+    }else{
+      if(c === '"'){ inQuotes = true; }
+      else if(c === ','){ row.push(field); field = ''; }
+      else if(c === '\r'){ /* skip */ }
+      else if(c === '\n'){ row.push(field); rows.push(row); row = []; field = ''; }
+      else { field += c; }
+    }
+  }
+  if(field !== '' || row.length){ row.push(field); rows.push(row); }
+  return rows;
+}
+
+function normalizeRows(rawRows){
+  return rawRows
+    .map(cols => ({
+      A: (cols[0] || '').trim(),
+      B: (cols[1] || '').trim(),
+      C: (cols[2] || '').trim(),
+      D: (cols[3] || '').trim(),
+      E: (cols[4] || '').trim(),
+      F: (cols[5] || '').trim(),
+      G: (cols[6] || '').trim(),
+    }))
+    .filter(row => row.B && row.B !== 'TÊN SP');
+}
+
+function loadViaScriptTag(url, timeoutMs = 12000){
+  return new Promise((resolve, reject) => {
+    window.google = window.google || {};
+    window.google.visualization = window.google.visualization || {};
+    window.google.visualization.Query = window.google.visualization.Query || {};
+    const prevSetResponse = window.google.visualization.Query.setResponse;
+    let settled = false;
+
+    function cleanup(){
+      if(script.parentNode) script.parentNode.removeChild(script);
+      window.google.visualization.Query.setResponse = prevSetResponse;
+    }
+
+    window.google.visualization.Query.setResponse = function(json){
+      if(settled) return;
+      settled = true;
+      resolve(json);
+      cleanup();
     };
 
-    function formatNumber(num) {
-      let n = parseFloat(num);
-      if (isNaN(n)) return num;
-      return n.toLocaleString('vi-VN');
+    const script = document.createElement('script');
+    script.src = url;
+    script.onerror = () => {
+      if(settled) return;
+      settled = true;
+      reject(new Error('Không tải được script (Sheet chưa public, sai đường dẫn, hoặc mạng chặn docs.google.com)'));
+      cleanup();
+    };
+    document.head.appendChild(script);
+
+    setTimeout(() => {
+      if(settled) return;
+      settled = true;
+      reject(new Error('Hết thời gian chờ phản hồi từ Google Sheets (quá 12s)'));
+      cleanup();
+    }, timeoutMs);
+  });
+}
+
+async function tryGviz(){
+  const json = await loadViaScriptTag(GVIZ_URL);
+  const rows = json.table && json.table.rows ? json.table.rows : [];
+  return normalizeRows(rows.map(r => [0,1,2,3,4,5,6].map(i => cellVal(r, i))));
+}
+
+async function tryCsv(){
+  const res = await fetch(CSV_URL, { cache: 'no-store' });
+  const text = await res.text();
+  if(!res.ok || text.trim().startsWith('<')){
+    throw new Error(`csv HTTP ${res.status} — phản hồi: ${text.slice(0, 200)}`);
+  }
+  const rows = parseCSV(text);
+  return normalizeRows(rows.slice(1));
+}
+
+function buildGroupList(){
+  const counts = new Map();
+  allRows.forEach(r => {
+    const g = r.F || '(Không có nhóm)';
+    counts.set(g, (counts.get(g) || 0) + 1);
+  });
+  groupList = Array.from(counts.entries())
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => a.name.localeCompare(b.name, 'vi'));
+}
+
+async function loadData(){
+  const errors = [];
+  for(const [label, fn] of [['gviz', tryGviz], ['csv', tryCsv]]){
+    try{
+      allRows = await fn();
+      buildGroupList();
+      setSync('ok', `${allRows.length} sản phẩm · ${new Date().toLocaleTimeString('vi-VN')}`);
+      return;
+    }catch(err){
+      errors.push(`[${label}] ${err.message}`);
     }
+  }
+  console.error(errors.join('\n'));
+  selectHint.textContent = 'Không tải được dữ liệu — kiểm tra kết nối rồi tải lại trang.';
+  setSync('err', 'Lỗi tải dữ liệu');
+}
 
-    function copyToClipboard(text) {
-      if (!text) return;
-      navigator.clipboard.writeText(text).then(() => {
-        const statusDiv = document.getElementById("status");
-        statusDiv.textContent = `Đã copy: "${text}"`;
-        statusDiv.style.color = "#2e7d32";
-        setTimeout(() => {
-          statusDiv.textContent = "";
-        }, 2000);
-      }).catch(err => {
-        console.error('Không thể copy: ', err);
-      });
+function setSync(state, msg){
+  const dot = $('syncDot');
+  dot.className = 'dot' + (state === 'loading' ? ' loading' : state === 'err' ? ' err' : '');
+  $('syncText').textContent = msg;
+}
+
+/* ---------- Top 4 bonus ---------- */
+
+function renderTopBonus(){
+  const groupRows = selectedGroup ? allRows.filter(r => r.F === selectedGroup) : [];
+  const ranked = sortByBonusDesc(groupRows.filter(r => !isNaN(parseVNNumber(r.E)))).slice(0, 4);
+
+  if(ranked.length === 0){
+    topGrid.innerHTML = `<div class="top-empty">Chưa có dữ liệu thưởng hợp lệ trong nhóm này</div>`;
+    return;
+  }
+
+  topGrid.innerHTML = ranked.map((row, i) => `
+    <div class="top-card" data-name="${escapeHtml(row.B)}">
+      <span class="top-rank ${i === 0 ? 'r1' : ''}">#${i + 1}</span>
+      <div class="top-name copyable" data-copy="${escapeHtml(row.B)}" title="Bấm để copy tên sản phẩm">${escapeHtml(row.B)}</div>
+      <div class="top-bonus-label">Thưởng</div>
+      <div class="top-bonus-val">${escapeHtml(row.E)}</div>
+    </div>
+  `).join('');
+
+  topGrid.querySelectorAll('.top-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const row = allRows.find(r => r.B === card.getAttribute('data-name'));
+      if(row) showSpotlight(row);
+    });
+  });
+}
+
+/* ---------- Results list ---------- */
+
+function renderTable(rows){
+  rowCount.textContent = `${rows.length} kết quả`;
+  if(rows.length === 0){
+    tbody.innerHTML = `<div class="empty-state">Không tìm thấy sản phẩm nào khớp với <b>${escapeHtml(keyword.value || selectedGroup)}</b></div>`;
+    return;
+  }
+  tbody.innerHTML = rows.map(row => `
+    <div class="prow" data-name="${escapeHtml(row.B)}">
+      <span class="c-name"><span class="nm copyable" data-copy="${escapeHtml(row.B)}" title="Bấm để copy tên sản phẩm">${escapeHtml(row.B)}</span></span>
+      <span class="c-num">${escapeHtml(row.C)}</span>
+      <span class="c-num">${escapeHtml(row.D)}</span>
+      <span class="c-num bonus">${escapeHtml(row.E)}</span>
+    </div>
+  `).join('');
+
+  tbody.querySelectorAll('.prow').forEach(el => {
+    el.addEventListener('click', () => {
+      const row = allRows.find(r => r.B === el.getAttribute('data-name'));
+      if(row) showSpotlight(row);
+    });
+  });
+}
+
+function showSpotlight(row){
+  $('spGroup').textContent = row.F || '—';
+  $('spName').textContent = row.B || '—';
+  $('spGiaNY').textContent = row.C || '—';
+  $('spGiaKM').textContent = row.D || '—';
+  $('spThuong').textContent = row.E || '—';
+  $('spLoai').textContent = row.G || '—';
+  spotlight.classList.add('show');
+  spotlight.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+$('spotlightClose').addEventListener('click', () => {
+  spotlight.classList.remove('show');
+});
+
+/* ---------- Group dropdown (typeahead over unique column-F values) ---------- */
+let activeIdx = -1;
+
+function openSuggest(list){
+  if(list.length === 0){
+    suggestBox.innerHTML = `<div class="empty">Không có nhóm hàng phù hợp</div>`;
+  }else{
+    suggestBox.innerHTML = list.map((g, i) => `
+      <div class="opt" data-idx="${i}" data-name="${escapeHtml(g.name)}">
+        <span class="name">${escapeHtml(g.name)}</span>
+        <span class="grp">${g.count} SP</span>
+      </div>
+    `).join('');
+  }
+  suggestBox.classList.add('open');
+  activeIdx = -1;
+}
+
+function closeSuggest(){
+  suggestBox.classList.remove('open');
+  suggestBox.innerHTML = '';
+  activeIdx = -1;
+}
+
+function matchingGroups(q){
+  if(q === '') return groupList;
+  return groupList.filter(g => g.name.toLowerCase().includes(q));
+}
+
+picker.addEventListener('input', () => {
+  const q = picker.value.trim().toLowerCase();
+  openSuggest(matchingGroups(q));
+  updateClearVisibility();
+  if(q === ''){ selectedGroup = ''; hideResults(); }
+});
+
+picker.addEventListener('focus', () => {
+  const q = picker.value.trim().toLowerCase();
+  openSuggest(matchingGroups(q));
+});
+
+picker.addEventListener('keydown', (e) => {
+  const opts = Array.from(suggestBox.querySelectorAll('.opt'));
+  if(opts.length === 0) return;
+  if(e.key === 'ArrowDown'){
+    e.preventDefault();
+    activeIdx = Math.min(activeIdx + 1, opts.length - 1);
+    opts.forEach((o,i) => o.classList.toggle('active', i === activeIdx));
+    opts[activeIdx].scrollIntoView({ block:'nearest' });
+  }else if(e.key === 'ArrowUp'){
+    e.preventDefault();
+    activeIdx = Math.max(activeIdx - 1, 0);
+    opts.forEach((o,i) => o.classList.toggle('active', i === activeIdx));
+    opts[activeIdx].scrollIntoView({ block:'nearest' });
+  }else if(e.key === 'Enter'){
+    e.preventDefault();
+    if(activeIdx >= 0 && opts[activeIdx]){
+      selectGroup(opts[activeIdx].getAttribute('data-name'));
     }
+  }else if(e.key === 'Escape'){
+    closeSuggest();
+  }
+});
 
-    function loadData() {
-      const statusDiv = document.getElementById("status");
-      statusDiv.textContent = "Đang kết nối lấy dữ liệu...";
-      statusDiv.style.color = "#666";
+suggestBox.addEventListener('mousedown', (e) => {
+  const opt = e.target.closest('.opt');
+  if(opt) selectGroup(opt.getAttribute('data-name'));
+});
 
-      window.google = window.google || {};
-      window.google.visualization = window.google.visualization || {};
-      window.google.visualization.Query = {
-        setResponse: function(response) {
-          try {
-            if (response && response.table && response.table.rows) {
-              const rows = response.table.rows;
-              globalData = rows.map(row => {
-                return {
-                  colA: row.c[0] && row.c[0].v !== null ? row.c[0].v : '', // Nhóm hàng
-                  colB: row.c[1] && row.c[1].v !== null ? row.c[1].v : '', // Mã SP
-                  colC: row.c[2] && row.c[2].v !== null ? row.c[2].v : '', // Tên SP
-                  colD: row.c[3] && row.c[3].v !== null ? row.c[3].v : 0,  // Thưởng Nóng
-                  colE: row.c[4] && row.c[4].v !== null ? row.c[4].v : '', // Hãng
-                  colF: row.c[5] && row.c[5].v !== null ? row.c[5].v : ''  // Size
-                };
-              });
+function selectGroup(name){
+  selectedGroup = name;
+  picker.value = name;
+  updateClearVisibility();
+  showResults();
+  renderTopBonus();
+  applyFilters();
+  closeSuggest();
+}
 
-              if (globalData.length > 0) {
-                globalData.shift(); // Bỏ dòng tiêu đề
-              }
+function updateClearVisibility(){
+  pickerClear.style.display = picker.value.trim() !== '' ? 'flex' : 'none';
+}
 
-              extractGroups();
-              statusDiv.textContent = "";
-            } else {
-              throw new Error("Dữ liệu trả về trống.");
-            }
-          } catch (e) {
-            console.error(e);
-            statusDiv.textContent = "Lỗi xử lý dữ liệu!";
-            statusDiv.style.color = "red";
-          }
-        }
-      };
+function showResults(){
+  resultsSection.style.display = 'block';
+  selectHint.style.display = 'none';
+}
 
-      const oldScript = document.getElementById("gviz-script");
-      if (oldScript) oldScript.remove();
+function hideResults(){
+  resultsSection.style.display = 'none';
+  selectHint.style.display = 'block';
+}
 
-      const script = document.createElement("script");
-      script.id = "gviz-script";
-      script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
-      script.onerror = function() {
-        statusDiv.textContent = "Không tải được dữ liệu!";
-        statusDiv.style.color = "red";
-      };
-      document.body.appendChild(script);
-    }
+pickerClear.addEventListener('click', () => {
+  selectedGroup = '';
+  picker.value = '';
+  keyword.value = '';
+  updateClearVisibility();
+  hideResults();
+  closeSuggest();
+  picker.focus();
+});
 
-    function extractGroups() {
-      const groupsSet = new Set();
-      globalData.forEach(row => {
-        let val = row.colA.toString().trim();
-        if (val !== "") {
-          groupsSet.add(val);
-        }
-      });
-      allGroups = Array.from(groupsSet).sort();
-      renderGroupDropdown(allGroups);
-    }
+document.addEventListener('click', (e) => {
+  if(!e.target.closest('.field')) closeSuggest();
+});
 
-    function renderGroupDropdown(groups) {
-      const dropdown = document.getElementById("groupDropdown");
-      dropdown.innerHTML = "";
-      
-      if (groups.length === 0) {
-        dropdown.innerHTML = '<div class="dropdown-item" style="color: #888; text-align: center;">Không tìm thấy nhóm hàng</div>';
-        return;
-      }
+/* ---------- Keyword search (columns B and G), scoped to selected group ---------- */
+keyword.addEventListener('input', applyFilters);
 
-      groups.forEach(group => {
-        const item = document.createElement("div");
-        item.className = "dropdown-item";
-        item.textContent = group;
-        item.onclick = function() {
-          selectGroup(group);
-        };
-        dropdown.appendChild(item);
-      });
-    }
+function applyFilters(){
+  if(!selectedGroup) return;
+  const kw = keyword.value.trim().toLowerCase();
+  let rows = allRows.filter(r => r.F === selectedGroup);
+  if(kw){
+    rows = rows.filter(r => r.B.toLowerCase().includes(kw) || r.G.toLowerCase().includes(kw));
+  }
+  filteredRows = sortByBonusDesc(rows);
+  renderTable(filteredRows);
+}
 
-    function toggleGroupDropdown() {
-      const dropdown = document.getElementById("groupDropdown");
-      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-      filterGroupList();
-    }
-
-    function filterGroupList() {
-      const keyword = document.getElementById("groupSearch").value.toLowerCase().trim();
-      const dropdown = document.getElementById("groupDropdown");
-      const clearBtn = document.getElementById("clearGroupBtn");
-      
-      if (keyword.length > 0 || selectedGroup !== "") {
-        clearBtn.style.display = "block";
-      } else {
-        clearBtn.style.display = "none";
-      }
-
-      const filtered = allGroups.filter(g => g.toLowerCase().includes(keyword));
-      renderGroupDropdown(filtered);
-      dropdown.style.display = "block";
-
-      if (keyword === "") {
-        selectedGroup = "";
-        onGroupChange();
-      }
-    }
-
-    function selectGroup(group) {
-      selectedGroup = group;
-      document.getElementById("groupSearch").value = group;
-      document.getElementById("groupDropdown").style.display = "none";
-      document.getElementById("clearGroupBtn").style.display = "block";
-      onGroupChange();
-    }
-
-    function clearGroupSearch() {
-      document.getElementById("groupSearch").value = "";
-      selectedGroup = "";
-      document.getElementById("groupDropdown").style.display = "none";
-      document.getElementById("clearGroupBtn").style.display = "none";
-      onGroupChange();
-      document.getElementById("groupSearch").focus();
-    }
-
-    function onGroupChange() {
-      const searchGroupDiv = document.getElementById("searchGroup");
-      const top4Container = document.getElementById("top4Container");
-      const table = document.getElementById("dataTable");
-      
-      if (!selectedGroup) {
-        searchGroupDiv.style.display = "none";
-        top4Container.style.display = "none";
-        table.style.display = "none";
-        document.getElementById("tableBody").innerHTML = "";
-        return;
-      }
-
-      searchGroupDiv.style.display = "block";
-      document.getElementById("searchInput").value = "";
-
-      displayData();
-    }
-
-    function renderTop4(group, preFilteredData) {
-      const container = document.getElementById("top4Container");
-      const list = document.getElementById("top4List");
-      list.innerHTML = "";
-
-      let groupData = preFilteredData;
-
-      let sorted = [...groupData].sort((a, b) => {
-        let valA = parseFloat(a.colD) || 0;
-        let valB = parseFloat(b.colD) || 0;
-        return valB - valA;
-      });
-
-      let top4Items = [];
-      let seenBrands = new Set();
-
-      // Bước 1: Ưu tiên lấy các sản phẩm từ các hãng khác nhau (tối đa 4 hãng)
-      for (let item of sorted) {
-        let brand = item.colE ? item.colE.toString().trim() : '';
-        if (!seenBrands.has(brand)) {
-          seenBrands.add(brand);
-          top4Items.push(item);
-          if (top4Items.length === 4) break;
-        }
-      }
-
-      // Bước 2: Nếu chưa đủ 4 sản phẩm, tiếp tục lấy thêm các sản phẩm tiếp theo
-      if (top4Items.length < 4) {
-        for (let item of sorted) {
-          if (!top4Items.includes(item)) {
-            top4Items.push(item);
-            if (top4Items.length === 4) break;
-          }
-        }
-      }
-
-      if (top4Items.length === 0) {
-        container.style.display = "none";
-        return;
-      }
-
-      top4Items.forEach((item, index) => {
-        let card = document.createElement("div");
-        card.className = "top4-card";
-        card.innerHTML = `
-          <div class="top4-rank">#${index + 1}</div>
-          <div class="top4-info">
-            <div class="top4-name" title="${item.colC}">${item.colC || '---'}</div>
-            <div class="top4-val">${formatNumber(item.colD)}</div>
-          </div>
-        `;
-        list.appendChild(card);
-      });
-
-      container.style.display = "block";
-    }
-
-    function displayData() {
-      const searchInputVal = document.getElementById("searchInput").value;
-      const keywords = searchInputVal.split(',').map(k => k.toLowerCase().trim()).filter(k => k !== "");
-      
-      const tbody = document.getElementById("tableBody");
-      const table = document.getElementById("dataTable");
-      
-      tbody.innerHTML = "";
-
-      if (!selectedGroup) {
-        table.style.display = "none";
-        document.getElementById("top4Container").style.display = "none";
-        return;
-      }
-
-      table.style.display = "table";
-
-      let filteredData = globalData.filter(row => {
-        let matchGroup = row.colA.toString().trim() === selectedGroup;
-        
-        let rowText = (row.colC.toString() + " " + row.colE.toString() + " " + row.colF.toString()).toLowerCase();
-        let matchSearch = keywords.length === 0 || keywords.every(kw => rowText.includes(kw));
-
-        return matchGroup && matchSearch;
-      });
-
-      filteredData.sort((a, b) => {
-        let valA = parseFloat(a.colD) || 0;
-        let valB = parseFloat(b.colD) || 0;
-        return valB - valA; 
-      });
-
-      renderTop4(selectedGroup, filteredData);
-
-      filteredData.forEach(row => {
-        const tr = document.createElement("tr");
-        
-        const tdName = document.createElement("td");
-        tdName.className = "product-name-click";
-        tdName.title = "Nhấn để copy tên sản phẩm";
-        tdName.textContent = row.colC;
-        tdName.onclick = () => copyToClipboard(row.colC);
-
-        const tdReward = document.createElement("td");
-        tdReward.style.textAlign = "right";
-        tdReward.style.paddingRight = "6px";
-        tdReward.innerHTML = `<strong style="color: #d32f2f;">${formatNumber(row.colD)}</strong>`;
-
-        const tdBrand = document.createElement("td");
-        tdBrand.textContent = row.colE;
-
-        const tdSize = document.createElement("td");
-        tdSize.textContent = row.colF;
-
-        tr.appendChild(tdName);
-        tr.appendChild(tdReward);
-        tr.appendChild(tdBrand);
-        tr.appendChild(tdSize);
-
-        tbody.appendChild(tr);
-      });
-    }
-  </script>
+loadData();
+</script>
 </body>
 </html>
