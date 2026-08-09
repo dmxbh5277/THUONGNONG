@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tra Cứu Thưởng Model</title>
-  <!-- Nhập font Google Sans -->
+  <title>Tra Cứu Thưởng Model Theo Shop</title>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -15,102 +14,50 @@
       --border-color: #E2E8F0;
       --accent-color: #2E7D32;
     }
-    *, *:before, *:after {
-      box-sizing: border-box;
-    }
+    *, *:before, *:after { box-sizing: border-box; }
     body {
       font-family: 'Google Sans', sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
       margin: 0;
-      padding: 4px;
+      padding: 8px;
       width: 100%;
       overflow-x: hidden;
     }
     .container {
       background: var(--box-bg);
-      padding: 8px 6px;
+      padding: 12px 10px;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.04);
       width: 100%;
-      max-width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
     }
     h2 {
       text-align: center;
       color: var(--primary-color);
-      margin: 4px 0 8px 0;
-      font-size: 16px;
+      margin: 4px 0 12px 0;
+      font-size: 18px;
     }
-    
-    /* Top 4 Section Style */
-    .top4-container {
-      background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-      border: 1px solid #a5d6a7;
-      border-radius: 6px;
-      padding: 6px;
-      margin-bottom: 8px;
-    }
-    .top4-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: #2e7d32;
-      margin-bottom: 4px;
-      text-align: center;
-    }
-    .top4-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4px;
-    }
-    .top4-card {
-      background: white;
-      padding: 5px 6px;
-      border-radius: 4px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-      display: flex;
-      align-items: flex-start;
-      gap: 4px;
-      min-width: 0;
-    }
-    .top4-rank {
-      font-weight: bold;
-      color: #2e7d32;
-      font-size: 11px;
-      min-width: 14px;
-      padding-top: 1px;
-      flex-shrink: 0;
-    }
-    .top4-info {
-      flex: 1;
-      min-width: 0;
-    }
-    .top4-name {
-      font-size: 10px;
-      font-weight: 500;
-      color: #333;
-      white-space: normal;
-      word-break: break-word;
-      overflow-wrap: break-word;
-      line-height: 1.3;
-    }
-    .top4-val {
-      font-size: 10px;
-      color: #d32f2f;
-      font-weight: bold;
-      margin-top: 2px;
-    }
-
-    .form-group {
-      margin-bottom: 8px;
-    }
+    .form-group { margin-bottom: 10px; }
     label {
       display: block;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
       font-weight: 500;
       color: #555;
-      font-size: 12px;
+      font-size: 13px;
     }
-
+    select, input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+      background-color: #fff;
+      font-family: 'Google Sans', sans-serif;
+    }
+    select:focus, input[type="text"]:focus { border-color: var(--primary-color); }
     .group-search-box {
       display: flex;
       align-items: center;
@@ -121,8 +68,8 @@
       background-color: #f1f3f4;
       border: 1px solid var(--border-color);
       border-radius: 6px;
-      padding: 0 10px;
-      height: 38px;
+      padding: 0 12px;
+      height: 42px;
       font-size: 14px;
       font-weight: bold;
       color: #666;
@@ -130,31 +77,8 @@
       display: none;
       flex-shrink: 0;
     }
-    #clearGroupBtn:hover {
-      background-color: #e4e6e8;
-      color: #d32f2f;
-    }
-
-    .input-wrapper {
-      position: relative;
-      flex: 1;
-      min-width: 0;
-    }
-
-    input[type="text"], select {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      font-size: 14px;
-      outline: none;
-      background-color: #fff;
-      font-family: 'Google Sans', sans-serif;
-    }
-    input[type="text"]:focus, select:focus {
-      border-color: var(--primary-color);
-    }
-
+    #clearGroupBtn:hover { background-color: #e4e6e8; color: #d32f2f; }
+    .input-wrapper { position: relative; flex: 1; min-width: 0; }
     .dropdown-list {
       display: none;
       position: absolute;
@@ -171,7 +95,7 @@
       margin-top: 2px;
     }
     .dropdown-item {
-      padding: 9px 10px;
+      padding: 10px;
       font-size: 13px;
       cursor: pointer;
       border-bottom: 1px solid #f5f5f5;
@@ -181,65 +105,67 @@
       color: var(--primary-color);
       font-weight: 500;
     }
-    
-    .table-responsive {
-      width: 100%;
-      overflow-x: hidden;
-      margin-top: 6px;
+    .top4-container {
+      background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+      border: 1px solid #a5d6a7;
+      border-radius: 6px;
+      padding: 8px;
+      margin-bottom: 10px;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-    }
-    th, td {
-      padding: 6px 4px;
-      text-align: left;
-      font-size: 11px;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      white-space: normal;
-    }
-    
-    .product-name-click {
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-    .product-name-click:hover {
-      color: var(--primary-color);
-      text-decoration: underline;
-    }
-
-    /* Phân bổ tỷ lệ 5 cột: Tên SP (B), Giá NY (C), Giá KM (D), Thưởng (E), Size (G) */
-    th:nth-child(1), td:nth-child(1) { width: 36%; }
-    th:nth-child(2), td:nth-child(2) { width: 16%; text-align: right; padding-right: 4px; }
-    th:nth-child(3), td:nth-child(3) { width: 16%; text-align: right; padding-right: 4px; }
-    th:nth-child(4), td:nth-child(4) { width: 18%; text-align: right; padding-right: 4px; }
-    th:nth-child(5), td:nth-child(5) { width: 14%; text-align: center; }
-
-    th {
-      background-color: #F1F4F8;
-      font-weight: 600;
-      color: #444;
-      border-bottom: 1px solid var(--border-color);
-    }
-    td {
-      border-bottom: 1px solid #f0f0f0;
-    }
-    tr:last-child td {
-      border-bottom: none;
-    }
-    tr:nth-child(even) {
-      background-color: #FAFAFA;
-    }
-    
-    #status {
+    .top4-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #2e7d32;
+      margin-bottom: 6px;
       text-align: center;
-      margin: 6px 0;
-      font-style: italic;
-      color: #666;
-      font-size: 11px;
     }
+    .top4-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .top4-card {
+      background: white;
+      padding: 6px 8px;
+      border-radius: 4px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .top4-rank {
+      font-weight: bold;
+      color: #2e7d32;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .top4-info { flex: 1; min-width: 0; }
+    .top4-name {
+      font-size: 11px;
+      font-weight: 500;
+      color: #333;
+      word-break: break-word;
+      line-height: 1.3;
+    }
+    .top4-val {
+      font-size: 11px;
+      color: #d32f2f;
+      font-weight: bold;
+      margin-top: 2px;
+    }
+    .table-responsive { width: 100%; overflow-x: auto; margin-top: 6px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td {
+      padding: 8px 6px;
+      text-align: left;
+      font-size: 12px;
+    }
+    .product-name-click { cursor: pointer; transition: color 0.2s; }
+    .product-name-click:hover { color: var(--primary-color); text-decoration: underline; }
+    th { background-color: #F1F4F8; font-weight: 600; color: #444; border-bottom: 1px solid var(--border-color); }
+    td { border-bottom: 1px solid #f0f0f0; }
+    tr:nth-child(even) { background-color: #FAFAFA; }
+    #status { text-align: center; margin: 8px 0; font-style: italic; color: #666; font-size: 12px; }
   </style>
 </head>
 <body>
@@ -247,7 +173,13 @@
   <div class="container">
     <h2>Tra Cứu Thưởng Model</h2>
 
-    <!-- Ô tìm kiếm & chọn nhóm hàng (Cột F) -->
+    <div class="form-group">
+      <label for="shopSelect">🏪 Chọn Shop (Tab dữ liệu):</label>
+      <select id="shopSelect" onchange="onShopChange()">
+        <option value="">Đang tải danh sách Shop...</option>
+      </select>
+    </div>
+
     <div class="form-group">
       <label for="groupSearch">🔍 Chọn hoặc tìm kiếm nhóm hàng:</label>
       <div class="group-search-box">
@@ -259,62 +191,90 @@
       </div>
     </div>
 
-    <!-- Ô nhập liệu lọc theo từ khóa (Tên SP, Size, v.v.) -->
     <div class="form-group" id="searchGroup" style="display:none;">
       <label for="searchInput">Tìm kiếm (Tên SP, Size... cách nhau dấu phẩy):</label>
       <input type="text" id="searchInput" oninput="displayData()" placeholder="Nhập từ khóa...">
     </div>
 
-    <!-- Tùy chọn sắp xếp (Sort tùy chỉnh) -->
     <div class="form-group" id="sortGroupContainer" style="display:none;">
       <label for="sortSelect">⚡ Sắp xếp bảng kết quả:</label>
       <select id="sortSelect" onchange="displayData()">
         <option value="reward_desc">Thưởng cao nhất (Mặc định)</option>
-        <option value="size_asc">Cột Size (Tăng dần / A-Z)</option>
-        <option value="size_desc">Cột Size (Giảm dần / Z-A)</option>
+        <option value="size_asc">Cột Size (Tăng dần / A-Z) + Thưởng cao→thấp</option>
+        <option value="size_desc">Cột Size (Giảm dần / Z-A) + Thưởng cao→thấp</option>
       </select>
     </div>
 
-    <!-- Vùng hiển thị Top 4 Model có thưởng cao nhất -->
     <div id="top4Container" class="top4-container" style="display:none;">
-      <div class="top4-title" id="top4Title">🌿 Top 4 Sản Phẩm Thưởng Cao Nhất</div>
+      <div class="top4-title">🌿 Top 4 Sản Phẩm Thưởng Cao Nhất</div>
       <div id="top4List" class="top4-grid"></div>
     </div>
 
-    <div id="status">Đang tải dữ liệu...</div>
+    <div id="status">Đang kết nối tới Google Sheet...</div>
 
-    <!-- Bảng kết quả hiển thị các cột B, C, D, E, G -->
     <div class="table-responsive">
       <table id="dataTable" style="display:none;">
         <thead>
           <tr>
             <th>Tên SP (Copy)</th>
-            <th style="text-align: right; padding-right: 4px;">Giá NY</th>
-            <th style="text-align: right; padding-right: 4px;">Giá KM</th>
-            <th style="text-align: right; padding-right: 4px;">Thưởng</th>
+            <th style="text-align: right;">Giá NY</th>
+            <th style="text-align: right;">Giá KM</th>
+            <th style="text-align: right;">Thưởng</th>
             <th style="text-align: center;">Size</th>
           </tr>
         </thead>
-        <tbody id="tableBody">
-        </tbody>
+        <tbody id="tableBody"></tbody>
       </table>
     </div>
   </div>
 
   <script>
+    // ⚠️ THAY ĐƯỜNG DẪN WEB APP APPS SCRIPT CỦA BẠN VÀO ĐÂY
+    const API_URL = "https://script.google.com/macros/s/AKfycbzNq-Q4UKBwIouh_j31vMHrGtbGO4Qmdnv8tsxlJNXjFOHyQ0krpCLIit-_wUnwX3nU/exec";
+
     let globalData = [];
     let allGroups = [];
     let selectedGroup = "";
-    const SHEET_ID = "1DqOGl4e2rLsvSOmJMiKyAzOSFPACjQKhPeASnX_w6wI";
 
     window.onload = function() {
-      loadData();
+      fetchShops();
       document.addEventListener('click', function(e) {
         if (!e.target.closest('.group-search-box')) {
           document.getElementById('groupDropdown').style.display = 'none';
         }
       });
     };
+
+    function fetchShops() {
+      const statusDiv = document.getElementById("status");
+      fetch(API_URL + "?action=getSheets")
+        .then(response => response.json())
+        .then(sheetNames => {
+          const shopSelect = document.getElementById("shopSelect");
+          shopSelect.innerHTML = "";
+          
+          if (!sheetNames || sheetNames.length === 0) {
+            shopSelect.innerHTML = '<option value="">Không tìm thấy Tab nào</option>';
+            statusDiv.textContent = "Không tìm thấy dữ liệu Tab.";
+            return;
+          }
+
+          sheetNames.forEach(name => {
+            const option = document.createElement("option");
+            option.value = name;
+            option.textContent = "Shop " + name;
+            shopSelect.appendChild(option);
+          });
+
+          statusDiv.textContent = "";
+          loadDataForCurrentShop();
+        })
+        .catch(err => {
+          console.error(err);
+          statusDiv.textContent = "Lỗi kết nối API: " + err.message;
+          statusDiv.style.color = "red";
+        });
+    }
 
     function formatNumber(num) {
       let n = parseFloat(num);
@@ -328,74 +288,52 @@
         const statusDiv = document.getElementById("status");
         statusDiv.textContent = `Đã copy: "${text}"`;
         statusDiv.style.color = "#2e7d32";
-        setTimeout(() => {
-          statusDiv.textContent = "";
-        }, 2000);
-      }).catch(err => {
-        console.error('Không thể copy: ', err);
-      });
+        setTimeout(() => { statusDiv.textContent = ""; }, 2000);
+      }).catch(err => { console.error('Không thể copy: ', err); });
     }
 
-    function loadData() {
+    function onShopChange() {
+      selectedGroup = "";
+      document.getElementById("groupSearch").value = "";
+      document.getElementById("searchGroup").style.display = "none";
+      document.getElementById("sortGroupContainer").style.display = "none";
+      document.getElementById("top4Container").style.display = "none";
+      document.getElementById("dataTable").style.display = "none";
+      document.getElementById("tableBody").innerHTML = "";
+      
+      loadDataForCurrentShop();
+    }
+
+    function loadDataForCurrentShop() {
+      const currentShopTab = document.getElementById("shopSelect").value;
+      if (!currentShopTab) return;
+
       const statusDiv = document.getElementById("status");
-      statusDiv.textContent = "Đang kết nối lấy dữ liệu...";
+      statusDiv.textContent = `Đang tải dữ liệu Shop ${currentShopTab}...`;
       statusDiv.style.color = "#666";
 
-      window.google = window.google || {};
-      window.google.visualization = window.google.visualization || {};
-      window.google.visualization.Query = {
-        setResponse: function(response) {
-          try {
-            if (response && response.table && response.table.rows) {
-              const rows = response.table.rows;
-              globalData = rows.map(row => {
-                return {
-                  colB: row.c[1] && row.c[1].v !== null ? row.c[1].v : '', // Tên SP (Cột B)
-                  colC: row.c[2] && row.c[2].v !== null ? row.c[2].v : 0,  // Giá NY (Cột C)
-                  colD: row.c[3] && row.c[3].v !== null ? row.c[3].v : 0,  // Giá KM (Cột D)
-                  colE: row.c[4] && row.c[4].v !== null ? row.c[4].v : 0,  // Thưởng (Cột E)
-                  colF: row.c[5] && row.c[5].v !== null ? row.c[5].v : '', // Nhóm hàng (Cột F)
-                  colG: row.c[6] && row.c[6].v !== null ? row.c[6].v : ''  // Size (Cột G)
-                };
-              });
-
-              if (globalData.length > 0) {
-                globalData.shift(); // Bỏ dòng tiêu đề
-              }
-
-              extractGroups();
-              statusDiv.textContent = "";
-            } else {
-              throw new Error("Dữ liệu trả về trống.");
-            }
-          } catch (e) {
-            console.error(e);
-            statusDiv.textContent = "Lỗi xử lý dữ liệu!";
-            statusDiv.style.color = "red";
+      fetch(API_URL + "?action=getData&sheet=" + encodeURIComponent(currentShopTab))
+        .then(response => response.json())
+        .then(data => {
+          globalData = data;
+          if (globalData.length > 0) {
+            globalData.shift(); // Bỏ qua dòng tiêu đề Google Sheet nếu cần
           }
-        }
-      };
-
-      const oldScript = document.getElementById("gviz-script");
-      if (oldScript) oldScript.remove();
-
-      const script = document.createElement("script");
-      script.id = "gviz-script";
-      script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
-      script.onerror = function() {
-        statusDiv.textContent = "Không tải được dữ liệu!";
-        statusDiv.style.color = "red";
-      };
-      document.body.appendChild(script);
+          extractGroups();
+          statusDiv.textContent = "";
+        })
+        .catch(err => {
+          console.error(err);
+          statusDiv.textContent = "Lỗi tải dữ liệu từ Sheet!";
+          statusDiv.style.color = "red";
+        });
     }
 
     function extractGroups() {
       const groupsSet = new Set();
       globalData.forEach(row => {
-        let val = row.colF.toString().trim();
-        if (val !== "") {
-          groupsSet.add(val);
-        }
+        let val = row.colF ? row.colF.toString().trim() : "";
+        if (val !== "") groupsSet.add(val);
       });
       allGroups = Array.from(groupsSet).sort();
       renderGroupDropdown(allGroups);
@@ -414,9 +352,7 @@
         const item = document.createElement("div");
         item.className = "dropdown-item";
         item.textContent = group;
-        item.onclick = function() {
-          selectGroup(group);
-        };
+        item.onclick = function() { selectGroup(group); };
         dropdown.appendChild(item);
       });
     }
@@ -432,11 +368,7 @@
       const dropdown = document.getElementById("groupDropdown");
       const clearBtn = document.getElementById("clearGroupBtn");
       
-      if (keyword.length > 0 || selectedGroup !== "") {
-        clearBtn.style.display = "block";
-      } else {
-        clearBtn.style.display = "none";
-      }
+      clearBtn.style.display = (keyword.length > 0 || selectedGroup !== "") ? "block" : "none";
 
       const filtered = allGroups.filter(g => g.toLowerCase().includes(keyword));
       renderGroupDropdown(filtered);
@@ -483,7 +415,7 @@
       searchGroupDiv.style.display = "block";
       sortGroupContainer.style.display = "block";
       document.getElementById("searchInput").value = "";
-      document.getElementById("sortSelect").value = "reward_desc"; // Mặc định khi chọn nhóm mới sẽ về thưởng cao nhất
+      document.getElementById("sortSelect").value = "reward_desc";
 
       displayData();
     }
@@ -493,17 +425,8 @@
       const list = document.getElementById("top4List");
       list.innerHTML = "";
 
-      let sorted = [...preFilteredData].sort((a, b) => {
-        let valA = parseFloat(a.colE) || 0;
-        let valB = parseFloat(b.colE) || 0;
-        return valB - valA;
-      });
-
-      let top4Items = [];
-      for (let item of sorted) {
-        top4Items.push(item);
-        if (top4Items.length === 4) break;
-      }
+      let sorted = [...preFilteredData].sort((a, b) => (parseFloat(b.colE) || 0) - (parseFloat(a.colE) || 0));
+      let top4Items = sorted.slice(0, 4);
 
       if (top4Items.length === 0) {
         container.style.display = "none";
@@ -516,7 +439,7 @@
         card.innerHTML = `
           <div class="top4-rank">#${index + 1}</div>
           <div class="top4-info">
-            <div class="top4-name" title="${item.colB}">${item.colB || '---'}</div>
+            <div class="top4-name">${item.colB || '---'}</div>
             <div class="top4-val">${formatNumber(item.colE)}</div>
           </div>
         `;
@@ -545,44 +468,25 @@
       table.style.display = "table";
 
       let filteredData = globalData.filter(row => {
-        let matchGroup = row.colF.toString().trim() === selectedGroup;
-        
-        let rowText = (row.colB.toString() + " " + row.colG.toString()).toLowerCase();
+        let groupVal = row.colF ? row.colF.toString().trim() : "";
+        let matchGroup = groupVal === selectedGroup;
+        let rowText = ((row.colB ? row.colB.toString() : "") + " " + (row.colG ? row.colG.toString() : "")).toLowerCase();
         let matchSearch = keywords.length === 0 || keywords.every(kw => rowText.includes(kw));
 
         return matchGroup && matchSearch;
       });
 
-      // Xử lý logic sắp xếp bảng theo tùy chọn của người dùng (Sắp xếp đa tầng)
       filteredData.sort((a, b) => {
         if (sortOption === "size_asc" || sortOption === "size_desc") {
-          let sizeA = a.colG.toString().trim().toLowerCase();
-          let sizeB = b.colG.toString().trim().toLowerCase();
-          
+          let sizeA = a.colG ? a.colG.toString().trim().toLowerCase() : "";
+          let sizeB = b.colG ? b.colG.toString().trim().toLowerCase() : "";
           let numA = parseFloat(a.colG);
           let numB = parseFloat(b.colG);
-          let comp = 0;
+          let comp = (!isNaN(numA) && !isNaN(numB)) ? (numA - numB) : sizeA.localeCompare(sizeB, 'vi', { numeric: true });
 
-          if (!isNaN(numA) && !isNaN(numB)) {
-            comp = numA - numB;
-          } else {
-            comp = sizeA.localeCompare(sizeB, 'vi', { numeric: true });
-          }
-
-          if (comp !== 0) {
-            return sortOption === "size_asc" ? comp : -comp;
-          } else {
-            // Điều kiện phụ: Nếu Size giống nhau, sort theo Thưởng từ cao xuống thấp
-            let valA = parseFloat(a.colE) || 0;
-            let valB = parseFloat(b.colE) || 0;
-            return valB - valA;
-          }
-        } else {
-          // Mặc định: Thưởng cao nhất
-          let valA = parseFloat(a.colE) || 0;
-          let valB = parseFloat(b.colE) || 0;
-          return valB - valA; 
+          if (comp !== 0) return sortOption === "size_asc" ? comp : -comp;
         }
+        return (parseFloat(b.colE) || 0) - (parseFloat(a.colE) || 0);
       });
 
       renderTop4(filteredData);
@@ -593,22 +497,19 @@
         const tdName = document.createElement("td");
         tdName.className = "product-name-click";
         tdName.title = "Nhấn để copy tên sản phẩm";
-        tdName.textContent = row.colB;
+        tdName.textContent = row.colB || '';
         tdName.onclick = () => copyToClipboard(row.colB);
 
         const tdNy = document.createElement("td");
         tdNy.style.textAlign = "right";
-        tdNy.style.paddingRight = "4px";
         tdNy.textContent = formatNumber(row.colC);
 
         const tdKm = document.createElement("td");
         tdKm.style.textAlign = "right";
-        tdKm.style.paddingRight = "4px";
         tdKm.textContent = formatNumber(row.colD);
 
         const tdReward = document.createElement("td");
         tdReward.style.textAlign = "right";
-        tdReward.style.paddingRight = "4px";
         tdReward.innerHTML = `<strong style="color: #d32f2f;">${formatNumber(row.colE)}</strong>`;
 
         const tdSize = document.createElement("td");
