@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tra Cứu Thưởng Nóng Theo Shop</title>
+  <title>Tra Cứu Thưởng Model Theo Shop</title>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -171,10 +171,10 @@
 <body>
 
   <div class="container">
-    <h2>Tra Cứu Thưởng Nóng</h2>
+    <h2>Tra Cứu Thưởng Model</h2>
 
     <div class="form-group">
-      <label for="shopSelect">🏪 Chọn Shop:</label>
+      <label for="shopSelect">🏪 Chọn Shop (Tab dữ liệu):</label>
       <select id="shopSelect" onchange="onShopChange()">
         <option value="">Đang tải danh sách Shop...</option>
       </select>
@@ -200,8 +200,8 @@
       <label for="sortSelect">⚡ Sắp xếp bảng kết quả:</label>
       <select id="sortSelect" onchange="displayData()">
         <option value="reward_desc">Thưởng cao nhất (Mặc định)</option>
-        <option value="size_asc">Cột Size (Tăng dần)</option>
-        <option value="size_desc">Cột Size (Giảm dần)</option>
+        <option value="size_asc">Cột Size (Tăng dần / A-Z) + Thưởng cao→thấp</option>
+        <option value="size_desc">Cột Size (Giảm dần / Z-A) + Thưởng cao→thấp</option>
       </select>
     </div>
 
@@ -216,7 +216,7 @@
       <table id="dataTable" style="display:none;">
         <thead>
           <tr>
-            <th>Tên SP</th>
+            <th>Tên SP (Copy Mã)</th>
             <th style="text-align: right;">Giá NY</th>
             <th style="text-align: right;">Giá KM</th>
             <th style="text-align: right;">Thưởng</th>
@@ -229,8 +229,8 @@
   </div>
 
   <script>
-    // ⚠️ THAY ĐƯỜNG DẪN WEB APP APPS SCRIPT CỦA BẠN VÀO ĐÂY
-    const API_URL = "https://script.google.com/macros/s/AKfycbzNq-Q4UKBwIouh_j31vMHrGtbGO4Qmdnv8tsxlJNXjFOHyQ0krpCLIit-_wUnwX3nU/exec";
+    // Điền URL Web App Apps Script của bạn vào đây
+    const API_URL = "https://script.google.com/macros/s/AKfycbzq9DnkLx9p51MowuzYjjoiV3GxdI_0LNM__ewKUKBo3auz89WOaESbexNkBgpgeEwB/exec";
 
     let globalData = [];
     let allGroups = [];
@@ -286,9 +286,9 @@
       if (!text) return;
       navigator.clipboard.writeText(text).then(() => {
         const statusDiv = document.getElementById("status");
-        statusDiv.textContent = `Đã copy: "${text}"`;
+        statusDiv.textContent = `Đã copy Mã SP: "${text}"`;
         statusDiv.style.color = "#2e7d32";
-        setTimeout(() => { statusDiv.textContent = ""; }, 2000);
+        setTimeout(() => { statusDiv.textContent = ""; }, 2500);
       }).catch(err => { console.error('Không thể copy: ', err); });
     }
 
@@ -317,7 +317,7 @@
         .then(data => {
           globalData = data;
           if (globalData.length > 0) {
-            globalData.shift(); // Bỏ qua dòng tiêu đề Google Sheet nếu cần
+            globalData.shift(); 
           }
           extractGroups();
           statusDiv.textContent = "";
@@ -496,9 +496,10 @@
         
         const tdName = document.createElement("td");
         tdName.className = "product-name-click";
-        tdName.title = "Nhấn để copy tên sản phẩm";
+        tdName.title = "Nhấn để copy mã sản phẩm";
         tdName.textContent = row.colB || '';
-        tdName.onclick = () => copyToClipboard(row.colB);
+        // Thay đổi quan trọng: Khi click sẽ copy colA (Mã SP) thay vì tên SP
+        tdName.onclick = () => copyToClipboard(row.colA);
 
         const tdNy = document.createElement("td");
         tdNy.style.textAlign = "right";
