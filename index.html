@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tra Cứu Thưởng Model Theo Shop</title>
+  <title>Tra Cứu Thưởng Nóng Theo Shop</title>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -171,10 +171,10 @@
 <body>
 
   <div class="container">
-    <h2>Tra Cứu Thưởng Model</h2>
+    <h2>Tra Cứu Thưởng Nóng</h2>
 
     <div class="form-group">
-      <label for="shopSelect">🏪 Chọn Shop (Tab dữ liệu):</label>
+      <label for="shopSelect">🏪 Chọn Shop:</label>
       <select id="shopSelect" onchange="onShopChange()">
         <option value="">Đang tải danh sách Shop...</option>
       </select>
@@ -199,9 +199,9 @@
     <div class="form-group" id="sortGroupContainer" style="display:none;">
       <label for="sortSelect">⚡ Sắp xếp bảng kết quả:</label>
       <select id="sortSelect" onchange="displayData()">
-        <option value="reward_desc">Thưởng cao nhất (Mặc định)</option>
-        <option value="size_asc">Cột Size (Tăng dần / A-Z) + Thưởng cao→thấp</option>
-        <option value="size_desc">Cột Size (Giảm dần / Z-A) + Thưởng cao→thấp</option>
+        <option value="reward_desc">Thưởng cao nhất</option>
+        <option value="size_asc">Cột Size (Tăng dần)</option>
+        <option value="size_desc">Cột Size (Giảm dần)</option>
       </select>
     </div>
 
