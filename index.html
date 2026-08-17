@@ -58,6 +58,18 @@
       font-family: 'Google Sans', sans-serif;
     }
     select:focus, input[type="text"]:focus { border-color: var(--primary-color); }
+    
+    /* Cấu trúc 2 vùng sort ngang hàng nhau */
+    .sort-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .sort-col {
+      flex: 1;
+      min-width: 0;
+    }
+
     .group-search-box {
       display: flex;
       align-items: center;
@@ -196,13 +208,24 @@
       <input type="text" id="searchInput" oninput="displayData()" placeholder="Nhập từ khóa...">
     </div>
 
-    <div class="form-group" id="sortGroupContainer" style="display:none;">
-      <label for="sortSelect">⚡ Sắp xếp bảng kết quả:</label>
-      <select id="sortSelect" onchange="displayData()">
-        <option value="reward_desc">Thưởng cao nhất</option>
-        <option value="size_asc">Cột Size (Tăng dần)</option>
-        <option value="size_desc">Cột Size (Giảm dần)</option>
-      </select>
+    <!-- 2 Vùng Sort Ngang Nhau -->
+    <div class="sort-row" id="sortGroupContainer" style="display:none;">
+      <div class="sort-col">
+        <label for="sortSize">↕️ Sắp xếp Size:</label>
+        <select id="sortSize" onchange="displayData()">
+          <option value="none">Mặc định</option>
+          <option value="asc">Size Tăng dần (↑)</option>
+          <option value="desc">Size Giảm dần (↓)</option>
+        </select>
+      </div>
+      <div class="sort-col">
+        <label for="sortPrice">💰 Sắp xếp Giá KM:</label>
+        <select id="sortPrice" onchange="displayData()">
+          <option value="none">Mặc định</option>
+          <option value="asc">Thấp → Cao</option>
+          <option value="desc">Cao → Thấp</option>
+        </select>
+      </div>
     </div>
 
     <div id="top4Container" class="top4-container" style="display:none;">
@@ -229,7 +252,6 @@
   </div>
 
   <script>
-    // Điền URL Web App Apps Script của bạn vào đây
     const API_URL = "https://script.google.com/macros/s/AKfycbzq9DnkLx9p51MowuzYjjoiV3GxdI_0LNM__ewKUKBo3auz89WOaESbexNkBgpgeEwB/exec";
 
     let globalData = [];
@@ -413,9 +435,10 @@
       }
 
       searchGroupDiv.style.display = "block";
-      sortGroupContainer.style.display = "block";
+      sortGroupContainer.style.display = "flex"; // hiển thị flex ngang
       document.getElementById("searchInput").value = "";
-      document.getElementById("sortSelect").value = "reward_desc";
+      document.getElementById("sortSize").value = "none";
+      document.getElementById("sortPrice").value = "none";
 
       displayData();
     }
@@ -452,7 +475,9 @@
     function displayData() {
       const searchInputVal = document.getElementById("searchInput").value;
       const keywords = searchInputVal.split(',').map(k => k.toLowerCase().trim()).filter(k => k !== "");
-      const sortOption = document.getElementById("sortSelect").value;
+      
+      const sortSize = document.getElementById("sortSize").value;
+      const sortPrice = document.getElementById("sortPrice").value;
       
       const tbody = document.getElementById("tableBody");
       const table = document.getElementById("dataTable");
@@ -476,16 +501,33 @@
         return matchGroup && matchSearch;
       });
 
+      // Sắp xếp theo đồng thời cả 2 điều kiện (Size và Giá KM)
       filteredData.sort((a, b) => {
-        if (sortOption === "size_asc" || sortOption === "size_desc") {
+        // 1. Ưu tiên sắp xếp theo Size trước nếu người dùng có chọn
+        if (sortSize !== "none") {
           let sizeA = a.colG ? a.colG.toString().trim().toLowerCase() : "";
           let sizeB = b.colG ? b.colG.toString().trim().toLowerCase() : "";
           let numA = parseFloat(a.colG);
           let numB = parseFloat(b.colG);
-          let comp = (!isNaN(numA) && !isNaN(numB)) ? (numA - numB) : sizeA.localeCompare(sizeB, 'vi', { numeric: true });
+          let compSize = (!isNaN(numA) && !isNaN(numB)) ? (numA - numB) : sizeA.localeCompare(sizeB, 'vi', { numeric: true });
 
-          if (comp !== 0) return sortOption === "size_asc" ? comp : -comp;
+          if (compSize !== 0) {
+            return sortSize === "asc" ? compSize : -compSize;
+          }
         }
+
+        // 2. Tiếp theo sắp xếp theo Giá KM nếu có chọn (hoặc nếu Size bằng nhau)
+        if (sortPrice !== "none") {
+          let kmA = parseFloat(a.colD) || 0;
+          let kmB = parseFloat(b.colD) || 0;
+          let compPrice = kmA - kmB;
+
+          if (compPrice !== 0) {
+            return sortPrice === "asc" ? compPrice : -compPrice;
+          }
+        }
+
+        // 3. Mặc định ưu tiên thưởng cao nhất nếu cả 2 điều kiện trên không thay đổi thứ tự
         return (parseFloat(b.colE) || 0) - (parseFloat(a.colE) || 0);
       });
 
@@ -498,7 +540,6 @@
         tdName.className = "product-name-click";
         tdName.title = "Nhấn để copy mã sản phẩm";
         tdName.textContent = row.colB || '';
-        // Thay đổi quan trọng: Khi click sẽ copy colA (Mã SP) thay vì tên SP
         tdName.onclick = () => copyToClipboard(row.colA);
 
         const tdNy = document.createElement("td");
