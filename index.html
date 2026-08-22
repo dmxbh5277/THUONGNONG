@@ -59,7 +59,28 @@
     }
     select:focus, input[type="text"]:focus { border-color: var(--primary-color); }
     
-    /* Cấu trúc 2 vùng sort ngang hàng nhau */
+    .shop-row {
+      display: flex;
+      gap: 6px;
+    }
+    #refreshBtn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0 12px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      flex-shrink: 0;
+      transition: background-color 0.2s;
+    }
+    #refreshBtn:hover { background-color: #3b7bc8; }
+
+    /* 2 Vùng Sort Ngang Nhau */
     .sort-row {
       display: flex;
       gap: 10px;
@@ -187,9 +208,12 @@
 
     <div class="form-group">
       <label for="shopSelect">🏪 Chọn Shop:</label>
-      <select id="shopSelect" onchange="onShopChange()">
-        <option value="">Đang tải danh sách Shop...</option>
-      </select>
+      <div class="shop-row">
+        <select id="shopSelect" onchange="onShopChange()">
+          <option value="">Đang tải danh sách Shop...</option>
+        </select>
+        <button type="button" id="refreshBtn" onclick="refreshShopData()" title="Lấy dữ liệu mới nhất từ Google Sheet">🔄 Cập nhật</button>
+      </div>
     </div>
 
     <div class="form-group">
@@ -233,7 +257,7 @@
       <div id="top4List" class="top4-grid"></div>
     </div>
 
-    <div id="status">Đang kết nối tới Google Sheet...</div>
+    <div id="status"></div>
 
     <div class="table-responsive">
       <table id="dataTable" style="display:none;">
@@ -289,7 +313,7 @@
           });
 
           statusDiv.textContent = "";
-          loadDataForCurrentShop();
+          loadDataForCurrentShop(false); // Tải ưu tiên từ cache
         })
         .catch(err => {
           console.error(err);
@@ -323,15 +347,34 @@
       document.getElementById("dataTable").style.display = "none";
       document.getElementById("tableBody").innerHTML = "";
       
-      loadDataForCurrentShop();
+      loadDataForCurrentShop(false);
     }
 
-    function loadDataForCurrentShop() {
+    // Tải dữ liệu: Mặc định đọc từ Cache để mở web cực nhanh, forceRefresh = true khi bấm nút Cập nhật
+    function loadDataForCurrentShop(forceRefresh = false) {
       const currentShopTab = document.getElementById("shopSelect").value;
       if (!currentShopTab) return;
 
       const statusDiv = document.getElementById("status");
-      statusDiv.textContent = `Đang tải dữ liệu Shop ${currentShopTab}...`;
+      const cacheKey = "shop_data_" + currentShopTab;
+
+      if (!forceRefresh) {
+        const cachedData = localStorage.getItem(cacheKey);
+        if (cachedData) {
+          try {
+            globalData = JSON.parse(cachedData);
+            extractGroups();
+            statusDiv.textContent = "⚡ Dữ liệu được tải tức thì từ bộ nhớ đệm.";
+            setTimeout(() => { statusDiv.textContent = ""; }, 2000);
+            return;
+          } catch (e) {
+            console.error("Lỗi đọc cache", e);
+          }
+        }
+      }
+
+      // Nếu không có cache hoặc người dùng bấm nút Cập nhật
+      statusDiv.textContent = `Đang cập nhật dữ liệu mới nhất từ Google Sheet...`;
       statusDiv.style.color = "#666";
 
       fetch(API_URL + "?action=getData&sheet=" + encodeURIComponent(currentShopTab))
@@ -341,14 +384,22 @@
           if (globalData.length > 0) {
             globalData.shift(); 
           }
+          // Lưu vào bộ nhớ tạm của máy
+          localStorage.setItem(cacheKey, JSON.stringify(globalData));
           extractGroups();
-          statusDiv.textContent = "";
+          statusDiv.textContent = "✅ Đã cập nhật dữ liệu mới thành công!";
+          statusDiv.style.color = "#2e7d32";
+          setTimeout(() => { statusDiv.textContent = ""; }, 2500);
         })
         .catch(err => {
           console.error(err);
           statusDiv.textContent = "Lỗi tải dữ liệu từ Sheet!";
           statusDiv.style.color = "red";
         });
+    }
+
+    function refreshShopData() {
+      loadDataForCurrentShop(true); // Ép buộc tải mới từ Google Sheet
     }
 
     function extractGroups() {
@@ -435,7 +486,7 @@
       }
 
       searchGroupDiv.style.display = "block";
-      sortGroupContainer.style.display = "flex"; // hiển thị flex ngang
+      sortGroupContainer.style.display = "flex";
       document.getElementById("searchInput").value = "";
       document.getElementById("sortSize").value = "none";
       document.getElementById("sortPrice").value = "none";
@@ -501,9 +552,7 @@
         return matchGroup && matchSearch;
       });
 
-      // Sắp xếp theo đồng thời cả 2 điều kiện (Size và Giá KM)
       filteredData.sort((a, b) => {
-        // 1. Ưu tiên sắp xếp theo Size trước nếu người dùng có chọn
         if (sortSize !== "none") {
           let sizeA = a.colG ? a.colG.toString().trim().toLowerCase() : "";
           let sizeB = b.colG ? b.colG.toString().trim().toLowerCase() : "";
@@ -516,7 +565,6 @@
           }
         }
 
-        // 2. Tiếp theo sắp xếp theo Giá KM nếu có chọn (hoặc nếu Size bằng nhau)
         if (sortPrice !== "none") {
           let kmA = parseFloat(a.colD) || 0;
           let kmB = parseFloat(b.colD) || 0;
@@ -527,7 +575,6 @@
           }
         }
 
-        // 3. Mặc định ưu tiên thưởng cao nhất nếu cả 2 điều kiện trên không thay đổi thứ tự
         return (parseFloat(b.colE) || 0) - (parseFloat(a.colE) || 0);
       });
 
