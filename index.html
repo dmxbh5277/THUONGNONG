@@ -253,7 +253,7 @@
     </div>
 
     <div id="top4Container" class="top4-container" style="display:none;">
-      <div id="top4Title" class="top4-title">🌿 Top Sản Phẩm Thưởng Cao Nhất (Mỗi Hãng 1 SP)</div>
+      <div class="top4-title">🌿 Top 4 Sản Phẩm Thưởng Cao Nhất</div>
       <div id="top4List" class="top4-grid"></div>
     </div>
 
@@ -313,7 +313,7 @@
           });
 
           statusDiv.textContent = "";
-          loadDataForCurrentShop(false);
+          loadDataForCurrentShop(false); // Tải ưu tiên từ cache
         })
         .catch(err => {
           console.error(err);
@@ -350,6 +350,7 @@
       loadDataForCurrentShop(false);
     }
 
+    // Tải dữ liệu: Mặc định đọc từ Cache để mở web cực nhanh, forceRefresh = true khi bấm nút Cập nhật
     function loadDataForCurrentShop(forceRefresh = false) {
       const currentShopTab = document.getElementById("shopSelect").value;
       if (!currentShopTab) return;
@@ -372,6 +373,7 @@
         }
       }
 
+      // Nếu không có cache hoặc người dùng bấm nút Cập nhật
       statusDiv.textContent = `Đang cập nhật dữ liệu mới nhất từ Google Sheet...`;
       statusDiv.style.color = "#666";
 
@@ -382,6 +384,7 @@
           if (globalData.length > 0) {
             globalData.shift(); 
           }
+          // Lưu vào bộ nhớ tạm của máy
           localStorage.setItem(cacheKey, JSON.stringify(globalData));
           extractGroups();
           statusDiv.textContent = "✅ Đã cập nhật dữ liệu mới thành công!";
@@ -396,7 +399,7 @@
     }
 
     function refreshShopData() {
-      loadDataForCurrentShop(true);
+      loadDataForCurrentShop(true); // Ép buộc tải mới từ Google Sheet
     }
 
     function extractGroups() {
@@ -491,42 +494,20 @@
       displayData();
     }
 
-    // Logic mới: Lọc mỗi hãng 1 sản phẩm thưởng cao nhất (tối đa 4 hãng khác nhau)
     function renderTop4(preFilteredData) {
       const container = document.getElementById("top4Container");
       const list = document.getElementById("top4List");
       list.innerHTML = "";
 
-      // 1. Sắp xếp giảm dần theo thưởng nóng trước
       let sorted = [...preFilteredData].sort((a, b) => (parseFloat(b.colE) || 0) - (parseFloat(a.colE) || 0));
+      let top4Items = sorted.slice(0, 4);
 
-      let brandMap = new Map();
-      let topItems = [];
-
-      for (let item of sorted) {
-        let name = item.colB ? item.colB.toString().trim() : "";
-        // Lấy từ đầu tiên của tên sản phẩm làm Hãng
-        let brand = name.split(/\s+/)[0] ? name.split(/\s+/)[0].toUpperCase() : "KHÁC";
-
-        if (!brandMap.has(brand)) {
-          brandMap.set(brand, true);
-          topItems.push(item);
-        }
-
-        // Dừng lại khi đã đủ tối đa 4 hãng
-        if (topItems.length >= 4) {
-          break;
-        }
-      }
-
-      if (topItems.length === 0) {
+      if (top4Items.length === 0) {
         container.style.display = "none";
         return;
       }
 
-      document.getElementById("top4Title").textContent = `🌿 Top Sản Phẩm Thưởng Cao Nhất (${topItems.length} Hãng khác nhau)`;
-
-      topItems.forEach((item, index) => {
+      top4Items.forEach((item, index) => {
         let card = document.createElement("div");
         card.className = "top4-card";
         card.innerHTML = `
