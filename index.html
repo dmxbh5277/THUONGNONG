@@ -97,7 +97,7 @@
       gap: 6px;
       position: relative;
     }
-    #clearGroupBtn {
+    #clearGroupBtn, #clearSearchBtn {
       background-color: #f1f3f4;
       border: 1px solid var(--border-color);
       border-radius: 6px;
@@ -110,7 +110,7 @@
       display: none;
       flex-shrink: 0;
     }
-    #clearGroupBtn:hover { background-color: #e4e6e8; color: #d32f2f; }
+    #clearGroupBtn:hover, #clearSearchBtn:hover { background-color: #e4e6e8; color: #d32f2f; }
     .input-wrapper { position: relative; flex: 1; min-width: 0; }
     .dropdown-list {
       display: none;
@@ -229,7 +229,10 @@
 
     <div class="form-group" id="searchGroup" style="display:none;">
       <label for="searchInput">Tìm kiếm (Tên SP, Size... cách nhau dấu phẩy):</label>
-      <input type="text" id="searchInput" oninput="displayData()" placeholder="Nhập từ khóa...">
+      <div class="group-search-box">
+        <input type="text" id="searchInput" oninput="onSearchInput()" placeholder="Nhập từ khóa...">
+        <button type="button" id="clearSearchBtn" onclick="clearSearchInput()" title="Xóa nhanh">✕</button>
+      </div>
     </div>
 
     <!-- 2 Vùng Sort Ngang Nhau -->
@@ -470,6 +473,19 @@
       document.getElementById("groupSearch").focus();
     }
 
+    function onSearchInput() {
+      const val = document.getElementById("searchInput").value;
+      document.getElementById("clearSearchBtn").style.display = val.length > 0 ? "block" : "none";
+      displayData();
+    }
+
+    function clearSearchInput() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("clearSearchBtn").style.display = "none";
+      displayData();
+      document.getElementById("searchInput").focus();
+    }
+
     function onGroupChange() {
       const searchGroupDiv = document.getElementById("searchGroup");
       const sortGroupContainer = document.getElementById("sortGroupContainer");
@@ -488,6 +504,7 @@
       searchGroupDiv.style.display = "block";
       sortGroupContainer.style.display = "flex";
       document.getElementById("searchInput").value = "";
+      document.getElementById("clearSearchBtn").style.display = "none";
       document.getElementById("sortSize").value = "none";
       document.getElementById("sortPrice").value = "none";
 
