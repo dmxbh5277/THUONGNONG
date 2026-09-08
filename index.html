@@ -2,8 +2,10 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Tra Cứu Thưởng Nóng Theo Shop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -14,13 +16,16 @@
       --border-color: #E2E8F0;
       --accent-color: #2E7D32;
     }
-    *, *:before, *:after { box-sizing: border-box; }
+    *, *:before, *:after { 
+      box-sizing: border-box; 
+      -webkit-tap-highlight-color: transparent;
+    }
     body {
-      font-family: 'Google Sans', sans-serif;
+      font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
       margin: 0;
-      padding: 8px;
+      padding: env(safe-area-inset-top, 8px) env(safe-area-inset-right, 8px) env(safe-area-inset-bottom, 8px) env(safe-area-inset-left, 8px);
       width: 100%;
       overflow-x: hidden;
     }
@@ -55,14 +60,12 @@
       font-size: 14px;
       outline: none;
       background-color: #fff;
-      font-family: 'Google Sans', sans-serif;
+      font-family: inherit;
+      -webkit-appearance: none;
     }
     select:focus, input[type="text"]:focus { border-color: var(--primary-color); }
     
-    .shop-row {
-      display: flex;
-      gap: 6px;
-    }
+    .shop-row { display: flex; gap: 6px; }
     #refreshBtn {
       background-color: var(--primary-color);
       color: white;
@@ -76,27 +79,14 @@
       gap: 4px;
       font-size: 13px;
       flex-shrink: 0;
-      transition: background-color 0.2s;
+      transition: opacity 0.1s;
     }
-    #refreshBtn:hover { background-color: #3b7bc8; }
+    #refreshBtn:active { opacity: 0.7; }
 
-    /* 2 Vùng Sort Ngang Nhau */
-    .sort-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    .sort-col {
-      flex: 1;
-      min-width: 0;
-    }
+    .sort-row { display: flex; gap: 10px; margin-bottom: 10px; }
+    .sort-col { flex: 1; min-width: 0; }
 
-    .group-search-box {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      position: relative;
-    }
+    .group-search-box { display: flex; align-items: center; gap: 6px; position: relative; }
     #clearGroupBtn, #clearSearchBtn {
       background-color: #f1f3f4;
       border: 1px solid var(--border-color);
@@ -110,7 +100,6 @@
       display: none;
       flex-shrink: 0;
     }
-    #clearGroupBtn:hover, #clearSearchBtn:hover { background-color: #e4e6e8; color: #d32f2f; }
     .input-wrapper { position: relative; flex: 1; min-width: 0; }
     .dropdown-list {
       display: none;
@@ -123,6 +112,7 @@
       border-radius: 6px;
       max-height: 180px;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       z-index: 1000;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       margin-top: 2px;
@@ -133,11 +123,8 @@
       cursor: pointer;
       border-bottom: 1px solid #f5f5f5;
     }
-    .dropdown-item:hover, .dropdown-item.active {
-      background-color: #f1f4f8;
-      color: var(--primary-color);
-      font-weight: 500;
-    }
+    .dropdown-item:active { background-color: #f1f4f8; color: var(--primary-color); }
+    
     .top4-container {
       background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
       border: 1px solid #a5d6a7;
@@ -152,11 +139,7 @@
       margin-bottom: 6px;
       text-align: center;
     }
-    .top4-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-    }
+    .top4-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
     .top4-card {
       background: white;
       padding: 6px 8px;
@@ -166,35 +149,21 @@
       align-items: flex-start;
       gap: 6px;
     }
-    .top4-rank {
-      font-weight: bold;
-      color: #2e7d32;
-      font-size: 12px;
-      flex-shrink: 0;
-    }
+    .top4-rank { font-weight: bold; color: #2e7d32; font-size: 12px; flex-shrink: 0; }
     .top4-info { flex: 1; min-width: 0; }
-    .top4-name {
-      font-size: 11px;
-      font-weight: 500;
-      color: #333;
-      word-break: break-word;
-      line-height: 1.3;
+    .top4-name { font-size: 11px; font-weight: 500; color: #333; word-break: break-word; line-height: 1.3; }
+    .top4-val { font-size: 11px; color: #d32f2f; font-weight: bold; margin-top: 2px; }
+    
+    .table-responsive { 
+      width: 100%; 
+      overflow-x: auto; 
+      -webkit-overflow-scrolling: touch;
+      margin-top: 6px; 
     }
-    .top4-val {
-      font-size: 11px;
-      color: #d32f2f;
-      font-weight: bold;
-      margin-top: 2px;
-    }
-    .table-responsive { width: 100%; overflow-x: auto; margin-top: 6px; }
     table { width: 100%; border-collapse: collapse; }
-    th, td {
-      padding: 8px 6px;
-      text-align: left;
-      font-size: 12px;
-    }
-    .product-name-click { cursor: pointer; transition: color 0.2s; }
-    .product-name-click:hover { color: var(--primary-color); text-decoration: underline; }
+    th, td { padding: 8px 6px; text-align: left; font-size: 12px; }
+    .product-name-click { cursor: pointer; }
+    .product-name-click:active { color: var(--primary-color); }
     th { background-color: #F1F4F8; font-weight: 600; color: #444; border-bottom: 1px solid var(--border-color); }
     td { border-bottom: 1px solid #f0f0f0; }
     tr:nth-child(even) { background-color: #FAFAFA; }
@@ -235,7 +204,6 @@
       </div>
     </div>
 
-    <!-- 2 Vùng Sort Ngang Nhau -->
     <div class="sort-row" id="sortGroupContainer" style="display:none;">
       <div class="sort-col">
         <label for="sortSize">↕️ Sắp xếp Size:</label>
@@ -286,7 +254,7 @@
     let selectedGroup = "";
 
     window.onload = function() {
-      fetchShops();
+      initApp();
       document.addEventListener('click', function(e) {
         if (!e.target.closest('.group-search-box')) {
           document.getElementById('groupDropdown').style.display = 'none';
@@ -294,29 +262,58 @@
       });
     };
 
-    function fetchShops() {
+    // Khởi tạo ứng dụng theo cơ chế Cache-First
+    function initApp() {
+      const cachedShops = localStorage.getItem("cached_shop_list");
+      const lastSelectedShop = localStorage.getItem("last_selected_shop");
+
+      if (cachedShops) {
+        // LẦN DÙNG TIẾP THEO: Render danh sách Shop từ bộ nhớ máy ngay lập tức (0ms delay)
+        const shopList = JSON.parse(cachedShops);
+        renderShopDropdown(shopList, lastSelectedShop);
+        
+        // Load dữ liệu Shop đã lưu
+        if (lastSelectedShop) {
+          loadDataForCurrentShop(false);
+        }
+      } else {
+        // LẦN ĐẦU TIÊN MỞ APP: Gọi gộp API lấy cả danh sách Shop và Dữ liệu Shop mặc định
+        fetchInitialData();
+      }
+    }
+
+    // Gọi gộp API 1 lần duy nhất cho lần khởi chạy đầu tiên
+    function fetchInitialData() {
       const statusDiv = document.getElementById("status");
-      fetch(API_URL + "?action=getSheets")
-        .then(response => response.json())
-        .then(sheetNames => {
-          const shopSelect = document.getElementById("shopSelect");
-          shopSelect.innerHTML = "";
+      statusDiv.textContent = "⚡ Đang khởi tạo ứng dụng lần đầu...";
+
+      fetch(API_URL + "?action=getInitialData")
+        .then(res => res.json())
+        .then(resData => {
+          if (resData.error) throw new Error(resData.error);
+
+          const shopList = resData.sheets || [];
+          const currentShop = resData.currentSheet || "";
           
-          if (!sheetNames || sheetNames.length === 0) {
-            shopSelect.innerHTML = '<option value="">Không tìm thấy Tab nào</option>';
-            statusDiv.textContent = "Không tìm thấy dữ liệu Tab.";
+          if (shopList.length === 0) {
+            statusDiv.textContent = "Không tìm thấy dữ liệu Shop.";
             return;
           }
 
-          sheetNames.forEach(name => {
-            const option = document.createElement("option");
-            option.value = name;
-            option.textContent = "Shop " + name;
-            shopSelect.appendChild(option);
-          });
+          // Lưu Cache Danh sách Shop và Shop được chọn
+          localStorage.setItem("cached_shop_list", JSON.stringify(shopList));
+          localStorage.setItem("last_selected_shop", currentShop);
 
-          statusDiv.textContent = "";
-          loadDataForCurrentShop(false); // Tải ưu tiên từ cache
+          // Lưu Cache dữ liệu của Shop hiện tại
+          localStorage.setItem("shop_data_" + currentShop, JSON.stringify(resData.data || []));
+
+          renderShopDropdown(shopList, currentShop);
+          
+          globalData = resData.data || [];
+          extractGroups();
+
+          statusDiv.textContent = "✅ Đã tải dữ liệu thành công!";
+          setTimeout(() => { statusDiv.textContent = ""; }, 2000);
         })
         .catch(err => {
           console.error(err);
@@ -325,23 +322,26 @@
         });
     }
 
-    function formatNumber(num) {
-      let n = parseFloat(num);
-      if (isNaN(n)) return num;
-      return n.toLocaleString('vi-VN');
-    }
+    function renderShopDropdown(sheetNames, selectedShop) {
+      const shopSelect = document.getElementById("shopSelect");
+      shopSelect.innerHTML = "";
 
-    function copyToClipboard(text) {
-      if (!text) return;
-      navigator.clipboard.writeText(text).then(() => {
-        const statusDiv = document.getElementById("status");
-        statusDiv.textContent = `Đã copy Mã SP: "${text}"`;
-        statusDiv.style.color = "#2e7d32";
-        setTimeout(() => { statusDiv.textContent = ""; }, 2500);
-      }).catch(err => { console.error('Không thể copy: ', err); });
+      sheetNames.forEach(name => {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = "Shop " + name;
+        if (name === selectedShop) option.selected = true;
+        shopSelect.appendChild(option);
+      });
     }
 
     function onShopChange() {
+      const shopSelect = document.getElementById("shopSelect");
+      const currentShop = shopSelect.value;
+      
+      // Lưu lại Shop đang chọn vào thiết bị
+      localStorage.setItem("last_selected_shop", currentShop);
+
       selectedGroup = "";
       document.getElementById("groupSearch").value = "";
       document.getElementById("searchGroup").style.display = "none";
@@ -353,7 +353,7 @@
       loadDataForCurrentShop(false);
     }
 
-    // Tải dữ liệu: Mặc định đọc từ Cache để mở web cực nhanh, forceRefresh = true khi bấm nút Cập nhật
+    // Đọc Dữ Liệu: Luôn ưu tiên Cache từ máy. Chỉ tải lại từ Server khi forceRefresh = true
     function loadDataForCurrentShop(forceRefresh = false) {
       const currentShopTab = document.getElementById("shopSelect").value;
       if (!currentShopTab) return;
@@ -367,8 +367,8 @@
           try {
             globalData = JSON.parse(cachedData);
             extractGroups();
-            statusDiv.textContent = "⚡ Dữ liệu được tải tức thì từ bộ nhớ đệm.";
-            setTimeout(() => { statusDiv.textContent = ""; }, 2000);
+            statusDiv.textContent = "⚡ Dữ liệu tải từ bộ nhớ máy.";
+            setTimeout(() => { statusDiv.textContent = ""; }, 1500);
             return;
           } catch (e) {
             console.error("Lỗi đọc cache", e);
@@ -376,33 +376,91 @@
         }
       }
 
-      // Nếu không có cache hoặc người dùng bấm nút Cập nhật
-      statusDiv.textContent = `Đang cập nhật dữ liệu mới nhất từ Google Sheet...`;
+      // Khi người dùng bấm Cập Nhật
+      statusDiv.textContent = `Đang cập nhật dữ liệu Shop ${currentShopTab}...`;
       statusDiv.style.color = "#666";
 
       fetch(API_URL + "?action=getData&sheet=" + encodeURIComponent(currentShopTab))
         .then(response => response.json())
         .then(data => {
           globalData = data;
-          if (globalData.length > 0) {
-            globalData.shift(); 
-          }
-          // Lưu vào bộ nhớ tạm của máy
           localStorage.setItem(cacheKey, JSON.stringify(globalData));
           extractGroups();
           statusDiv.textContent = "✅ Đã cập nhật dữ liệu mới thành công!";
           statusDiv.style.color = "#2e7d32";
-          setTimeout(() => { statusDiv.textContent = ""; }, 2500);
+          setTimeout(() => { statusDiv.textContent = ""; }, 2000);
         })
         .catch(err => {
           console.error(err);
-          statusDiv.textContent = "Lỗi tải dữ liệu từ Sheet!";
+          statusDiv.textContent = "Lỗi tải dữ liệu!";
           statusDiv.style.color = "red";
         });
     }
 
     function refreshShopData() {
-      loadDataForCurrentShop(true); // Ép buộc tải mới từ Google Sheet
+      const currentShopTab = document.getElementById("shopSelect").value;
+      const statusDiv = document.getElementById("status");
+      statusDiv.textContent = "Đang làm mới danh sách Shop và Dữ liệu...";
+
+      // Làm mới cả Danh sách Shop lẫn Dữ liệu của Shop hiện tại
+      fetch(API_URL + "?action=getInitialData&sheet=" + encodeURIComponent(currentShopTab))
+        .then(res => res.json())
+        .then(resData => {
+          if (resData.sheets) {
+            localStorage.setItem("cached_shop_list", JSON.stringify(resData.sheets));
+            renderShopDropdown(resData.sheets, currentShopTab);
+          }
+          globalData = resData.data || [];
+          localStorage.setItem("shop_data_" + currentShopTab, JSON.stringify(globalData));
+          extractGroups();
+
+          statusDiv.textContent = "✅ Đã cập nhật toàn bộ dữ liệu mới!";
+          statusDiv.style.color = "#2e7d32";
+          setTimeout(() => { statusDiv.textContent = ""; }, 2000);
+        })
+        .catch(err => {
+          console.error(err);
+          statusDiv.textContent = "Lỗi cập nhật!";
+          statusDiv.style.color = "red";
+        });
+    }
+
+    function formatNumber(num) {
+      let n = parseFloat(num);
+      if (isNaN(n)) return num;
+      return n.toLocaleString('vi-VN');
+    }
+
+    function copyToClipboard(text) {
+      if (!text) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showCopyStatus(text)).catch(() => fallbackCopy(text));
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showCopyStatus(text);
+      } catch (err) {
+        console.error('Không thể copy', err);
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function showCopyStatus(text) {
+      const statusDiv = document.getElementById("status");
+      statusDiv.textContent = `Đã copy Mã SP: "${text}"`;
+      statusDiv.style.color = "#2e7d32";
+      setTimeout(() => { statusDiv.textContent = ""; }, 2500);
     }
 
     function extractGroups() {
@@ -424,13 +482,15 @@
         return;
       }
 
+      const fragment = document.createDocumentFragment();
       groups.forEach(group => {
         const item = document.createElement("div");
         item.className = "dropdown-item";
         item.textContent = group;
         item.onclick = function() { selectGroup(group); };
-        dropdown.appendChild(item);
+        fragment.appendChild(item);
       });
+      dropdown.appendChild(fragment);
     }
 
     function toggleGroupDropdown() {
@@ -524,6 +584,7 @@
         return;
       }
 
+      const fragment = document.createDocumentFragment();
       top4Items.forEach((item, index) => {
         let card = document.createElement("div");
         card.className = "top4-card";
@@ -534,9 +595,9 @@
             <div class="top4-val">${formatNumber(item.colE)}</div>
           </div>
         `;
-        list.appendChild(card);
+        fragment.appendChild(card);
       });
-
+      list.appendChild(fragment);
       container.style.display = "block";
     }
 
@@ -597,6 +658,7 @@
 
       renderTop4(filteredData);
 
+      const fragment = document.createDocumentFragment();
       filteredData.forEach(row => {
         const tr = document.createElement("tr");
         
@@ -628,8 +690,10 @@
         tr.appendChild(tdReward);
         tr.appendChild(tdSize);
 
-        tbody.appendChild(tr);
+        fragment.appendChild(tr);
       });
+
+      tbody.appendChild(fragment);
     }
   </script>
 </body>
