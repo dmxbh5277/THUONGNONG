@@ -262,27 +262,22 @@
       });
     };
 
-    // Khởi tạo ứng dụng theo cơ chế Cache-First
     function initApp() {
       const cachedShops = localStorage.getItem("cached_shop_list");
       const lastSelectedShop = localStorage.getItem("last_selected_shop");
 
       if (cachedShops) {
-        // LẦN DÙNG TIẾP THEO: Render danh sách Shop từ bộ nhớ máy ngay lập tức (0ms delay)
         const shopList = JSON.parse(cachedShops);
         renderShopDropdown(shopList, lastSelectedShop);
         
-        // Load dữ liệu Shop đã lưu
         if (lastSelectedShop) {
           loadDataForCurrentShop(false);
         }
       } else {
-        // LẦN ĐẦU TIÊN MỞ APP: Gọi gộp API lấy cả danh sách Shop và Dữ liệu Shop mặc định
         fetchInitialData();
       }
     }
 
-    // Gọi gộp API 1 lần duy nhất cho lần khởi chạy đầu tiên
     function fetchInitialData() {
       const statusDiv = document.getElementById("status");
       statusDiv.textContent = "⚡ Đang khởi tạo ứng dụng lần đầu...";
@@ -300,11 +295,8 @@
             return;
           }
 
-          // Lưu Cache Danh sách Shop và Shop được chọn
           localStorage.setItem("cached_shop_list", JSON.stringify(shopList));
           localStorage.setItem("last_selected_shop", currentShop);
-
-          // Lưu Cache dữ liệu của Shop hiện tại
           localStorage.setItem("shop_data_" + currentShop, JSON.stringify(resData.data || []));
 
           renderShopDropdown(shopList, currentShop);
@@ -339,7 +331,6 @@
       const shopSelect = document.getElementById("shopSelect");
       const currentShop = shopSelect.value;
       
-      // Lưu lại Shop đang chọn vào thiết bị
       localStorage.setItem("last_selected_shop", currentShop);
 
       selectedGroup = "";
@@ -353,7 +344,6 @@
       loadDataForCurrentShop(false);
     }
 
-    // Đọc Dữ Liệu: Luôn ưu tiên Cache từ máy. Chỉ tải lại từ Server khi forceRefresh = true
     function loadDataForCurrentShop(forceRefresh = false) {
       const currentShopTab = document.getElementById("shopSelect").value;
       if (!currentShopTab) return;
@@ -376,7 +366,6 @@
         }
       }
 
-      // Khi người dùng bấm Cập Nhật
       statusDiv.textContent = `Đang cập nhật dữ liệu Shop ${currentShopTab}...`;
       statusDiv.style.color = "#666";
 
@@ -402,7 +391,6 @@
       const statusDiv = document.getElementById("status");
       statusDiv.textContent = "Đang làm mới danh sách Shop và Dữ liệu...";
 
-      // Làm mới cả Danh sách Shop lẫn Dữ liệu của Shop hiện tại
       fetch(API_URL + "?action=getInitialData&sheet=" + encodeURIComponent(currentShopTab))
         .then(res => res.json())
         .then(resData => {
@@ -588,10 +576,17 @@
       top4Items.forEach((item, index) => {
         let card = document.createElement("div");
         card.className = "top4-card";
+        
+        // Đồng thời hỗ trợ hiển thị màu chữ trong Top 4 nếu có
+        let nameStyle = "";
+        if (item.colBColor && item.colBColor !== '#000000' && item.colBColor !== '#000') {
+          nameStyle = `style="color: ${item.colBColor};"`;
+        }
+
         card.innerHTML = `
           <div class="top4-rank">#${index + 1}</div>
           <div class="top4-info">
-            <div class="top4-name">${item.colB || '---'}</div>
+            <div class="top4-name" ${nameStyle}>${item.colB || '---'}</div>
             <div class="top4-val">${formatNumber(item.colE)}</div>
           </div>
         `;
@@ -666,6 +661,12 @@
         tdName.className = "product-name-click";
         tdName.title = "Nhấn để copy mã sản phẩm";
         tdName.textContent = row.colB || '';
+        
+        // Ứng dụng màu chữ từ Sheet nếu có màu tùy chỉnh (vd: màu đỏ, xanh...)
+        if (row.colBColor && row.colBColor !== '#000000' && row.colBColor !== '#000') {
+          tdName.style.color = row.colBColor;
+        }
+
         tdName.onclick = () => copyToClipboard(row.colA);
 
         const tdNy = document.createElement("td");
