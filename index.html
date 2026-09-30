@@ -232,14 +232,8 @@
 
     <div class="table-responsive">
       <table id="dataTable" style="display:none;">
-        <thead>
-          <tr>
-            <th>Tên SP (Copy Mã)</th>
-            <th style="text-align: right;">Giá NY</th>
-            <th style="text-align: right;">Giá KM</th>
-            <th style="text-align: right;">Thưởng</th>
-            <th style="text-align: center;">Size</th>
-          </tr>
+        <thead id="tableHeader">
+          <!-- Hàng tiêu đề động sẽ được JavaScript sinh ra tự động -->
         </thead>
         <tbody id="tableBody"></tbody>
       </table>
@@ -250,6 +244,7 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbzq9DnkLx9p51MowuzYjjoiV3GxdI_0LNM__ewKUKBo3auz89WOaESbexNkBgpgeEwB/exec";
 
     let globalData = [];
+    let globalHeaders = []; // Biến lưu mảng tiêu đề của Sheet hiện tại
     let allGroups = [];
     let selectedGroup = "";
 
@@ -278,6 +273,19 @@
       }
     }
 
+    function processIncomingData(resDataPayload) {
+      if (resDataPayload && resDataPayload.rows) {
+        globalData = resDataPayload.rows || [];
+        globalHeaders = resDataPayload.headers || [];
+      } else if (Array.isArray(resDataPayload)) {
+        globalData = resDataPayload;
+        globalHeaders = [];
+      } else {
+        globalData = [];
+        globalHeaders = [];
+      }
+    }
+
     function fetchInitialData() {
       const statusDiv = document.getElementById("status");
       statusDiv.textContent = "⚡ Đang khởi tạo ứng dụng lần đầu...";
@@ -297,11 +305,14 @@
 
           localStorage.setItem("cached_shop_list", JSON.stringify(shopList));
           localStorage.setItem("last_selected_shop", currentShop);
-          localStorage.setItem("shop_data_" + currentShop, JSON.stringify(resData.data || []));
+          
+          processIncomingData(resData.data);
+          localStorage.setItem("shop_data_" + currentShop, JSON.stringify({
+            headers: globalHeaders,
+            rows: globalData
+          }));
 
           renderShopDropdown(shopList, currentShop);
-          
-          globalData = resData.data || [];
           extractGroups();
 
           statusDiv.textContent = "✅ Đã tải dữ liệu thành công!";
@@ -355,7 +366,8 @@
         const cachedData = localStorage.getItem(cacheKey);
         if (cachedData) {
           try {
-            globalData = JSON.parse(cachedData);
+            const parsedCache = JSON.parse(cachedData);
+            processIncomingData(parsedCache);
             extractGroups();
             statusDiv.textContent = "⚡ Dữ liệu tải từ bộ nhớ máy.";
             setTimeout(() => { statusDiv.textContent = ""; }, 1500);
@@ -372,8 +384,11 @@
       fetch(API_URL + "?action=getData&sheet=" + encodeURIComponent(currentShopTab))
         .then(response => response.json())
         .then(data => {
-          globalData = data;
-          localStorage.setItem(cacheKey, JSON.stringify(globalData));
+          processIncomingData(data);
+          localStorage.setItem(cacheKey, JSON.stringify({
+            headers: globalHeaders,
+            rows: globalData
+          }));
           extractGroups();
           statusDiv.textContent = "✅ Đã cập nhật dữ liệu mới thành công!";
           statusDiv.style.color = "#2e7d32";
@@ -398,8 +413,12 @@
             localStorage.setItem("cached_shop_list", JSON.stringify(resData.sheets));
             renderShopDropdown(resData.sheets, currentShopTab);
           }
-          globalData = resData.data || [];
-          localStorage.setItem("shop_data_" + currentShopTab, JSON.stringify(globalData));
+          
+          processIncomingData(resData.data);
+          localStorage.setItem("shop_data_" + currentShopTab, JSON.stringify({
+            headers: globalHeaders,
+            rows: globalData
+          }));
           extractGroups();
 
           statusDiv.textContent = "✅ Đã cập nhật toàn bộ dữ liệu mới!";
@@ -413,10 +432,14 @@
         });
     }
 
-    function formatNumber(num) {
-      let n = parseFloat(num);
-      if (isNaN(n)) return num;
-      return n.toLocaleString('vi-VN');
+    // Hàm chuyển đổi chuỗi định dạng từ Sheet sang dạng số thuần để phục vụ việc Tính toán & Sắp xếp
+    function parseValueToNumber(val) {
+      if (typeof val === 'number') return val;
+      if (!val) return 0;
+      // LoạI bỏ tất cả ký tự không phải số hoặc dấu chấm/phẩy decimal
+      let cleanStr = val.toString().replace(/[^0-9,-]/g, '').replace(',', '.');
+      let num = parseFloat(cleanStr);
+      return isNaN(num) ? 0 : num;
     }
 
     function copyToClipboard(text) {
@@ -564,7 +587,7 @@
       const list = document.getElementById("top4List");
       list.innerHTML = "";
 
-      let sorted = [...preFilteredData].sort((a, b) => (parseFloat(b.colE) || 0) - (parseFloat(a.colE) || 0));
+      let sorted = [...preFilteredData].sort((a, b) => parseValueToNumber(b.colE) - parseValueToNumber(a.colE));
       let top4Items = sorted.slice(0, 4);
 
       if (top4Items.length === 0) {
@@ -577,7 +600,6 @@
         let card = document.createElement("div");
         card.className = "top4-card";
         
-        // Đồng thời hỗ trợ hiển thị màu chữ trong Top 4 nếu có
         let nameStyle = "";
         if (item.colBColor && item.colBColor !== '#000000' && item.colBColor !== '#000') {
           nameStyle = `style="color: ${item.colBColor};"`;
@@ -587,13 +609,49 @@
           <div class="top4-rank">#${index + 1}</div>
           <div class="top4-info">
             <div class="top4-name" ${nameStyle}>${item.colB || '---'}</div>
-            <div class="top4-val">${formatNumber(item.colE)}</div>
+            <div class="top4-val">${item.colE || '0'}</div>
           </div>
         `;
         fragment.appendChild(card);
       });
       list.appendChild(fragment);
       container.style.display = "block";
+    }
+
+    // Hàm render Tiêu đề động tự động điều chỉnh theo tiêu đề từng Sheet
+    function renderTableHeader() {
+      const thead = document.getElementById("tableHeader");
+      thead.innerHTML = "";
+
+      const defaultHeaders = [
+        'Tên SP (Copy Mã)', 
+        'Giá NY', 
+        'Giá KM', 
+        'Thưởng', 
+        'Size'
+      ];
+
+      const headersToRender = (globalHeaders && globalHeaders.length >= 7) ? [
+        `${globalHeaders[1] || 'Tên SP'} (Copy ${globalHeaders[0] || 'Mã'})`,
+        globalHeaders[2] || 'Giá NY',
+        globalHeaders[3] || 'Giá KM',
+        globalHeaders[4] || 'Thưởng',
+        globalHeaders[6] || 'Size'
+      ] : defaultHeaders;
+
+      const tr = document.createElement("tr");
+
+      headersToRender.forEach((text, index) => {
+        const th = document.createElement("th");
+        th.textContent = text;
+        
+        if (index === 0) th.style.textAlign = "left";
+        else th.style.textAlign = "right";
+
+        tr.appendChild(th);
+      });
+
+      thead.appendChild(tr);
     }
 
     function displayData() {
@@ -616,6 +674,9 @@
 
       table.style.display = "table";
 
+      // Render hàng tiêu đề động tương ứng với Sheet vừa chọn
+      renderTableHeader();
+
       let filteredData = globalData.filter(row => {
         let groupVal = row.colF ? row.colF.toString().trim() : "";
         let matchGroup = groupVal === selectedGroup;
@@ -627,11 +688,9 @@
 
       filteredData.sort((a, b) => {
         if (sortSize !== "none") {
-          let sizeA = a.colG ? a.colG.toString().trim().toLowerCase() : "";
-          let sizeB = b.colG ? b.colG.toString().trim().toLowerCase() : "";
-          let numA = parseFloat(a.colG);
-          let numB = parseFloat(b.colG);
-          let compSize = (!isNaN(numA) && !isNaN(numB)) ? (numA - numB) : sizeA.localeCompare(sizeB, 'vi', { numeric: true });
+          let numA = parseValueToNumber(a.colG);
+          let numB = parseValueToNumber(b.colG);
+          let compSize = (numA && numB) ? (numA - numB) : a.colG.toString().localeCompare(b.colG.toString(), 'vi', { numeric: true });
 
           if (compSize !== 0) {
             return sortSize === "asc" ? compSize : -compSize;
@@ -639,8 +698,8 @@
         }
 
         if (sortPrice !== "none") {
-          let kmA = parseFloat(a.colD) || 0;
-          let kmB = parseFloat(b.colD) || 0;
+          let kmA = parseValueToNumber(a.colD);
+          let kmB = parseValueToNumber(b.colD);
           let compPrice = kmA - kmB;
 
           if (compPrice !== 0) {
@@ -648,7 +707,7 @@
           }
         }
 
-        return (parseFloat(b.colE) || 0) - (parseFloat(a.colE) || 0);
+        return parseValueToNumber(b.colE) - parseValueToNumber(a.colE);
       });
 
       renderTop4(filteredData);
@@ -662,7 +721,6 @@
         tdName.title = "Nhấn để copy mã sản phẩm";
         tdName.textContent = row.colB || '';
         
-        // Ứng dụng màu chữ từ Sheet nếu có màu tùy chỉnh (vd: màu đỏ, xanh...)
         if (row.colBColor && row.colBColor !== '#000000' && row.colBColor !== '#000') {
           tdName.style.color = row.colBColor;
         }
@@ -671,19 +729,19 @@
 
         const tdNy = document.createElement("td");
         tdNy.style.textAlign = "right";
-        tdNy.textContent = formatNumber(row.colC);
+        tdNy.textContent = row.colC || '0'; // Hiển thị trực tiếp định dạng chuỗi từ Sheet
 
         const tdKm = document.createElement("td");
         tdKm.style.textAlign = "right";
-        tdKm.textContent = formatNumber(row.colD);
+        tdKm.textContent = row.colD || '0'; // Hiển thị trực tiếp định dạng chuỗi từ Sheet
 
         const tdReward = document.createElement("td");
         tdReward.style.textAlign = "right";
-        tdReward.innerHTML = `<strong style="color: #d32f2f;">${formatNumber(row.colE)}</strong>`;
+        tdReward.innerHTML = `<strong style="color: #d32f2f;">${row.colE || '0'}</strong>`; // Hiển thị trực tiếp định dạng chuỗi từ Sheet
 
         const tdSize = document.createElement("td");
-        tdSize.style.textAlign = "center";
-        tdSize.textContent = row.colG || '---';
+        tdSize.style.textAlign = "right";
+        tdSize.textContent = row.colG || '---'; // Hiển thị trực tiếp định dạng chuỗi từ Sheet
 
         tr.appendChild(tdName);
         tr.appendChild(tdNy);
