@@ -71,6 +71,71 @@ body{padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-rig
 @media(max-width:359px){.brand-caption,.brand-divider{display:none}.top4-badge{display:none}.empty-hint i{display:none}.empty-hint{gap:4px}.sort-row{flex-direction:column}.top4-card{flex-direction:column}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
+/* Compact layout: all five data columns fit the phone viewport. */
+@media (max-width: 820px) {
+  body { padding: max(6px, env(safe-area-inset-top)) max(6px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(6px, env(safe-area-inset-left)); }
+  .container { padding: 0 8px; border-radius: 14px; grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .container > * { grid-column: 1 / -1; }
+  .app-header { order: 0; margin: -1px -9px 0; padding: 10px 12px; border-radius: 14px 14px 0 0; }
+  .header-top { gap: 8px; }
+  .brand { font-size: 10px; letter-spacing: .7px; gap: 7px; }
+  .brand-icon { width: 27px; height: 27px; border-radius: 8px; }
+  .brand-icon svg { width: 17px; height: 17px; }
+  .brand-caption { font-size: 8px; letter-spacing: .4px; }
+  .brand-divider { padding: 0 6px; }
+  .hero-content, .header-tag, .section-heading { display: none; }
+  .container > .shop-field { order: 2; grid-column: 1 / -1; margin-top: 10px; }
+  .container > .group-field { order: 3; grid-column: 1 / -1; }
+  #searchGroup { order: 4; }
+  .form-group { margin-bottom: 9px; }
+  label { margin-bottom: 4px; font-size: 10px; line-height: 1.45; }
+  .shop-row, .group-search-box { gap: 6px; }
+  select, input[type="text"] { min-height: 44px; padding: 9px 10px; border-radius: 8px; font-size: 16px; line-height: 24px; }
+  select { padding-right: 29px; background-position: right 9px center; }
+  #refreshBtn { min-height: 44px; border-radius: 8px; padding: 0 12px; font-size: 11px; gap: 5px; }
+  #refreshBtn svg { width: 15px; height: 15px; }
+  #clearGroupBtn, #clearSearchBtn { min-height: 44px; width: 44px; border-radius: 8px; }
+  .dropdown-list { margin-top: 4px; border-radius: 9px; max-height: 230px; }
+  .sort-row { order: 5; flex-direction: row; gap: 8px; padding: 8px; margin-bottom: 10px; border-radius: 9px; }
+  .sort-col label { font-size: 9px; min-height: 13px; margin-bottom: 3px; }
+  .sort-col select { min-height: 44px; padding: 8px 23px 8px 8px; font-size: 12px; border-radius: 7px; }
+  #status { order: 6; font-size: 10px; }
+  #status:not(:empty) { margin-bottom: 8px; padding: 7px 8px; border-radius: 7px; }
+  .table-responsive { order: 7; width: 100%; min-width: 0; margin: 0 0 12px; border-radius: 9px; }
+  .results-heading { padding: 9px 7px; gap: 5px; }
+  .results-heading h3 { font-size: 12px; }
+  .results-heading p { margin-top: 2px; font-size: 9px; max-width: none; }
+  .table-hint { display: none; }
+  #dataTable { width: 100%; min-width: 0; table-layout: fixed; }
+  #dataTable th, #dataTable td { padding: 8px 3px; font-size: clamp(9px, 2.85vw, 12px); line-height: 1.55; letter-spacing: 0; white-space: normal; overflow-wrap: anywhere; word-break: normal; }
+  #dataTable th { font-size: clamp(9px, 2.4vw, 11px); padding-top: 7px; padding-bottom: 7px; }
+  #dataTable th:nth-child(1) { width: 30%; }
+  #dataTable th:nth-child(2), #dataTable th:nth-child(3) { width: 21%; }
+  #dataTable th:nth-child(4) { width: 18%; }
+  #dataTable th:nth-child(5) { width: 10%; }
+  #dataTable .product-name-click { font-size: clamp(10px, 2.9vw, 12px); line-height: 1.6; }
+  #dataTable td:nth-child(4) strong { max-width: 100%; padding: 2px 3px; border-radius: 4px; font-size: inherit; white-space: normal; overflow-wrap: anywhere; }
+  .top4-container { order: 8; padding: 10px 8px; margin-bottom: 12px; border-radius: 10px; }
+  .top4-title { gap: 7px; margin-bottom: 8px; }
+  .top4-title h3 { font-size: 12px; }
+  .top4-title p, .top4-badge { display: none; }
+  .top4-title-icon { width: 25px; height: 26px; border-radius: 7px; }
+  .top4-title-icon svg { width: 16px; height: 16px; }
+  .top4-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .top4-card { flex-direction: row; padding: 8px; gap: 6px; border-radius: 7px; }
+  .top4-rank { width: 20px; height: 20px; border-radius: 5px; font-size: 9px; }
+  .top4-name { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 10px; line-height: 1.5; }
+  .top4-val { margin-top: 3px; font-size: 12px; }
+  .welcome-state { order: 9; margin-top: 0; padding: 23px 8px; }
+  .empty-icon { width: 44px; height: 44px; border-radius: 14px; margin-bottom: 15px; box-shadow: 0 0 0 5px #f7faf6; }
+  .empty-icon svg { width: 23px; height: 23px; }
+  .welcome-state h3 { font-size: 13px; }
+  .welcome-state > p { font-size: 10px; margin: 8px 0 16px; }
+  .app-footer { order: 10; padding: 10px 0 12px; font-size: 9px; }
+  .no-results { padding: 22px 8px; }
+}
+
+
   </style>
 </head>
 <body>
@@ -144,7 +209,7 @@ body{padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-rig
     <div id="status" role="status" aria-live="polite" aria-atomic="true"></div>
     <div class="welcome-state"><span class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></span><h3>Tìm đúng sản phẩm. Nắm ngay mức thưởng.</h3><p>Chọn một nhóm hàng ở trên để xem danh sách sản phẩm<br class="desktop-break"> và khám phá những mức thưởng nổi bật.</p><span class="empty-hint"><span>1</span> Chọn shop <i></i> <span>2</span> Chọn nhóm hàng <i></i> <span>3</span> Xem thưởng</span></div>
 
-    <div class="table-responsive" tabindex="0" role="region" aria-label="Bảng kết quả sản phẩm, có thể cuộn ngang">
+    <div class="table-responsive" tabindex="0" role="region" aria-label="Bảng kết quả sản phẩm">
       <div class="results-heading"><div><h3>Danh sách sản phẩm</h3><p>Nhấn vào tên sản phẩm để sao chép mã.</p></div><span class="table-hint">↔ Cuộn để xem thêm</span></div>
       <table id="dataTable" aria-label="Kết quả tra cứu thưởng nóng" style="display:none;">
         <thead id="tableHeader">
