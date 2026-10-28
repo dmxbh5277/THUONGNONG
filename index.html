@@ -2,211 +2,124 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Tra Cứu Thưởng Nóng Theo Shop</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary-color: #4A90E2;
-      --bg-color: #F4F6F9;
-      --box-bg: #FFFFFF;
-      --text-color: #333333;
-      --border-color: #E2E8F0;
-      --accent-color: #2E7D32;
-    }
-    *, *:before, *:after { 
-      box-sizing: border-box; 
-      -webkit-tap-highlight-color: transparent;
-    }
-    body {
-      font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      margin: 0;
-      padding: env(safe-area-inset-top, 8px) env(safe-area-inset-right, 8px) env(safe-area-inset-bottom, 8px) env(safe-area-inset-left, 8px);
-      width: 100%;
-      overflow-x: hidden;
-    }
-    .container {
-      background: var(--box-bg);
-      padding: 12px 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    h2 {
-      text-align: center;
-      color: var(--primary-color);
-      margin: 4px 0 12px 0;
-      font-size: 18px;
-    }
-    .form-group { margin-bottom: 10px; }
-    label {
-      display: block;
-      margin-bottom: 4px;
-      font-weight: 500;
-      color: #555;
-      font-size: 13px;
-    }
-    select, input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      font-size: 14px;
-      outline: none;
-      background-color: #fff;
-      font-family: inherit;
-      -webkit-appearance: none;
-    }
-    select:focus, input[type="text"]:focus { border-color: var(--primary-color); }
-    
-    .shop-row { display: flex; gap: 6px; }
-    #refreshBtn {
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 0 12px;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 13px;
-      flex-shrink: 0;
-      transition: opacity 0.1s;
-    }
-    #refreshBtn:active { opacity: 0.7; }
+:root{color-scheme:light;--primary-color:#167347;--accent-color:#12643e;--bg-color:#f1f6f3;--box-bg:#fff;--text-color:#203a30;--border-color:#d9e5dd;--muted:#64766c;--mint:#eaf5ee}
+*,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;width:100%;padding:max(32px,env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) max(32px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left));font-family:'Google Sans','Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;color:var(--text-color);background:radial-gradient(ellipse at 8% 8%,#dceee3 0,transparent 42%),radial-gradient(ellipse at 95% 90%,#e3eee5 0,transparent 40%),var(--bg-color);font-size:14px;line-height:1.5;min-height:100vh}
+button,input,select{font:inherit}button,select{touch-action:manipulation}svg{width:22px;height:22px;flex-shrink:0;vertical-align:middle}
+.container{max-width:1080px;width:100%;margin:0 auto;background:var(--box-bg);border:1px solid #dce8df;box-shadow:0 20px 65px #1e50360b,0 2px 8px #1e503604;border-radius:26px;padding:0 32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:24px;animation:page-in .6s ease-out both}
+.container>*{grid-column:1/-1;min-width:0}
+.app-header{margin:-1px -33px 0;padding:25px 33px 29px;border-radius:26px 26px 0 0;color:#fff;background:radial-gradient(ellipse at 90% 10%,#2c7752 0,transparent 58%),linear-gradient(115deg,#103e2b,#185638);position:relative;overflow:hidden}
+.header-top{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:1.3px}
+.brand-icon{display:grid;place-items:center;width:33px;height:33px;border:1px solid #ffffff35;border-radius:10px;background:#ffffff0c;color:#c2f4bd}
+.brand-icon svg{width:20px;height:20px}.brand-divider{padding:0 11px;color:#ffffff45}.brand-caption{font-size:10px;color:#bad7c6;letter-spacing:1px;font-weight:500}
+.header-tag{color:#d8ebde;font-size:11px;border:1px solid #ffffff28;border-radius:30px;padding:6px 12px;white-space:nowrap}
+.hero-content{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-top:30px}
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:1.8px;color:#b4dfb6;margin-bottom:10px}
+h2{font-size:clamp(27px,3.2vw,39px);line-height:1.22;letter-spacing:-1.3px;margin:0;font-weight:700;color:#fff}h2 span{color:#c5efbb}
+.hero-copy p{margin:13px 0 0;color:#c6dbce;font-size:13px}
+.hero-art{width:190px;height:150px;position:relative;display:grid;place-items:center;flex:0 0 auto;margin-right:35px}
+.orbit{border:1px solid #c4e4c820;border-radius:50%;width:135px;height:135px;position:absolute}.orbit-two{width:181px;height:181px;border-style:dashed;transform:rotate(20deg)}
+.hero-trophy{width:98px;height:104px;border:1px solid #d4efba60;background:linear-gradient(135deg,#e0f7bd,#a3dca0);box-shadow:0 12px 30px #082c3040,inset 0 1px 0 #ffffffa0;border-radius:27px;color:#246043;display:grid;place-items:center;transform:rotate(-8deg);animation:float 6s ease-in-out infinite}
+.hero-trophy svg{width:54px;height:54px;stroke-width:1.3}.spark{position:absolute;color:#c5efbb;font-size:21px;font-weight:400}.spark-one{top:4px;right:11px}.spark-two{bottom:4px;left:15px;font-size:16px;opacity:.6}
+h3{font-size:16px;margin:0;line-height:1.4;font-weight:700;letter-spacing:-.25px}
+.section-heading{display:flex;align-items:center;gap:12px;margin:27px 0 22px}.section-index{width:33px;height:33px;background:var(--mint);border:1px solid #dbebdf;color:var(--primary-color);border-radius:10px;display:grid;place-items:center;font-size:11px;font-weight:700}.section-heading p{color:var(--muted);font-size:12px;margin:4px 0 0}
+.form-group{margin-bottom:20px}.container>.shop-field{grid-column:1}.container>.group-field{grid-column:2}
+label{display:block;margin-bottom:8px;color:#3b5246;font-size:12px;font-weight:700}
+select,input[type="text"]{width:100%;min-width:0;min-height:48px;padding:12px 14px;border:1px solid var(--border-color);border-radius:11px;font-size:14px;line-height:22px;color:#243f31;outline:none;background-color:#fbfdfb;-webkit-appearance:none;appearance:none;transition:border-color .18s ease,background-color .18s ease,box-shadow .18s ease}
+input::placeholder{color:#7a8a80;opacity:1}
+select{padding-right:36px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2364766c' stroke-width='1.7' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center}
+select:hover,input[type="text"]:hover{border-color:#9fbcaa}select:focus,input[type="text"]:focus{border-color:#218355;background-color:#fff;box-shadow:0 0 0 4px #21835516}
+button:focus-visible,.table-responsive:focus-visible{outline:3px solid #208251;outline-offset:4px}
+.shop-row,.group-search-box{display:flex;align-items:stretch;gap:8px;min-width:0}.group-search-box{position:relative}.shop-row>select{flex:1}
+#refreshBtn{border:1px solid #167347;background:#167347;color:#fff;border-radius:11px;padding:0 15px;min-height:48px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-size:12px;font-weight:700;flex-shrink:0;box-shadow:0 3px 7px #12643e14;transition:background .18s ease,box-shadow .18s ease,transform .18s ease}
+#refreshBtn svg{width:16px;height:16px;transition:transform .5s ease}#refreshBtn:hover{background:#105e38;box-shadow:0 5px 12px #12643e25;transform:translateY(-1px)}#refreshBtn:hover svg{transform:rotate(70deg)}#refreshBtn:active{transform:translateY(1px)}
+#clearGroupBtn,#clearSearchBtn{display:none;flex-shrink:0;width:46px;min-height:48px;padding:0;border:1px solid var(--border-color);border-radius:11px;background:#f3f7f4;color:#536b5c;cursor:pointer;font-size:15px;transition:background .18s}#clearGroupBtn:hover,#clearSearchBtn:hover{background:#e5efe8}
+.input-wrapper{position:relative;flex:1;min-width:0}
+.dropdown-list{display:none;position:absolute;top:100%;left:0;right:0;z-index:1000;max-height:250px;overflow-y:auto;overscroll-behavior:contain;background:#fff;border:1px solid #d5e5d9;border-radius:13px;box-shadow:0 12px 30px #173f2c1c;margin-top:7px;padding:5px;animation:reveal .18s ease both}
+.dropdown-item{padding:12px 11px;min-height:44px;font-size:13px;border-radius:8px;cursor:pointer;color:#304e3c;overflow-wrap:anywhere;transition:background .15s,color .15s}.dropdown-item:hover,.dropdown-item:active{color:#12643e;background:#eaf5ee}
+.sort-row{display:flex;gap:20px;padding:17px 18px;border:1px solid #e2ebe5;background:#f7faf8;border-radius:13px;margin-bottom:24px;animation:reveal .3s ease both}.sort-col{flex:1;min-width:0}.sort-col label{font-size:11px;color:#61796a}.sort-col select{background-color:#fff}#searchGroup{animation:reveal .3s ease both}
+.top4-container{padding:20px;border:1px solid #d4e8d7;border-radius:17px;background:linear-gradient(115deg,#f0f8ef,#eaf5ee);margin:0 0 20px;animation:reveal .4s ease both}
+.top4-title{display:flex;align-items:center;gap:10px;margin-bottom:15px}.top4-title-icon{color:#257144;background:#dbeed9;border-radius:11px;width:39px;height:39px;display:grid;place-items:center}.top4-title h3{color:#244e34;font-size:15px}.top4-title p{margin:3px 0 0;font-size:11px;color:#617d67}.top4-badge{margin-left:auto;color:#386b3c;background:#dbeecf;border:1px solid #d0e5c2;border-radius:6px;padding:4px 8px;font-size:9px;font-weight:700;letter-spacing:.8px}
+.top4-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.top4-card{background:#ffffffed;padding:14px 12px;border-radius:11px;border:1px solid #deebe0;box-shadow:0 3px 7px #284e2f03;display:flex;align-items:flex-start;gap:9px;min-width:0;transition:transform .2s,box-shadow .2s,border-color .2s;animation:reveal .35s ease both}.top4-card:nth-child(2){animation-delay:.05s}.top4-card:nth-child(3){animation-delay:.1s}.top4-card:nth-child(4){animation-delay:.15s}.top4-card:hover{transform:translateY(-3px);border-color:#a5c8ac;box-shadow:0 7px 15px #315c3210}
+.top4-rank{background:#eef5ee;color:#447453;font-size:10px;font-weight:700;width:25px;height:25px;display:grid;place-items:center;border-radius:7px;flex-shrink:0}.top4-card:first-child .top4-rank{background:#e4edbe;color:#556329}.top4-info{flex:1;min-width:0}.top4-name{font-size:12px;font-weight:500;color:#304438;overflow-wrap:anywhere;line-height:1.5}.top4-val{color:#126b3c;font-size:17px;font-weight:700;margin-top:8px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+#status{text-align:center;color:#56725e;font-size:12px;border-radius:10px;overflow-wrap:anywhere}#status:empty{display:none}#status:not(:empty){padding:11px 14px;margin-bottom:18px;background:#f2f7f3;border:1px solid #e0ebe2;animation:reveal .25s ease both}
+.welcome-state{text-align:center;padding:33px 16px 45px;border-top:1px solid #edf1ee;margin-top:1px}.empty-icon{display:grid;place-items:center;width:70px;height:70px;border-radius:23px;margin:0 auto 20px;color:#42885a;background:linear-gradient(135deg,#edf7e8,#e1f0e7);box-shadow:0 0 0 8px #f7faf6}.empty-icon svg{width:31px;height:31px;stroke-width:1.4}.welcome-state h3{font-size:17px;color:#355440}.welcome-state>p{color:#718075;font-size:12px;line-height:1.8;margin:10px 0 22px}.empty-hint{display:inline-flex;align-items:center;gap:8px;color:#607665;font-size:10px}.empty-hint span{display:grid;place-items:center;background:#edf3ee;border-radius:50%;width:20px;height:20px;color:#447453;font-size:9px}.empty-hint i{width:17px;height:1px;background:#d9e5da;margin:0 5px}
+.container:has(#dataTable[style*="display: table"]) .welcome-state{display:none}
+.table-responsive{width:100%;overflow-x:auto;overscroll-behavior-x:contain;border:1px solid #dfe8e1;border-radius:14px;margin:0 0 24px;scrollbar-width:thin;scrollbar-color:#b5cdbb #f4f8f5}
+.table-responsive:has(#dataTable[style*="display:none"]),.table-responsive:has(#dataTable[style*="display: none"]){display:none}
+.results-heading{padding:19px 18px 17px;display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;left:0;background:#fff}.results-heading h3{font-size:15px}.results-heading p{margin:4px 0 0;font-size:11px;color:var(--muted)}.table-hint{font-size:10px;color:var(--muted);white-space:nowrap;display:none}
+table{width:100%;min-width:650px;border-collapse:collapse;font-variant-numeric:tabular-nums}th,td{padding:15px 16px;text-align:left;font-size:12px}th{font-size:10px;font-weight:700;color:#526c5a;background:#eff5f0;border-top:1px solid #e1eae3;border-bottom:1px solid #dbe7de;letter-spacing:.2px;white-space:nowrap}th:first-child{width:39%}td{border-bottom:1px solid #edf1ee;color:#43594b}td:not(:first-child){white-space:nowrap}tbody tr{transition:background .15s}tbody tr:nth-child(even){background:#fafcf9}tbody tr:hover{background:#eff7f0}tbody tr:last-child td{border-bottom:0}.product-name-click{font-weight:500;color:#255c3a;cursor:pointer;line-height:1.65;overflow-wrap:anywhere}.product-name-click:hover{text-decoration:underline;text-underline-offset:3px}.product-name-click:active{color:var(--primary-color)}td:nth-child(3){color:#2d4435;font-weight:500}td:nth-child(4) strong{display:inline-block;color:#137143!important;background:#eaf5ec;padding:4px 8px;border-radius:6px;font-size:12px}td:last-child{color:#6a7a70}
+.no-results{display:none;padding:32px 18px;text-align:center}.table-responsive:has(#tableBody:empty) .no-results{display:block}.table-responsive:has(#tableBody:empty) table{min-width:0}.table-responsive:has(#tableBody:empty) thead{display:none}.no-results>span{display:block;color:#6f9478;margin-bottom:10px}.no-results h3{font-size:14px}.no-results p{font-size:12px;color:var(--muted);margin:6px 0 0}
+.app-footer{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:17px 0 20px;border-top:1px solid #eaf0eb;color:#738479;font-size:10px}.app-footer>span:first-child{display:inline-flex;gap:6px;align-items:center}.app-footer svg{width:15px;height:15px;color:#669673}
+@keyframes page-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@keyframes reveal{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}@keyframes float{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-7px) rotate(-4deg)}}
+@media(min-width:1500px){body{padding-top:48px;padding-bottom:48px}}
+@media(max-width:820px){body{padding:24px 18px}.container{padding:0 24px;gap:0 18px}.app-header{margin:-1px -25px 0;padding:23px 25px 28px}.hero-art{margin-right:0;width:150px}.hero-trophy{width:85px;height:92px;border-radius:24px}.orbit{width:115px;height:115px}.orbit-two{width:155px;height:155px}.top4-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.table-hint{display:inline}.shop-row{gap:6px}#refreshBtn{padding:0 11px;gap:5px}.header-tag{display:none}}
+@media(max-width:620px){
+body{padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}.container{border-radius:21px;padding:0 18px;grid-template-columns:minmax(0,1fr);gap:0}.container>.shop-field,.container>.group-field{grid-column:1/-1}.app-header{margin:-1px -19px 0;border-radius:21px 21px 0 0;padding:20px 19px 26px}
+.brand{font-size:10px;letter-spacing:1px;gap:8px}.brand-caption{font-size:8px;letter-spacing:.6px}.brand-divider{padding:0 7px}.brand-icon{width:30px;height:30px;border-radius:9px}.brand-icon svg{width:18px;height:18px}.hero-content{margin-top:27px;gap:0;align-items:flex-end}.hero-copy{position:relative;z-index:1}.eyebrow{font-size:8px;letter-spacing:1px;margin-bottom:12px}h2{font-size:clamp(26px,6.4vw,37px);letter-spacing:-.9px;line-height:1.25}.hero-copy p{font-size:11px;max-width:240px;line-height:1.7;margin-top:12px}.hero-art{position:absolute;width:80px;height:90px;right:13px;bottom:9px;opacity:.12}.hero-trophy{width:70px;height:75px}.hero-trophy svg{width:42px;height:42px}.orbit,.spark{display:none}
+.section-heading{margin-top:23px;margin-bottom:20px;gap:10px}.section-heading h3{font-size:15px}.section-heading p{font-size:11px;line-height:1.65}.section-index{width:30px;height:32px;flex-shrink:0}.form-group{margin-bottom:17px}label{font-size:11px;margin-bottom:7px}select,input[type="text"]{font-size:16px;min-height:49px;padding-left:12px}#refreshBtn{font-size:12px;padding:0 13px;min-height:49px}
+.sort-row{padding:13px 11px;gap:10px;margin:0 0 20px}.sort-col label{font-size:10px;min-height:15px}.sort-col select{font-size:12px;min-height:44px;padding:9px 24px 9px 10px;background-position:right 7px center}.top4-container{padding:14px 11px;border-radius:13px;margin-bottom:17px}.top4-title{gap:8px;margin-bottom:12px}.top4-title h3{font-size:13px}.top4-title p{font-size:10px}.top4-title-icon{width:33px;height:35px;border-radius:9px}.top4-title-icon svg{width:19px;height:19px}.top4-badge{font-size:8px;padding:3px 5px;letter-spacing:.3px}.top4-grid{gap:8px}.top4-card{padding:11px 8px;gap:6px}.top4-rank{width:21px;height:22px;font-size:9px;border-radius:6px}.top4-name{font-size:11px}.top4-val{font-size:15px;margin-top:7px}
+.welcome-state{padding:32px 0}.empty-icon{width:60px;height:60px;border-radius:20px;margin-bottom:22px}.empty-icon svg{width:28px;height:28px}.welcome-state h3{font-size:15px;max-width:270px;margin:auto}.welcome-state>p{font-size:11px;margin-bottom:20px}.desktop-break{display:none}.empty-hint{gap:5px;font-size:9px}.empty-hint i{width:8px;margin:0 2px}.empty-hint span{width:18px;height:18px;font-size:8px}.results-heading{padding:15px 12px;align-items:flex-start}.results-heading h3{font-size:13px}.results-heading p{font-size:10px;max-width:180px}.table-hint{font-size:9px;padding-top:3px}th,td{padding:13px 12px}th:first-child{width:35%}.app-footer{font-size:9px;padding:16px 0 18px;gap:8px}.app-footer>span:last-child{display:none}}
+@media(max-width:359px){.brand-caption,.brand-divider{display:none}.top4-badge{display:none}.empty-hint i{display:none}.empty-hint{gap:4px}.sort-row{flex-direction:column}.top4-card{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
-    .sort-row { display: flex; gap: 10px; margin-bottom: 10px; }
-    .sort-col { flex: 1; min-width: 0; }
-
-    .group-search-box { display: flex; align-items: center; gap: 6px; position: relative; }
-    #clearGroupBtn, #clearSearchBtn {
-      background-color: #f1f3f4;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 0 12px;
-      height: 42px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #666;
-      cursor: pointer;
-      display: none;
-      flex-shrink: 0;
-    }
-    .input-wrapper { position: relative; flex: 1; min-width: 0; }
-    .dropdown-list {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: #fff;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      max-height: 180px;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      z-index: 1000;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      margin-top: 2px;
-    }
-    .dropdown-item {
-      padding: 10px;
-      font-size: 13px;
-      cursor: pointer;
-      border-bottom: 1px solid #f5f5f5;
-    }
-    .dropdown-item:active { background-color: #f1f4f8; color: var(--primary-color); }
-    
-    .top4-container {
-      background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-      border: 1px solid #a5d6a7;
-      border-radius: 6px;
-      padding: 8px;
-      margin-bottom: 10px;
-    }
-    .top4-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: #2e7d32;
-      margin-bottom: 6px;
-      text-align: center;
-    }
-    .top4-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-    .top4-card {
-      background: white;
-      padding: 6px 8px;
-      border-radius: 4px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-    }
-    .top4-rank { font-weight: bold; color: #2e7d32; font-size: 12px; flex-shrink: 0; }
-    .top4-info { flex: 1; min-width: 0; }
-    .top4-name { font-size: 11px; font-weight: 500; color: #333; word-break: break-word; line-height: 1.3; }
-    .top4-val { font-size: 11px; color: #d32f2f; font-weight: bold; margin-top: 2px; }
-    
-    .table-responsive { 
-      width: 100%; 
-      overflow-x: auto; 
-      -webkit-overflow-scrolling: touch;
-      margin-top: 6px; 
-    }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { padding: 8px 6px; text-align: left; font-size: 12px; }
-    .product-name-click { cursor: pointer; }
-    .product-name-click:active { color: var(--primary-color); }
-    th { background-color: #F1F4F8; font-weight: 600; color: #444; border-bottom: 1px solid var(--border-color); }
-    td { border-bottom: 1px solid #f0f0f0; }
-    tr:nth-child(even) { background-color: #FAFAFA; }
-    #status { text-align: center; margin: 8px 0; font-style: italic; color: #666; font-size: 12px; }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h2>Tra Cứu Thưởng Nóng</h2>
+    <header class="app-header">
+      <div class="header-top">
+        <div class="brand"><span class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4c-9-2-17 3-14 10 3 7 15 4 14-10Z"/><path d="M4 21 15 10"/></svg></span><span>THƯỞNG NÓNG<span class="brand-divider">/</span><span class="brand-caption">TRA CỨU THEO SHOP</span></span></div>
+        <span class="header-tag">Không bỏ lỡ cơ hội</span>
+      </div>
+      <div class="hero-content">
+        <div class="hero-copy"><div class="eyebrow">TRA CỨU NHANH · BÁN HÀNG HIỆU QUẢ</div><h2>Thưởng nóng.<br><span>Cơ hội trong tầm tay.</span></h2><p>Chọn shop, tìm sản phẩm và xem ngay mức thưởng.</p></div>
+        <div class="hero-art" aria-hidden="true"><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span><span class="hero-trophy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8v6a4 4 0 0 1-8 0V3Z"/><path d="M8 5H4v2a4 4 0 0 0 4 4m8-6h4v2a4 4 0 0 1-4 4m-4 2v5m-4 3h8m-6-3h4v3h-4z"/></svg></span><span class="spark spark-one">+</span><span class="spark spark-two">+</span></div>
+      </div>
+    </header>
+    <div class="section-heading"><span class="section-index">01</span><div><h3>Thiết lập tra cứu</h3><p>Bắt đầu bằng cách chọn shop và nhóm hàng bạn quan tâm.</p></div></div>
 
-    <div class="form-group">
-      <label for="shopSelect">🏪 Chọn Shop:</label>
+    <div class="form-group shop-field">
+      <label for="shopSelect">Shop đang tra cứu</label>
       <div class="shop-row">
         <select id="shopSelect" onchange="onShopChange()">
           <option value="">Đang tải danh sách Shop...</option>
         </select>
-        <button type="button" id="refreshBtn" onclick="refreshShopData()" title="Lấy dữ liệu mới nhất từ Google Sheet">🔄 Cập nhật</button>
+        <button type="button" id="refreshBtn" onclick="refreshShopData()" title="Lấy dữ liệu mới nhất từ Google Sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.1 7a7 7 0 0 1 11.5-1L20 9M4 15l2.4 3A7 7 0 0 0 18 17"/></svg><span>Cập nhật</span></button>
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="groupSearch">🔍 Chọn hoặc tìm kiếm nhóm hàng:</label>
+    <div class="form-group group-field">
+      <label for="groupSearch">Nhóm hàng</label>
       <div class="group-search-box">
         <div class="input-wrapper">
-          <input type="text" id="groupSearch" placeholder="Gõ để tìm nhanh nhóm hàng..." oninput="filterGroupList()" onclick="toggleGroupDropdown()" autocomplete="off">
+          <input type="text" id="groupSearch" placeholder="Tìm hoặc chọn nhóm hàng..." oninput="filterGroupList()" onclick="toggleGroupDropdown()" autocomplete="off">
           <div id="groupDropdown" class="dropdown-list"></div>
         </div>
-        <button type="button" id="clearGroupBtn" onclick="clearGroupSearch()" title="Xóa nhanh">✕</button>
+        <button type="button" id="clearGroupBtn" aria-label="Xóa nhóm hàng đã chọn" onclick="clearGroupSearch()" title="Xóa nhanh">✕</button>
       </div>
     </div>
 
     <div class="form-group" id="searchGroup" style="display:none;">
-      <label for="searchInput">Tìm kiếm (Tên SP, Size... cách nhau dấu phẩy):</label>
+      <label for="searchInput">Tìm sản phẩm hoặc size · Phân tách từ khóa bằng dấu phẩy</label>
       <div class="group-search-box">
-        <input type="text" id="searchInput" oninput="onSearchInput()" placeholder="Nhập từ khóa...">
-        <button type="button" id="clearSearchBtn" onclick="clearSearchInput()" title="Xóa nhanh">✕</button>
+        <input type="text" id="searchInput" oninput="onSearchInput()" placeholder="Nhập tên sản phẩm, size...">
+        <button type="button" id="clearSearchBtn" aria-label="Xóa từ khóa tìm kiếm" onclick="clearSearchInput()" title="Xóa nhanh">✕</button>
       </div>
     </div>
 
     <div class="sort-row" id="sortGroupContainer" style="display:none;">
       <div class="sort-col">
-        <label for="sortSize">↕️ Sắp xếp Size:</label>
+        <label for="sortSize">Sắp xếp theo size</label>
         <select id="sortSize" onchange="displayData()">
           <option value="none">Mặc định</option>
           <option value="asc">Size Tăng dần (↑)</option>
@@ -214,7 +127,7 @@
         </select>
       </div>
       <div class="sort-col">
-        <label for="sortPrice">💰 Sắp xếp Giá KM:</label>
+        <label for="sortPrice">Sắp xếp theo giá khuyến mãi</label>
         <select id="sortPrice" onchange="displayData()">
           <option value="none">Mặc định</option>
           <option value="asc">Thấp → Cao</option>
@@ -224,20 +137,24 @@
     </div>
 
     <div id="top4Container" class="top4-container" style="display:none;">
-      <div class="top4-title">🌿 Top 4 Sản Phẩm Thưởng Cao Nhất</div>
+      <div class="top4-title"><span class="top4-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8v6a4 4 0 0 1-8 0V3Z"/><path d="M8 5H4v2a4 4 0 0 0 4 4m8-6h4v2a4 4 0 0 1-4 4m-4 2v5m-4 3h8m-6-3h4v3h-4z"/></svg></span><div><h3>Top 4 thưởng cao nhất</h3><p>Trong kết quả đang hiển thị</p></div><span class="top4-badge">NỔI BẬT</span></div>
       <div id="top4List" class="top4-grid"></div>
     </div>
 
-    <div id="status"></div>
+    <div id="status" role="status" aria-live="polite" aria-atomic="true"></div>
+    <div class="welcome-state"><span class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></span><h3>Tìm đúng sản phẩm. Nắm ngay mức thưởng.</h3><p>Chọn một nhóm hàng ở trên để xem danh sách sản phẩm<br class="desktop-break"> và khám phá những mức thưởng nổi bật.</p><span class="empty-hint"><span>1</span> Chọn shop <i></i> <span>2</span> Chọn nhóm hàng <i></i> <span>3</span> Xem thưởng</span></div>
 
-    <div class="table-responsive">
-      <table id="dataTable" style="display:none;">
+    <div class="table-responsive" tabindex="0" role="region" aria-label="Bảng kết quả sản phẩm, có thể cuộn ngang">
+      <div class="results-heading"><div><h3>Danh sách sản phẩm</h3><p>Nhấn vào tên sản phẩm để sao chép mã.</p></div><span class="table-hint">↔ Cuộn để xem thêm</span></div>
+      <table id="dataTable" aria-label="Kết quả tra cứu thưởng nóng" style="display:none;">
         <thead id="tableHeader">
           <!-- Hàng tiêu đề động sẽ được JavaScript sinh ra tự động -->
         </thead>
         <tbody id="tableBody"></tbody>
       </table>
+      <div class="no-results"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></span><h3>Chưa có sản phẩm phù hợp</h3><p>Thử thay đổi từ khóa hoặc xóa bộ lọc tìm kiếm.</p></div>
     </div>
+    <footer class="app-footer"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4c-9-2-17 3-14 10 3 7 15 4 14-10Z"/><path d="M4 21 15 10"/></svg> Tra cứu thưởng nóng theo shop</span><span>Dễ tìm kiếm · Dễ theo dõi</span></footer>
   </div>
 
   <script>
